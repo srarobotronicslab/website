@@ -1,160 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Admin | SRA Robotronics Lab</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="admin.css">
+    <title>SRA Robotronics Lab - Admin</title>
 
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link
+        rel="stylesheet"
+        href="admin.css"
+    >
 </head>
+
 
 <body>
 
-    <!-- LOGIN SECTION -->
-    <section id="loginSection" class="login-section">
 
-        <div class="login-card">
+<!-- =========================================
+     LOGIN SECTION
+========================================= -->
 
-            <img src="logo.jpg" class="logo" alt="SRA Robotronics Lab">
+<section id="loginSection" class="login-section">
 
-            <h1>Admin Login</h1>
+    <div class="login-card">
 
-            <p>Manage your SRA Robotronics Lab store</p>
+        <img
+            src="logo.jpg"
+            alt="SRA Robotronics Lab"
+            class="login-logo"
+        >
 
-            <form id="loginForm">
+        <h1>Admin Login</h1>
+
+        <p class="login-subtitle">
+            SRA Robotronics Lab
+        </p>
+
+
+        <form id="loginForm">
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email
+                </label>
 
                 <input
                     type="email"
                     id="email"
-                    placeholder="Admin Email"
+                    placeholder="Enter admin email"
                     required
                 >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
 
                 <input
                     type="password"
                     id="password"
-                    placeholder="Password"
+                    placeholder="Enter password"
                     required
                 >
 
-                <button type="submit">
-                    Login
-                </button>
+            </div>
 
-            </form>
 
-            <p id="loginMessage"></p>
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Login
+            </button>
+
+
+            <p
+                id="loginMessage"
+                class="message"
+            ></p>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================
+     ADMIN SECTION
+========================================= -->
+
+<section
+    id="adminSection"
+    class="admin-section hidden"
+>
+
+
+    <!-- HEADER -->
+
+    <header class="admin-header">
+
+        <div>
+
+            <h1>
+                SRA Robotronics Lab
+            </h1>
+
+            <p>
+                Product Management
+            </p>
 
         </div>
 
-    </section>
+
+        <button
+            id="logoutBtn"
+            class="logout-btn"
+        >
+            Logout
+        </button>
+
+    </header>
 
 
-    <!-- ADMIN DASHBOARD -->
-    <section id="adminSection" class="admin-section hidden">
 
-        <!-- HEADER -->
-        <header class="admin-header">
-
-            <div>
-                <h1>SRA Robotronics Lab</h1>
-                <p>Admin Dashboard</p>
-            </div>
-
-            <button id="logoutBtn" class="logout-btn">
-                Logout
-            </button>
-
-        </header>
+    <main class="admin-container">
 
 
-        <main class="dashboard">
+        <!-- =====================================
+             ADD PRODUCT
+        ====================================== -->
 
-            <!-- ADD PRODUCT -->
-            <div class="admin-card">
+        <section class="admin-card">
 
-                <h2>Add New Product</h2>
+            <h2>
+                Add New Product
+            </h2>
 
-                <form id="productForm">
 
-                    <label>Product Name</label>
+            <form id="productForm">
+
+
+                <!-- PRODUCT NAME -->
+
+                <div class="form-group">
+
+                    <label for="productName">
+                        Product Name
+                    </label>
 
                     <input
                         type="text"
                         id="productName"
-                        placeholder="Arduino Nano CH340"
+                        placeholder="Example: Arduino Nano"
                         required
                     >
 
+                </div>
 
-                    <label>Description</label>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group">
+
+                    <label for="productDescription">
+                        Description
+                    </label>
 
                     <textarea
                         id="productDescription"
-                        placeholder="Product description..."
+                        placeholder="Enter product description"
+                        rows="4"
                     ></textarea>
 
-
-                    <div class="form-row">
-
-                        <div>
-                            <label>Price (BDT)</label>
-
-                            <input
-                                type="number"
-                                id="productPrice"
-                                placeholder="365"
-                                min="0"
-                                required
-                            >
-                        </div>
+                </div>
 
 
-                        <div>
-                            <label>Stock</label>
 
-                            <input
-                                type="number"
-                                id="productStock"
-                                placeholder="10"
-                                min="0"
-                                value="0"
-                            >
-                        </div>
+                <!-- PRICE -->
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="productPrice">
+                            Price (BDT)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="productPrice"
+                            placeholder="500"
+                            min="0"
+                            required
+                        >
 
                     </div>
 
 
-                    <label>Category</label>
+
+                    <!-- STOCK -->
+
+                    <div class="form-group">
+
+                        <label for="productStock">
+                            Stock
+                        </label>
+
+                        <input
+                            type="number"
+                            id="productStock"
+                            placeholder="10"
+                            min="0"
+                            value="0"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CATEGORY -->
+
+                <div class="form-group">
+
+                    <label for="productCategory">
+                        Category
+                    </label>
 
                     <select id="productCategory">
 
-                        <option value="Boards">
-                            Development Boards
+                        <option value="Robotics">
+                            Robotics
+                        </option>
+
+                        <option value="Electronics">
+                            Electronics
+                        </option>
+
+                        <option value="Arduino">
+                            Arduino
                         </option>
 
                         <option value="Sensors">
                             Sensors
                         </option>
 
-                        <option value="Modules">
-                            Modules
-                        </option>
-
                         <option value="Motors">
                             Motors
                         </option>
 
-                        <option value="Robotics">
-                            Robotics
-                        </option>
-
-                        <option value="Accessories">
-                            Accessories
+                        <option value="Kits">
+                            Kits
                         </option>
 
                         <option value="Other">
@@ -163,8 +274,17 @@
 
                     </select>
 
+                </div>
 
-                    <label>Product Image</label>
+
+
+                <!-- IMAGE -->
+
+                <div class="form-group">
+
+                    <label for="productImage">
+                        Product Image
+                    </label>
 
                     <input
                         type="file"
@@ -172,78 +292,127 @@
                         accept="image/*"
                     >
 
-
-                    <div id="imagePreview"></div>
-
-
-                    <label class="checkbox-label">
-
-                        <input
-                            type="checkbox"
-                            id="productAvailable"
-                            checked
-                        >
-
-                        Product is available
-
-                    </label>
-
-
-                    <button
-                        type="submit"
-                        class="add-product-btn"
-                    >
-                        Add Product
-                    </button>
-
-                </form>
-
-                <p id="productMessage"></p>
-
-            </div>
-
-
-            <!-- PRODUCT LIST -->
-            <div class="admin-card">
-
-                <div class="products-header">
-
-                    <div>
-
-                        <h2>Your Products</h2>
-
-                        <p>
-                            Manage products displayed in your store.
-                        </p>
-
-                    </div>
-
-                    <button
-                        id="refreshBtn"
-                        class="refresh-btn"
-                    >
-                        Refresh
-                    </button>
-
                 </div>
 
 
-                <div id="productsList">
 
-                    <p class="loading">
-                        Loading products...
+                <!-- IMAGE PREVIEW -->
+
+                <div
+                    id="imagePreview"
+                    class="image-preview"
+                ></div>
+
+
+
+                <!-- AVAILABILITY -->
+
+                <label class="checkbox-label">
+
+                    <input
+                        type="checkbox"
+                        id="productAvailable"
+                        checked
+                    >
+
+                    Product is available
+
+                </label>
+
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Add Product
+                </button>
+
+
+                <p
+                    id="productMessage"
+                    class="message"
+                ></p>
+
+
+            </form>
+
+        </section>
+
+
+
+        <!-- =====================================
+             PRODUCT LIST
+        ====================================== -->
+
+        <section class="admin-card">
+
+
+            <div class="products-header">
+
+                <div>
+
+                    <h2>
+                        Products
+                    </h2>
+
+                    <p>
+                        Manage products currently in your store.
                     </p>
 
                 </div>
 
+
+                <button
+                    id="refreshBtn"
+                    class="refresh-btn"
+                >
+                    ↻ Refresh
+                </button>
+
             </div>
 
-        </main>
-
-    </section>
 
 
-    <script src="admin.js"></script>
+            <!-- IMPORTANT:
+                 JavaScript loads products here
+            -->
+
+            <div id="productsList">
+
+                <p class="loading">
+                    Loading products...
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</section>
+
+
+
+<!-- =========================================
+     SUPABASE
+========================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<!-- =========================================
+     ADMIN JAVASCRIPT
+========================================= -->
+
+<script src="admin.js"></script>
+
 
 </body>
+
 </html>

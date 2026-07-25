@@ -1,7 +1,73 @@
-const header=document.querySelector('.site-header');
-const menuToggle=document.querySelector('.menu-toggle');
-const mainNav=document.querySelector('.main-nav');
-window.addEventListener('scroll',()=>header.classList.toggle('scrolled',window.scrollY>20));
-menuToggle.addEventListener('click',()=>{const open=mainNav.classList.toggle('open');menuToggle.setAttribute('aria-expanded',String(open));});
-document.querySelectorAll('.main-nav a').forEach(a=>a.addEventListener('click',()=>{mainNav.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');}));
-document.getElementById('year').textContent=new Date().getFullYear();
+/* =========================================
+   HEADER SCROLL EFFECT
+========================================= */
+
+const header = document.querySelector(".header");
+
+window.addEventListener("scroll", () => {
+
+    if (window.scrollY > 20) {
+
+        header.style.boxShadow =
+            "0 8px 30px rgba(0,0,0,0.08)";
+
+    } else {
+
+        header.style.boxShadow = "none";
+
+    }
+
+});
+
+
+/* =========================================
+   MOBILE MENU
+========================================= */
+
+const menuButton =
+    document.getElementById("menuButton");
+
+const topNav =
+    document.querySelector(".top-nav");
+
+
+menuButton.addEventListener("click", () => {
+
+    if (topNav.style.display === "flex") {
+
+        topNav.style.display = "none";
+
+    } else {
+
+        topNav.style.display = "flex";
+
+        topNav.style.position = "absolute";
+
+        topNav.style.top = "68px";
+
+        topNav.style.left = "20px";
+
+        topNav.style.right = "20px";
+
+        topNav.style.padding = "15px";
+
+        topNav.style.flexDirection = "column";
+
+        topNav.style.background = "#fefefe";
+
+        topNav.style.borderRadius = "15px";
+
+        topNav.style.boxShadow =
+            "0 15px 40px rgba(0,0,0,0.12)";
+
+    }
+
+});
+
+
+/* =========================================
+   CURRENT YEAR
+========================================= */
+
+document.getElementById("year").textContent =
+    new Date().getFullYear();

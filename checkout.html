@@ -14,6 +14,11 @@
         Checkout | SRA Robotronics Lab
     </title>
 
+    <meta
+        name="description"
+        content="Complete your order from SRA Robotronics Lab."
+    >
+
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
         rel="stylesheet"
@@ -21,7 +26,7 @@
 
     <link
         rel="stylesheet"
-        href="cart.css"
+        href="checkout.css"
     >
 
 </head>
@@ -58,7 +63,7 @@
 
         <a
             href="cart.html"
-            class="back-store"
+            class="back-cart"
         >
 
             ← Back to Cart
@@ -73,16 +78,18 @@
 
 
 <!-- =========================================
-     CHECKOUT
+     MAIN
 ========================================= -->
 
 <main class="checkout-page">
 
 
-    <div class="page-header">
+    <!-- PAGE HEADER -->
+
+    <section class="page-header">
 
         <p class="section-label">
-            CHECKOUT
+            SECURE CHECKOUT
         </p>
 
         <h1>
@@ -91,21 +98,25 @@
 
         <p>
             Enter your delivery information
-            and select your payment method.
+            and complete the payment.
         </p>
 
-    </div>
+    </section>
 
 
 
-    <div class="checkout-layout">
+    <!-- =====================================
+         CHECKOUT LAYOUT
+    ====================================== -->
+
+    <section class="checkout-layout">
 
 
-        <!-- =====================================
-             CUSTOMER FORM
-        ====================================== -->
+        <!-- =================================
+             CUSTOMER INFORMATION
+        ================================== -->
 
-        <section class="checkout-card">
+        <div class="checkout-card">
 
 
             <h2>
@@ -121,22 +132,14 @@
                 <div class="form-group">
 
                     <label for="customerName">
-
                         Full Name
-
                     </label>
 
-
                     <input
-
                         type="text"
-
                         id="customerName"
-
                         placeholder="Enter your full name"
-
                         required
-
                     >
 
                 </div>
@@ -148,22 +151,15 @@
                 <div class="form-group">
 
                     <label for="customerPhone">
-
                         Phone Number
-
                     </label>
 
-
                     <input
-
                         type="tel"
-
                         id="customerPhone"
-
                         placeholder="01XXXXXXXXX"
-
+                        maxlength="11"
                         required
-
                     >
 
                 </div>
@@ -175,23 +171,64 @@
                 <div class="form-group">
 
                     <label for="customerAddress">
+                        Full Address
+                    </label>
 
-                        Delivery Address
+                    <textarea
+                        id="customerAddress"
+                        rows="4"
+                        placeholder="House, Road, Area, Thana, District"
+                        required
+                    ></textarea>
 
+                </div>
+
+
+
+                <!-- LOCATION -->
+
+                <div class="form-group">
+
+                    <label>
+                        Delivery Location
                     </label>
 
 
-                    <textarea
+                    <div class="location-options">
 
-                        id="customerAddress"
 
-                        rows="4"
+                        <label class="radio-option">
 
-                        placeholder="House, Road, Area, District"
+                            <input
+                                type="radio"
+                                name="deliveryLocation"
+                                value="inside"
+                                checked
+                            >
 
-                        required
+                            <span>
+                                Inside Dhaka
+                            </span>
 
-                    ></textarea>
+                        </label>
+
+
+                        <label class="radio-option">
+
+                            <input
+                                type="radio"
+                                name="deliveryLocation"
+                                value="outside"
+                            >
+
+                            <span>
+                                Outside Dhaka
+                            </span>
+
+                        </label>
+
+
+                    </div>
 
                 </div>
 
@@ -202,9 +239,7 @@
                 <div class="form-group">
 
                     <label>
-
                         Payment Method
-
                     </label>
 
 
@@ -216,22 +251,23 @@
                         <label class="payment-option">
 
                             <input
-
                                 type="radio"
-
                                 name="paymentMethod"
-
-                                value="COD"
-
+                                value="cod"
                                 checked
-
                             >
 
-                            <span>
+                            <div>
 
-                                Cash on Delivery
+                                <strong>
+                                    Cash on Delivery
+                                </strong>
 
-                            </span>
+                                <small>
+                                    Pay delivery charge in advance
+                                </small>
+
+                            </div>
 
                         </label>
 
@@ -242,20 +278,22 @@
                         <label class="payment-option">
 
                             <input
-
                                 type="radio"
-
                                 name="paymentMethod"
-
-                                value="bKash"
-
+                                value="bkash"
                             >
 
-                            <span>
+                            <div>
 
-                                bKash
+                                <strong>
+                                    bKash
+                                </strong>
 
-                            </span>
+                                <small>
+                                    Pay the full order amount
+                                </small>
+
+                            </div>
 
                         </label>
 
@@ -266,20 +304,22 @@
                         <label class="payment-option">
 
                             <input
-
                                 type="radio"
-
                                 name="paymentMethod"
-
-                                value="Nagad"
-
+                                value="nogod"
                             >
 
-                            <span>
+                            <div>
 
-                                Nagad
+                                <strong>
+                                    Nagad
+                                </strong>
 
-                            </span>
+                                <small>
+                                    Pay the full order amount
+                                </small>
+
+                            </div>
 
                         </label>
 
@@ -290,91 +330,42 @@
 
 
 
-                <!-- =================================
-                     PAYMENT INSTRUCTIONS
-                ================================== -->
+                <!-- PAYMENT INSTRUCTIONS -->
 
                 <div
-
                     id="paymentInstructions"
-
                     class="payment-instructions"
-
-                >
-
-
-                    <h3>
-
-                        Delivery Charge Payment
-
-                    </h3>
-
-
-                    <p>
-
-                        For Cash on Delivery orders,
-                        please pay the ৳100 delivery
-                        charge in advance.
-
-                    </p>
-
-
-                    <div class="payment-number">
-
-                        bKash:
-
-                        <strong>
-                            01303614563
-                        </strong>
-
-                    </div>
-
-
-                    <p>
-
-                        Send ৳100 to the number above,
-                        then enter the last 2 digits
-                        of the sender's phone number.
-
-                    </p>
-
-
-                </div>
+                ></div>
 
 
 
-                <!-- SENDER LAST TWO DIGITS -->
+                <!-- PAYMENT LAST TWO DIGITS -->
 
-                <div
+                <div class="form-group">
 
-                    class="form-group"
+                    <label for="paymentLastTwo">
 
-                    id="senderDigitsGroup"
-
-                >
-
-                    <label for="senderLastTwo">
-
-                        Last 2 Digits of Sender Phone
+                        Last 2 Digits of
+                        Payment Number
 
                     </label>
 
-
                     <input
-
                         type="text"
-
-                        id="senderLastTwo"
-
+                        id="paymentLastTwo"
                         maxlength="2"
-
                         inputmode="numeric"
-
-                        placeholder="e.g. 45"
-
+                        placeholder="Example: 45"
                         required
-
                     >
+
+                    <small class="input-help">
+
+                        Enter the last 2 digits of the
+                        phone number you used to make
+                        the payment.
+
+                    </small>
 
                 </div>
 
@@ -383,13 +374,9 @@
                 <!-- SUBMIT -->
 
                 <button
-
                     type="submit"
-
-                    class="place-order-btn"
-
                     id="placeOrderBtn"
-
+                    class="place-order-btn"
                 >
 
                     Place Order
@@ -397,47 +384,43 @@
                 </button>
 
 
-                <p
+                <!-- MESSAGE -->
 
+                <div
                     id="checkoutMessage"
-
                     class="checkout-message"
-
-                ></p>
+                ></div>
 
 
             </form>
 
 
-        </section>
+        </div>
 
 
 
-        <!-- =====================================
+        <!-- =================================
              ORDER SUMMARY
-        ====================================== -->
+        ================================== -->
 
-        <aside class="checkout-summary">
+        <aside class="order-summary">
 
 
             <h2>
-
-                Your Order
-
+                Order Summary
             </h2>
 
 
+            <!-- ITEMS -->
+
             <div
-
                 id="checkoutItems"
-
                 class="checkout-items"
-
             ></div>
 
 
-            <div class="summary-divider"></div>
 
+            <!-- SUBTOTAL -->
 
             <div class="summary-row">
 
@@ -452,18 +435,28 @@
             </div>
 
 
+
+            <!-- DELIVERY -->
+
             <div class="summary-row">
 
                 <span>
-                    Delivery Fee
+                    Delivery
                 </span>
 
-                <strong>
-                    ৳100
+                <strong id="checkoutDelivery">
+                    ৳80
                 </strong>
 
             </div>
 
+
+
+            <div class="summary-divider"></div>
+
+
+
+            <!-- TOTAL -->
 
             <div class="summary-total">
 
@@ -472,7 +465,7 @@
                 </span>
 
                 <strong id="checkoutTotal">
-                    ৳100
+                    ৳80
                 </strong>
 
             </div>
@@ -481,7 +474,7 @@
         </aside>
 
 
-    </div>
+    </section>
 
 
 </main>
@@ -502,6 +495,12 @@
 
     </p>
 
+    <p>
+
+        Humans Innovate, Machines Repeat
+
+    </p>
+
 </footer>
 
 
@@ -511,6 +510,7 @@
 ========================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 
 <!-- =========================================

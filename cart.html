@@ -11,8 +11,18 @@
     >
 
     <title>
-        Shopping Cart - SRA Robotronics Lab
+        Your Cart | SRA Robotronics Lab
     </title>
+
+    <meta
+        name="description"
+        content="Review your shopping cart and checkout."
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
 
     <link
         rel="stylesheet"
@@ -29,33 +39,39 @@
      HEADER
 ========================================= -->
 
-<header class="cart-header">
+<header class="header">
 
-    <a
-        href="index.html"
-        class="logo-link"
-    >
+    <div class="nav-container">
 
-        <img
-            src="logo.jpg"
-            alt="SRA Robotronics Lab"
+
+        <a
+            href="store.html"
+            class="brand"
         >
 
-        <span>
-            SRA Robotronics Lab
-        </span>
+            <img
+                src="logo.jpg"
+                alt="SRA Robotronics Lab"
+            >
 
-    </a>
+            <span>
+                SRA Robotronics Lab
+            </span>
+
+        </a>
 
 
-    <a
-        href="store.html"
-        class="continue-shopping"
-    >
+        <a
+            href="store.html"
+            class="back-store"
+        >
 
-        ← Continue Shopping
+            ← Continue Shopping
 
-    </a>
+        </a>
+
+
+    </div>
 
 </header>
 
@@ -65,63 +81,23 @@
      MAIN
 ========================================= -->
 
-<main class="cart-container">
+<main class="cart-page">
 
 
-    <div class="cart-title">
+    <div class="page-header">
+
+        <p class="section-label">
+            YOUR CART
+        </p>
 
         <h1>
-            Your Cart
+            Shopping Cart
         </h1>
 
         <p>
-            Review your products before checkout.
+            Review your items before proceeding
+            to checkout.
         </p>
-
-    </div>
-
-
-
-    <!-- =====================================
-         LOADING
-    ====================================== -->
-
-    <div
-        id="loadingMessage"
-        class="message"
-    >
-
-        Loading your cart...
-
-    </div>
-
-
-
-    <!-- =====================================
-         LOGIN MESSAGE
-    ====================================== -->
-
-    <div
-        id="loginMessage"
-        class="message hidden"
-    >
-
-        <h2>
-            Please Log In
-        </h2>
-
-        <p>
-            You need to log in to view your cart.
-        </p>
-
-        <a
-            href="auth.html"
-            class="primary-btn"
-        >
-
-            Login / Register
-
-        </a>
 
     </div>
 
@@ -131,9 +107,9 @@
          EMPTY CART
     ====================================== -->
 
-    <div
+    <section
         id="emptyCart"
-        class="empty-cart hidden"
+        class="empty-cart"
     >
 
         <div class="empty-icon">
@@ -145,19 +121,18 @@
         </h2>
 
         <p>
-            Looks like you haven't added anything yet.
+            Add some robotics components
+            to get started.
         </p>
 
         <a
             href="store.html"
             class="primary-btn"
         >
-
-            Browse Products
-
+            Browse Store
         </a>
 
-    </div>
+    </section>
 
 
 
@@ -165,19 +140,32 @@
          CART CONTENT
     ====================================== -->
 
-    <div
+    <section
         id="cartContent"
-        class="cart-content hidden"
+        class="cart-layout"
     >
 
 
         <!-- CART ITEMS -->
 
-        <section class="cart-items-section">
+        <div class="cart-card">
 
-            <h2>
-                Cart Items
-            </h2>
+
+            <div class="cart-card-header">
+
+                <h2>
+                    Cart Items
+                </h2>
+
+                <button
+                    id="clearCartBtn"
+                    class="clear-cart"
+                    type="button"
+                >
+                    Clear Cart
+                </button>
+
+            </div>
 
 
             <div
@@ -185,13 +173,15 @@
                 class="cart-items"
             ></div>
 
-        </section>
+
+        </div>
 
 
 
-        <!-- SUMMARY -->
+        <!-- CART SUMMARY -->
 
         <aside class="cart-summary">
+
 
             <h2>
                 Order Summary
@@ -201,12 +191,10 @@
             <div class="summary-row">
 
                 <span>
-                    Products
+                    Subtotal
                 </span>
 
-                <strong
-                    id="productTotal"
-                >
+                <strong id="cartSubtotal">
                     ৳0
                 </strong>
 
@@ -220,7 +208,7 @@
                 </span>
 
                 <strong>
-                    Calculated at checkout
+                    ৳100
                 </strong>
 
             </div>
@@ -232,21 +220,28 @@
             <div class="summary-total">
 
                 <span>
-                    Subtotal
+                    Total
                 </span>
 
-                <strong
-                    id="cartTotal"
-                >
-                    ৳0
+                <strong id="cartTotal">
+                    ৳100
                 </strong>
 
             </div>
 
 
+            <p class="delivery-note">
+
+                ৳100 delivery charge is payable
+                in advance.
+
+            </p>
+
+
             <button
                 id="checkoutBtn"
                 class="checkout-btn"
+                type="button"
             >
 
                 Proceed to Checkout →
@@ -257,7 +252,7 @@
         </aside>
 
 
-    </div>
+    </section>
 
 
 </main>
@@ -268,15 +263,19 @@
      FOOTER
 ========================================= -->
 
-<footer>
+<footer class="footer">
 
     <p>
 
         ©
         <span id="year"></span>
-        SRA Robotronics Lab.
+        SRA Robotronics Lab
 
-        Humans Innovate. Machines Repeat.
+    </p>
+
+    <p>
+
+        Humans Innovate, Machines Repeat
 
     </p>
 
@@ -285,14 +284,7 @@
 
 
 <!-- =========================================
-     SUPABASE
-========================================= -->
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-<!-- =========================================
-     CART JAVASCRIPT
+     CART JS
 ========================================= -->
 
 <script src="cart.js"></script>

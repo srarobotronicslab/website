@@ -1,9 +1,14 @@
-// ========================================
+// ==================================================
 // SUPABASE CONFIGURATION
-// ========================================
+// ==================================================
 
 const SUPABASE_URL =
     "https://xzhpbisrzhgbeiptdkfd.supabase.co";
+
+
+// IMPORTANT:
+// Paste your CURRENT WORKING anon / publishable key here.
+// Do NOT use a different key.
 
 const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6aHBiaXNyemhnYmVpcHRka2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NzE1NDcsImV4cCI6MjEwMDU0NzU0N30.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
@@ -17,45 +22,64 @@ const supabaseClient =
 
 
 
-// ========================================
+// ==================================================
 // ELEMENTS
-// ========================================
+// ==================================================
 
 const loginSection =
-    document.getElementById("loginSection");
+    document.getElementById(
+        "loginSection"
+    );
 
 const adminSection =
-    document.getElementById("adminSection");
+    document.getElementById(
+        "adminSection"
+    );
 
 const loginForm =
-    document.getElementById("loginForm");
+    document.getElementById(
+        "loginForm"
+    );
 
 const loginMessage =
-    document.getElementById("loginMessage");
+    document.getElementById(
+        "loginMessage"
+    );
 
 const logoutBtn =
-    document.getElementById("logoutBtn");
+    document.getElementById(
+        "logoutBtn"
+    );
 
 const productForm =
-    document.getElementById("productForm");
+    document.getElementById(
+        "productForm"
+    );
 
 const productImage =
-    document.getElementById("productImage");
+    document.getElementById(
+        "productImage"
+    );
 
 const imagePreview =
-    document.getElementById("imagePreview");
+    document.getElementById(
+        "imagePreview"
+    );
 
 const productsList =
-    document.getElementById("productsList");
+    document.getElementById(
+        "productsList"
+    );
 
 const productMessage =
-    document.getElementById("productMessage");
+    document.getElementById(
+        "productMessage"
+    );
 
 const refreshBtn =
-    document.getElementById("refreshBtn");
-
-
-// Edit mode elements
+    document.getElementById(
+        "refreshBtn"
+    );
 
 const editingProductId =
     document.getElementById(
@@ -79,9 +103,43 @@ const cancelEditBtn =
 
 
 
-// ========================================
-// CHECK LOGIN
-// ========================================
+// ==================================================
+// SHOW LOGIN
+// ==================================================
+
+function showLogin() {
+
+    loginSection.style.display =
+        "block";
+
+    adminSection.style.display =
+        "none";
+
+}
+
+
+
+// ==================================================
+// SHOW ADMIN
+// ==================================================
+
+function showAdmin() {
+
+    loginSection.style.display =
+        "none";
+
+    adminSection.style.display =
+        "block";
+
+    loadProducts();
+
+}
+
+
+
+// ==================================================
+// CHECK USER
+// ==================================================
 
 async function checkUser() {
 
@@ -89,13 +147,14 @@ async function checkUser() {
         data,
         error
     } =
-        await supabaseClient.auth.getUser();
+        await supabaseClient.auth
+            .getUser();
 
 
     if (error) {
 
         console.error(
-            "Auth error:",
+            "User check error:",
             error
         );
 
@@ -120,65 +179,31 @@ async function checkUser() {
 
 
 
-// ========================================
-// SHOW ADMIN
-// ========================================
-
-function showAdmin() {
-
-    loginSection.classList.add(
-        "hidden"
-    );
-
-    adminSection.classList.remove(
-        "hidden"
-    );
-
-    loadProducts();
-
-}
-
-
-
-// ========================================
-// SHOW LOGIN
-// ========================================
-
-function showLogin() {
-
-    loginSection.classList.remove(
-        "hidden"
-    );
-
-    adminSection.classList.add(
-        "hidden"
-    );
-
-}
-
-
-
-// ========================================
+// ==================================================
 // LOGIN
-// ========================================
+// ==================================================
 
 loginForm.addEventListener(
     "submit",
-    async (event) => {
+    async function(event) {
 
         event.preventDefault();
 
 
         const email =
             document
-                .getElementById("email")
+                .getElementById(
+                    "email"
+                )
                 .value
                 .trim();
 
 
         const password =
             document
-                .getElementById("password")
+                .getElementById(
+                    "password"
+                )
                 .value;
 
 
@@ -187,6 +212,7 @@ loginForm.addEventListener(
 
 
         const {
+            data,
             error
         } =
             await supabaseClient.auth
@@ -203,13 +229,26 @@ loginForm.addEventListener(
 
         if (error) {
 
+            console.error(
+                "Login error:",
+                error
+            );
+
+
             loginMessage.textContent =
                 "Login failed: " +
                 error.message;
 
+
             return;
 
         }
+
+
+        console.log(
+            "Logged in user:",
+            data.user
+        );
 
 
         loginMessage.textContent =
@@ -223,15 +262,34 @@ loginForm.addEventListener(
 
 
 
-// ========================================
+// ==================================================
 // LOGOUT
-// ========================================
+// ==================================================
 
 logoutBtn.addEventListener(
     "click",
-    async () => {
+    async function() {
 
-        await supabaseClient.auth.signOut();
+        const {
+            error
+        } =
+            await supabaseClient.auth
+                .signOut();
+
+
+        if (error) {
+
+            console.error(
+                "Logout error:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        resetProductForm();
 
         showLogin();
 
@@ -240,13 +298,13 @@ logoutBtn.addEventListener(
 
 
 
-// ========================================
+// ==================================================
 // IMAGE PREVIEW
-// ========================================
+// ==================================================
 
 productImage.addEventListener(
     "change",
-    () => {
+    function() {
 
         const file =
             productImage.files[0];
@@ -279,29 +337,34 @@ productImage.addEventListener(
 
 
 
-// ========================================
+// ==================================================
 // RESET FORM
-// ========================================
+// ==================================================
 
 function resetProductForm() {
 
     productForm.reset();
 
+
     editingProductId.value =
         "";
+
 
     imagePreview.innerHTML =
         "";
 
+
     formTitle.textContent =
         "Add New Product";
+
 
     submitProductBtn.textContent =
         "Add Product";
 
-    cancelEditBtn.classList.add(
-        "hidden"
-    );
+
+    cancelEditBtn.style.display =
+        "none";
+
 
     productMessage.textContent =
         "";
@@ -310,13 +373,13 @@ function resetProductForm() {
 
 
 
-// ========================================
+// ==================================================
 // ADD / UPDATE PRODUCT
-// ========================================
+// ==================================================
 
 productForm.addEventListener(
     "submit",
-    async (event) => {
+    async function(event) {
 
         event.preventDefault();
 
@@ -383,10 +446,14 @@ productForm.addEventListener(
             editingProductId.value;
 
 
+        const isEditing =
+            productId !== "";
 
-        // =================================
+
+
+        // ==================================================
         // VALIDATION
-        // =================================
+        // ==================================================
 
         if (!name) {
 
@@ -425,33 +492,25 @@ productForm.addEventListener(
 
 
 
-        const isEditing =
-            productId !== "";
-
-
-
         productMessage.textContent =
-
             isEditing
-
-            ? "Updating product..."
-
-            : "Adding product...";
+                ? "Updating product..."
+                : "Adding product...";
 
 
 
-        // =================================
+        // ==================================================
         // IMAGE URL
-        // =================================
+        // ==================================================
 
         let imageURL = null;
 
 
 
-        // =================================
-        // EDITING:
+        // ==================================================
+        // IF EDITING
         // GET CURRENT IMAGE
-        // =================================
+        // ==================================================
 
         if (isEditing) {
 
@@ -461,7 +520,9 @@ productForm.addEventListener(
             } =
                 await supabaseClient
                     .from("products")
-                    .select("image_url")
+                    .select(
+                        "image_url"
+                    )
                     .eq(
                         "id",
                         productId
@@ -475,9 +536,11 @@ productForm.addEventListener(
                     existingError
                 );
 
+
                 productMessage.textContent =
-                    "Failed to load existing product: " +
+                    "Failed to load product: " +
                     existingError.message;
+
 
                 return;
 
@@ -491,9 +554,9 @@ productForm.addEventListener(
 
 
 
-        // =================================
-        // UPLOAD NEW IMAGE IF SELECTED
-        // =================================
+        // ==================================================
+        // UPLOAD NEW IMAGE
+        // ==================================================
 
         if (imageFile) {
 
@@ -523,8 +586,7 @@ productForm.addEventListener(
             const {
                 error: uploadError
             } =
-                await supabaseClient
-                    .storage
+                await supabaseClient.storage
                     .from(
                         "product-images"
                     )
@@ -541,9 +603,11 @@ productForm.addEventListener(
                     uploadError
                 );
 
+
                 productMessage.textContent =
                     "Image upload failed: " +
                     uploadError.message;
+
 
                 return;
 
@@ -555,8 +619,7 @@ productForm.addEventListener(
                 data:
                     publicURLData
             } =
-                supabaseClient
-                    .storage
+                supabaseClient.storage
                     .from(
                         "product-images"
                     )
@@ -572,9 +635,9 @@ productForm.addEventListener(
 
 
 
-        // =================================
+        // ==================================================
         // UPDATE EXISTING PRODUCT
-        // =================================
+        // ==================================================
 
         if (isEditing) {
 
@@ -620,9 +683,11 @@ productForm.addEventListener(
                     updateError
                 );
 
+
                 productMessage.textContent =
                     "Failed to update product: " +
                     updateError.message;
+
 
                 return;
 
@@ -637,9 +702,9 @@ productForm.addEventListener(
 
 
 
-        // =================================
+        // ==================================================
         // ADD NEW PRODUCT
-        // =================================
+        // ==================================================
 
         else {
 
@@ -677,13 +742,15 @@ productForm.addEventListener(
             if (insertError) {
 
                 console.error(
-                    "Add product error:",
+                    "Insert error:",
                     insertError
                 );
+
 
                 productMessage.textContent =
                     "Failed to add product: " +
                     insertError.message;
+
 
                 return;
 
@@ -698,16 +765,16 @@ productForm.addEventListener(
 
 
 
-        // =================================
+        // ==================================================
         // RESET
-        // =================================
+        // ==================================================
 
         resetProductForm();
 
 
-        // =================================
-        // RELOAD
-        // =================================
+        // ==================================================
+        // RELOAD PRODUCTS
+        // ==================================================
 
         await loadProducts();
 
@@ -716,9 +783,9 @@ productForm.addEventListener(
 
 
 
-// ========================================
+// ==================================================
 // LOAD PRODUCTS
-// ========================================
+// ==================================================
 
 async function loadProducts() {
 
@@ -741,8 +808,7 @@ async function loadProducts() {
             .order(
                 "created_at",
                 {
-                    ascending:
-                        false
+                    ascending: false
                 }
             );
 
@@ -757,17 +823,13 @@ async function loadProducts() {
 
         productsList.innerHTML = `
 
-            <p class="error">
-
+            <p>
                 Error loading products:
-
-                <br>
-
                 ${error.message}
-
             </p>
 
         `;
+
 
         return;
 
@@ -783,12 +845,11 @@ async function loadProducts() {
         productsList.innerHTML = `
 
             <p class="loading">
-
                 No products added yet.
-
             </p>
 
         `;
+
 
         return;
 
@@ -802,7 +863,8 @@ async function loadProducts() {
 
 
     data.forEach(
-        product => {
+        function(product) {
+
 
             const item =
                 document.createElement(
@@ -829,31 +891,26 @@ async function loadProducts() {
                 >
 
 
-                <div
-                    class="product-info"
-                >
+                <div class="product-info">
+
 
                     <h3>
                         ${product.name}
                     </h3>
 
 
-                    <div
-                        class="product-price"
-                    >
+                    <div class="product-price">
 
                         ৳${product.price}
 
                     </div>
 
 
-                    <div
-                        class="product-category"
-                    >
+                    <div class="product-category">
 
                         ${
                             product.category ||
-                            "Uncategorized"
+                            "Other"
                         }
 
                     </div>
@@ -882,18 +939,16 @@ async function loadProducts() {
 
                     </div>
 
+
                 </div>
 
 
+                <div class="product-actions">
 
-                <div
-                    class="product-actions"
-                >
 
                     <button
                         type="button"
                         class="edit-btn"
-                        data-id="${product.id}"
                     >
                         Edit
                     </button>
@@ -902,10 +957,10 @@ async function loadProducts() {
                     <button
                         type="button"
                         class="delete-btn"
-                        data-id="${product.id}"
                     >
                         Delete
                     </button>
+
 
                 </div>
 
@@ -913,7 +968,9 @@ async function loadProducts() {
 
 
 
+            // ==================================================
             // EDIT BUTTON
+            // ==================================================
 
             item
                 .querySelector(
@@ -921,7 +978,7 @@ async function loadProducts() {
                 )
                 .addEventListener(
                     "click",
-                    () => {
+                    function() {
 
                         editProduct(
                             product.id
@@ -932,7 +989,9 @@ async function loadProducts() {
 
 
 
+            // ==================================================
             // DELETE BUTTON
+            // ==================================================
 
             item
                 .querySelector(
@@ -940,7 +999,7 @@ async function loadProducts() {
                 )
                 .addEventListener(
                     "click",
-                    () => {
+                    function() {
 
                         deleteProduct(
                             product.id
@@ -951,10 +1010,9 @@ async function loadProducts() {
 
 
 
-            productsList
-                .appendChild(
-                    item
-                );
+            productsList.appendChild(
+                item
+            );
 
         }
     );
@@ -963,9 +1021,9 @@ async function loadProducts() {
 
 
 
-// ========================================
+// ==================================================
 // EDIT PRODUCT
-// ========================================
+// ==================================================
 
 async function editProduct(id) {
 
@@ -990,13 +1048,15 @@ async function editProduct(id) {
     if (error) {
 
         console.error(
-            "Edit load error:",
+            "Edit error:",
             error
         );
+
 
         productMessage.textContent =
             "Failed to load product: " +
             error.message;
+
 
         return;
 
@@ -1004,9 +1064,9 @@ async function editProduct(id) {
 
 
 
-    // =================================
+    // ==================================================
     // FILL FORM
-    // =================================
+    // ==================================================
 
     document
         .getElementById(
@@ -1061,9 +1121,9 @@ async function editProduct(id) {
 
 
 
-    // =================================
+    // ==================================================
     // IMAGE PREVIEW
-    // =================================
+    // ==================================================
 
     if (product.image_url) {
 
@@ -1076,7 +1136,7 @@ async function editProduct(id) {
 
             <p>
                 Current image.
-                Select a new image only if you want to replace it.
+                Select a new image to replace it.
             </p>
 
         `;
@@ -1086,7 +1146,7 @@ async function editProduct(id) {
         imagePreview.innerHTML = `
 
             <p>
-                No product image.
+                No current image.
             </p>
 
         `;
@@ -1095,9 +1155,9 @@ async function editProduct(id) {
 
 
 
-    // =================================
+    // ==================================================
     // CHANGE FORM TO EDIT MODE
-    // =================================
+    // ==================================================
 
     formTitle.textContent =
         "Edit Product";
@@ -1107,9 +1167,8 @@ async function editProduct(id) {
         "Update Product";
 
 
-    cancelEditBtn.classList.remove(
-        "hidden"
-    );
+    cancelEditBtn.style.display =
+        "inline-block";
 
 
     productMessage.textContent =
@@ -1118,9 +1177,9 @@ async function editProduct(id) {
 
 
 
-    // =================================
+    // ==================================================
     // SCROLL TO FORM
-    // =================================
+    // ==================================================
 
     productForm.scrollIntoView({
 
@@ -1136,13 +1195,13 @@ async function editProduct(id) {
 
 
 
-// ========================================
+// ==================================================
 // CANCEL EDIT
-// ========================================
+// ==================================================
 
 cancelEditBtn.addEventListener(
     "click",
-    () => {
+    function() {
 
         resetProductForm();
 
@@ -1151,9 +1210,9 @@ cancelEditBtn.addEventListener(
 
 
 
-// ========================================
+// ==================================================
 // DELETE PRODUCT
-// ========================================
+// ==================================================
 
 async function deleteProduct(id) {
 
@@ -1168,6 +1227,7 @@ async function deleteProduct(id) {
         return;
 
     }
+
 
 
     const {
@@ -1195,6 +1255,7 @@ async function deleteProduct(id) {
             error.message
         );
 
+
         return;
 
     }
@@ -1211,23 +1272,45 @@ async function deleteProduct(id) {
 
 
 
-// ========================================
+// ==================================================
 // REFRESH
-// ========================================
+// ==================================================
 
 refreshBtn.addEventListener(
     "click",
-    async () => {
+    function() {
 
-        await loadProducts();
+        loadProducts();
 
     }
 );
 
 
 
-// ========================================
+// ==================================================
+// AUTH STATE CHANGE
+// ==================================================
+
+supabaseClient.auth.onAuthStateChange(
+    function(event, session) {
+
+        if (session) {
+
+            showAdmin();
+
+        } else {
+
+            showLogin();
+
+        }
+
+    }
+);
+
+
+
+// ==================================================
 // START
-// ========================================
+// ==================================================
 
 checkUser();

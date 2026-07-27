@@ -756,7 +756,7 @@ checkoutForm.addEventListener(
                             deliveryFee,
 
                         total:
-                            total,
+                            total_amount,
 
                         payment_status:
                             "pending",

@@ -6,7 +6,7 @@ const SUPABASE_URL =
     "https://xzhpbisrzhgbeiptdkfd.supabase.co";
 
 const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6aHBiaXNyemhnYmVpcHRka2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NzE1NDcsImV4cCI6MjEwMDU0NzU0N30.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoieHpoYmNpc3J6aGdiZWlwdGRrZmQiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4NDk3MTU0NywiZXhwIjoxNzgwNTQ3NTQ3fQ.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
 
 
 // Create Supabase client
@@ -33,7 +33,7 @@ const OUTSIDE_DHAKA_FEE = 150;
 const BKASH_NUMBER =
     "01303614563";
 
-const NOGOD_NUMBER =
+const NAGAD_NUMBER =
     "01712108137";
 
 
@@ -160,6 +160,36 @@ function getPaymentMethod() {
 
 
 // ========================================
+// CONVERT PAYMENT METHOD
+// TO DATABASE FORMAT
+// ========================================
+
+function getDatabasePaymentMethod() {
+
+    const method =
+        getPaymentMethod();
+
+
+    if (method === "bkash") {
+
+        return "bKash";
+
+    }
+
+
+    if (method === "nogod") {
+
+        return "Nagad";
+
+    }
+
+
+    return "COD";
+
+}
+
+
+// ========================================
 // GET DELIVERY FEE
 // ========================================
 
@@ -228,17 +258,12 @@ function calculateSubtotal() {
 
 function calculateTotal() {
 
-    const subtotal =
-        calculateSubtotal();
-
-
-    const deliveryFee =
-        getDeliveryFee();
-
-
     return (
-        subtotal +
-        deliveryFee
+
+        calculateSubtotal() +
+
+        getDeliveryFee()
+
     );
 
 }
@@ -291,7 +316,7 @@ function updatePaymentInstructions() {
                 </h3>
 
                 <p>
-                    Pay only the delivery charge
+                    Pay the delivery charge
                     in advance.
                 </p>
 
@@ -422,7 +447,7 @@ function updatePaymentInstructions() {
 
                     Nagad:
                     <strong>
-                        ${NOGOD_NUMBER}
+                        ${NAGAD_NUMBER}
                     </strong>
 
                 </div>
@@ -522,10 +547,6 @@ function renderCheckoutCart() {
     }
 
 
-    // ====================================
-    // CART HAS ITEMS
-    // ====================================
-
     if (placeOrderBtn) {
 
         placeOrderBtn.disabled =
@@ -546,7 +567,7 @@ function renderCheckoutCart() {
 
 
     // ====================================
-    // DISPLAY ITEMS
+    // DISPLAY CART ITEMS
     // ====================================
 
     cart.forEach(
@@ -637,16 +658,12 @@ function renderCheckoutCart() {
 
 
     // ====================================
-    // DELIVERY
+    // CALCULATE DELIVERY
     // ====================================
 
     const deliveryFee =
         getDeliveryFee();
 
-
-    // ====================================
-    // GRAND TOTAL
-    // ====================================
 
     const total =
         subtotal +
@@ -681,10 +698,6 @@ function renderCheckoutCart() {
     }
 
 
-    // ====================================
-    // PAYMENT INSTRUCTIONS
-    // ====================================
-
     updatePaymentInstructions();
 
 }
@@ -706,11 +719,7 @@ document
 
                 "change",
 
-                () => {
-
-                    renderCheckoutCart();
-
-                }
+                renderCheckoutCart
 
             );
 
@@ -735,11 +744,7 @@ document
 
                 "change",
 
-                () => {
-
-                    updatePaymentInstructions();
-
-                }
+                updatePaymentInstructions
 
             );
 
@@ -785,7 +790,7 @@ if (checkoutForm) {
 
 
             // =================================
-            // CUSTOMER INFORMATION
+            // GET CUSTOMER INFORMATION
             // =================================
 
             const customerName =
@@ -823,6 +828,10 @@ if (checkoutForm) {
                 getPaymentMethod();
 
 
+            const databasePaymentMethod =
+                getDatabasePaymentMethod();
+
+
             const paymentLastTwoValue =
                 paymentLastTwo
                     ?.value
@@ -833,33 +842,11 @@ if (checkoutForm) {
             // VALIDATION
             // =================================
 
-            if (
-                !customerName
-            ) {
+            if (!customerName) {
 
                 showMessage(
-
                     "Please enter your name.",
-
                     "error"
-
-                );
-
-                return;
-
-            }
-
-
-            if (
-                !customerPhone
-            ) {
-
-                showMessage(
-
-                    "Please enter your phone number.",
-
-                    "error"
-
                 );
 
                 return;
@@ -869,16 +856,13 @@ if (checkoutForm) {
 
             if (
                 !/^[0-9]{11}$/.test(
-                    customerPhone
+                    customerPhone || ""
                 )
             ) {
 
                 showMessage(
-
                     "Please enter a valid 11-digit Bangladeshi phone number.",
-
                     "error"
-
                 );
 
                 return;
@@ -886,16 +870,11 @@ if (checkoutForm) {
             }
 
 
-            if (
-                !customerAddress
-            ) {
+            if (!customerAddress) {
 
                 showMessage(
-
                     "Please enter your delivery address.",
-
                     "error"
-
                 );
 
                 return;
@@ -910,11 +889,8 @@ if (checkoutForm) {
             ) {
 
                 showMessage(
-
                     "Please enter exactly 2 digits of your transaction ID.",
-
                     "error"
-
                 );
 
                 return;
@@ -961,6 +937,7 @@ if (checkoutForm) {
 
                 // =================================
                 // CREATE ORDER
+                // EXACT DATABASE COLUMN NAMES
                 // =================================
 
                 const orderData = {
@@ -971,23 +948,20 @@ if (checkoutForm) {
                     phone:
                         customerPhone,
 
-                    address:
+                    delivery_address:
                         customerAddress,
 
-                    delivery_location:
-                        deliveryLocation,
-
                     payment_method:
-                        paymentMethod,
+                        databasePaymentMethod,
 
-                    payment_last_two:
+                    payment_sender_last_two:
                         paymentLastTwoValue,
-
-                    subtotal:
-                        subtotal,
 
                     delivery_fee:
                         deliveryFee,
+
+                    subtotal:
+                        subtotal,
 
                     total_amount:
                         total,
@@ -1007,6 +981,10 @@ if (checkoutForm) {
                 );
 
 
+                // =================================
+                // INSERT ORDER
+                // =================================
+
                 const {
 
                     data: order,
@@ -1022,7 +1000,7 @@ if (checkoutForm) {
                         )
 
                         .insert(
-                            [orderData]
+                            orderData
                         )
 
                         .select()
@@ -1030,12 +1008,10 @@ if (checkoutForm) {
                         .single();
 
 
-                if (
-                    orderError
-                ) {
+                if (orderError) {
 
                     console.error(
-                        "Order insert error:",
+                        "ORDER INSERT ERROR:",
                         orderError
                     );
 
@@ -1056,6 +1032,12 @@ if (checkoutForm) {
                     );
 
                 }
+
+
+                console.log(
+                    "Order created:",
+                    order
+                );
 
 
                 // =================================
@@ -1092,6 +1074,12 @@ if (checkoutForm) {
                     );
 
 
+                console.log(
+                    "Submitting order items:",
+                    orderItems
+                );
+
+
                 const {
 
                     error: itemsError
@@ -1109,12 +1097,10 @@ if (checkoutForm) {
                         );
 
 
-                if (
-                    itemsError
-                ) {
+                if (itemsError) {
 
                     console.error(
-                        "Order items error:",
+                        "ORDER ITEMS INSERT ERROR:",
                         itemsError
                     );
 
@@ -1178,7 +1164,7 @@ if (checkoutForm) {
             catch (error) {
 
                 console.error(
-                    "Complete order error:",
+                    "COMPLETE ORDER ERROR:",
                     error
                 );
 

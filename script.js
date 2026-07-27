@@ -915,25 +915,13 @@ function addToCart(
         // =================================
 
         cart.push({
-
-            id:
-                product.id,
-
-            name:
-                product.name,
-
-            price:
-                Number(
-                    product.price
-                ),
-
-            quantity:
-                1,
-
-            stock:
-                stock
-
-        });
+    id: product.id,
+    name: product.name,
+    price: Number(product.price),
+    quantity: 1,
+    stock: stock,
+    image_url: product.image_url || null
+});
 
     }
 

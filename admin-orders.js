@@ -6,7 +6,7 @@ const SUPABASE_URL =
     "https://xzhpbisrzhgbeiptdkfd.supabase.co";
 
 const SUPABASE_ANON_KEY =
-    "YOUR_ANON_KEY_HERE";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6aHBiaXNyemhnYmVpcHRka2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NzE1NDcsImV4cCI6MjEwMDU0NzU0N30.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
 
 const supabaseClient =
     supabase.createClient(

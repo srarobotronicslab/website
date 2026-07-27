@@ -22,7 +22,10 @@
         rel="stylesheet"
     >
 
-    <link rel="stylesheet" href="store.css">
+    <link
+        rel="stylesheet"
+        href="store.css"
+    >
 
 </head>
 
@@ -37,8 +40,6 @@
     <div class="nav-container">
 
 
-        <!-- LOGO -->
-
         <a href="index.html" class="brand">
 
             <img
@@ -52,8 +53,6 @@
 
         </a>
 
-
-        <!-- NAVIGATION -->
 
         <nav class="top-nav">
 
@@ -87,8 +86,6 @@
         </nav>
 
 
-        <!-- CART -->
-
         <a href="#cart" class="cart-button">
 
             <span class="cart-icon">
@@ -108,8 +105,6 @@
 
         </a>
 
-
-        <!-- MOBILE MENU -->
 
         <button
             class="menu-button"
@@ -132,19 +127,15 @@
 
 <section class="store-hero">
 
-
     <div class="store-hero-content">
-
 
         <p class="hero-label">
             SRA ROBOTRONICS LAB • STORE
         </p>
 
-
         <h1>
             Build Something.
         </h1>
-
 
         <p class="hero-description">
 
@@ -154,9 +145,7 @@
 
         </p>
 
-
     </div>
-
 
 </section>
 
@@ -166,14 +155,12 @@
 
 <section class="store-section">
 
-
     <div class="store-container">
 
 
         <!-- STORE TOP -->
 
         <div class="store-top">
-
 
             <div>
 
@@ -204,7 +191,6 @@
 
             </div>
 
-
         </div>
 
 
@@ -212,7 +198,6 @@
         <!-- ================= CATEGORIES ================= -->
 
         <div class="categories">
-
 
             <button
                 class="category active"
@@ -224,7 +209,7 @@
 
             <button
                 class="category"
-                data-category="boards"
+                data-category="Boards"
             >
                 Boards
             </button>
@@ -232,7 +217,7 @@
 
             <button
                 class="category"
-                data-category="sensors"
+                data-category="Sensors"
             >
                 Sensors
             </button>
@@ -240,7 +225,7 @@
 
             <button
                 class="category"
-                data-category="motors"
+                data-category="Motors"
             >
                 Motors
             </button>
@@ -248,11 +233,26 @@
 
             <button
                 class="category"
-                data-category="components"
+                data-category="Components"
             >
                 Components
             </button>
 
+
+            <button
+                class="category"
+                data-category="Kits"
+            >
+                Kits
+            </button>
+
+
+            <button
+                class="category"
+                data-category="Other"
+            >
+                Other
+            </button>
 
         </div>
 
@@ -260,277 +260,19 @@
 
         <!-- ================= PRODUCTS ================= -->
 
+        <!--
+            Products from Supabase
+            will automatically appear here.
+        -->
+
         <div
             class="product-grid"
             id="productGrid"
         >
 
-
-            <!-- PRODUCT 1 -->
-
-            <article
-                class="product-card"
-                data-category="boards"
-                data-name="Arduino Nano CH340"
-            >
-
-
-                <!-- BLANK IMAGE -->
-
-                <div class="product-image">
-
-                    <span>
-                        Product Image
-                    </span>
-
-                </div>
-
-
-                <div class="product-info">
-
-
-                    <span class="product-category">
-                        BOARDS
-                    </span>
-
-
-                    <h3>
-                        Arduino Nano CH340
-                    </h3>
-
-
-                    <p class="product-description">
-
-                        Compact Arduino development
-                        board for robotics and electronics
-                        projects.
-
-                    </p>
-
-
-                    <div class="product-bottom">
-
-
-                        <strong class="price">
-                            ৳365
-                        </strong>
-
-
-                        <span class="stock">
-                            In Stock
-                        </span>
-
-
-                    </div>
-
-
-                    <div class="product-actions">
-
-
-                        <button
-                            class="add-cart"
-                            onclick="addToCart('Arduino Nano CH340', 365)"
-                        >
-
-                            Add to Cart
-
-                        </button>
-
-
-                        <button
-                            class="buy-now"
-                            onclick="buyNow('Arduino Nano CH340', 365)"
-                        >
-
-                            Buy Now
-
-                        </button>
-
-
-                    </div>
-
-
-                </div>
-
-
-            </article>
-
-
-
-            <!-- PRODUCT 2 -->
-
-            <article
-                class="product-card"
-                data-category="sensors"
-                data-name="HC-SR04 Ultrasonic Sensor"
-            >
-
-
-                <div class="product-image">
-
-                    <span>
-                        Product Image
-                    </span>
-
-                </div>
-
-
-                <div class="product-info">
-
-
-                    <span class="product-category">
-                        SENSORS
-                    </span>
-
-
-                    <h3>
-                        HC-SR04 Ultrasonic Sensor
-                    </h3>
-
-
-                    <p class="product-description">
-
-                        Distance measurement sensor
-                        commonly used in robotics projects.
-
-                    </p>
-
-
-                    <div class="product-bottom">
-
-
-                        <strong class="price">
-                            ৳125
-                        </strong>
-
-
-                        <span class="stock">
-                            In Stock
-                        </span>
-
-
-                    </div>
-
-
-                    <div class="product-actions">
-
-
-                        <button
-                            class="add-cart"
-                            onclick="addToCart('HC-SR04 Ultrasonic Sensor', 125)"
-                        >
-
-                            Add to Cart
-
-                        </button>
-
-
-                        <button
-                            class="buy-now"
-                            onclick="buyNow('HC-SR04 Ultrasonic Sensor', 125)"
-                        >
-
-                            Buy Now
-
-                        </button>
-
-
-                    </div>
-
-
-                </div>
-
-
-            </article>
-
-
-
-            <!-- PRODUCT 3 -->
-
-            <article
-                class="product-card"
-                data-category="motors"
-                data-name="TT Gear Motor 300 RPM"
-            >
-
-
-                <div class="product-image">
-
-                    <span>
-                        Product Image
-                    </span>
-
-                </div>
-
-
-                <div class="product-info">
-
-
-                    <span class="product-category">
-                        MOTORS
-                    </span>
-
-
-                    <h3>
-                        TT Gear Motor 300 RPM
-                    </h3>
-
-
-                    <p class="product-description">
-
-                        Compact DC gear motor suitable
-                        for small robotics projects.
-
-                    </p>
-
-
-                    <div class="product-bottom">
-
-
-                        <strong class="price">
-                            ৳150
-                        </strong>
-
-
-                        <span class="stock">
-                            In Stock
-                        </span>
-
-
-                    </div>
-
-
-                    <div class="product-actions">
-
-
-                        <button
-                            class="add-cart"
-                            onclick="addToCart('TT Gear Motor 300 RPM', 150)"
-                        >
-
-                            Add to Cart
-
-                        </button>
-
-
-                        <button
-                            class="buy-now"
-                            onclick="buyNow('TT Gear Motor 300 RPM', 150)"
-                        >
-
-                            Buy Now
-
-                        </button>
-
-
-                    </div>
-
-
-                </div>
-
-
-            </article>
-
+            <p class="loading">
+                Loading products...
+            </p>
 
         </div>
 
@@ -540,6 +282,7 @@
         <div
             class="no-results"
             id="noResults"
+            style="display:none;"
         >
 
             No products found.
@@ -548,7 +291,6 @@
 
 
     </div>
-
 
 </section>
 
@@ -560,7 +302,6 @@
     class="cart-section"
     id="cart"
 >
-
 
     <div class="cart-container">
 
@@ -605,7 +346,6 @@
 
     </div>
 
-
 </section>
 
 
@@ -617,28 +357,23 @@
 
 <footer class="footer">
 
-
     <div class="footer-container">
 
 
         <div class="footer-brand">
-
 
             <img
                 src="logo.jpg"
                 alt="SRA Robotronics Lab"
             >
 
-
             <h3>
                 SRA Robotronics Lab
             </h3>
 
-
             <p>
                 Humans Innovate, Machines Repeat
             </p>
-
 
         </div>
 
@@ -680,6 +415,7 @@
                 <a
                     href="https://www.facebook.com/srarobotronicslab/"
                     target="_blank"
+                    rel="noopener"
                 >
                     Facebook
                 </a>
@@ -693,17 +429,19 @@
 
         </div>
 
-
     </div>
 
 
     <div class="footer-bottom">
 
         <span>
+
             ©
             <span id="year"></span>
             SRA Robotronics Lab
+
         </span>
+
 
         <span>
             Humans Innovate, Machines Repeat
@@ -711,10 +449,17 @@
 
     </div>
 
-
 </footer>
 
 
+
+<!-- ================= SUPABASE ================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+
+<!-- ================= STORE JS ================= -->
 
 <script src="store.js"></script>
 

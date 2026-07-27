@@ -6,7 +6,7 @@ const SUPABASE_URL =
     "https://xzhpbisrzhgbeiptdkfd.supabase.co";
 
 const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6aHBiaXNyemhnYmVpcHRka2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NzE1NDcsImV4cCI6MjEwMDU0NzU0N30.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFic3J6aGdiZWlwdGRrZmQiLCJyb2xlIjoiYW5vbiJ9";
 
 
 const supabaseClient =
@@ -55,7 +55,7 @@ const refreshBtn =
     document.getElementById("refreshBtn");
 
 
-// NEW ELEMENTS
+// Edit mode elements
 
 const editingProductId =
     document.getElementById(
@@ -203,16 +203,9 @@ loginForm.addEventListener(
 
         if (error) {
 
-            console.error(
-                "Login error:",
-                error
-            );
-
-
             loginMessage.textContent =
                 "Login failed: " +
                 error.message;
-
 
             return;
 
@@ -328,10 +321,6 @@ productForm.addEventListener(
         event.preventDefault();
 
 
-        // --------------------------------
-        // GET FORM VALUES
-        // --------------------------------
-
         const name =
             document
                 .getElementById(
@@ -395,9 +384,9 @@ productForm.addEventListener(
 
 
 
-        // --------------------------------
+        // =================================
         // VALIDATION
-        // --------------------------------
+        // =================================
 
         if (!name) {
 
@@ -410,7 +399,7 @@ productForm.addEventListener(
 
 
         if (
-            isNaN(price) ||
+            !Number.isFinite(price) ||
             price < 0
         ) {
 
@@ -423,7 +412,7 @@ productForm.addEventListener(
 
 
         if (
-            isNaN(stock) ||
+            !Number.isInteger(stock) ||
             stock < 0
         ) {
 
@@ -436,25 +425,18 @@ productForm.addEventListener(
 
 
 
-        // =================================
-        // DETERMINE MODE
-        // =================================
-
         const isEditing =
-            Boolean(productId);
+            productId !== "";
+
 
 
         productMessage.textContent =
 
             isEditing
 
-            ?
+            ? "Updating product..."
 
-            "Updating product..."
-
-            :
-
-            "Adding product...";
+            : "Adding product...";
 
 
 
@@ -462,24 +444,21 @@ productForm.addEventListener(
         // IMAGE URL
         // =================================
 
-        let imageURL =
-            null;
+        let imageURL = null;
 
 
 
         // =================================
-        // IF EDITING
+        // EDITING:
         // GET CURRENT IMAGE
         // =================================
 
         if (isEditing) {
 
-
             const {
                 data: existingProduct,
                 error: existingError
             } =
-
                 await supabaseClient
                     .from("products")
                     .select("image_url")
@@ -492,12 +471,13 @@ productForm.addEventListener(
 
             if (existingError) {
 
-                productMessage.textContent =
-                    "Failed to load current product.";
-
                 console.error(
                     existingError
                 );
+
+                productMessage.textContent =
+                    "Failed to load existing product: " +
+                    existingError.message;
 
                 return;
 
@@ -512,11 +492,10 @@ productForm.addEventListener(
 
 
         // =================================
-        // UPLOAD NEW IMAGE
+        // UPLOAD NEW IMAGE IF SELECTED
         // =================================
 
         if (imageFile) {
-
 
             const fileExtension =
                 imageFile.name
@@ -526,7 +505,6 @@ productForm.addEventListener(
 
 
             const fileName =
-
                 Date.now() +
                 "-" +
                 Math.random()
@@ -543,10 +521,8 @@ productForm.addEventListener(
 
 
             const {
-                error:
-                    uploadError
+                error: uploadError
             } =
-
                 await supabaseClient
                     .storage
                     .from(
@@ -558,7 +534,6 @@ productForm.addEventListener(
                     );
 
 
-
             if (uploadError) {
 
                 console.error(
@@ -566,11 +541,9 @@ productForm.addEventListener(
                     uploadError
                 );
 
-
                 productMessage.textContent =
                     "Image upload failed: " +
                     uploadError.message;
-
 
                 return;
 
@@ -578,13 +551,10 @@ productForm.addEventListener(
 
 
 
-            // GET PUBLIC URL
-
             const {
                 data:
                     publicURLData
             } =
-
                 supabaseClient
                     .storage
                     .from(
@@ -608,16 +578,11 @@ productForm.addEventListener(
 
         if (isEditing) {
 
-
             const {
-                data,
-                error
+                error: updateError
             } =
-
                 await supabaseClient
-                    .from(
-                        "products"
-                    )
+                    .from("products")
                     .update({
 
                         name:
@@ -645,62 +610,44 @@ productForm.addEventListener(
                     .eq(
                         "id",
                         productId
-                    )
-                    .select()
-                    .single();
+                    );
 
 
-
-            if (error) {
+            if (updateError) {
 
                 console.error(
                     "Update error:",
-                    error
+                    updateError
                 );
-
 
                 productMessage.textContent =
                     "Failed to update product: " +
-                    error.message;
-
+                    updateError.message;
 
                 return;
 
             }
 
 
-
-            console.log(
-                "Product updated:",
-                data
+            alert(
+                "Product updated successfully!"
             );
-
-
-            productMessage.textContent =
-                "Product updated successfully!";
 
         }
 
 
 
         // =================================
-        // INSERT NEW PRODUCT
+        // ADD NEW PRODUCT
         // =================================
 
         else {
 
-
             const {
-                data:
-                    insertedProduct,
-
-                error
+                error: insertError
             } =
-
                 await supabaseClient
-                    .from(
-                        "products"
-                    )
+                    .from("products")
                     .insert({
 
                         name:
@@ -724,53 +671,42 @@ productForm.addEventListener(
                         is_available:
                             isAvailable
 
-                    })
-                    .select()
-                    .single();
+                    });
 
 
-
-            if (error) {
+            if (insertError) {
 
                 console.error(
                     "Add product error:",
-                    error
+                    insertError
                 );
-
 
                 productMessage.textContent =
                     "Failed to add product: " +
-                    error.message;
-
+                    insertError.message;
 
                 return;
 
             }
 
 
-
-            console.log(
-                "Product added:",
-                insertedProduct
+            alert(
+                "Product added successfully!"
             );
-
-
-            productMessage.textContent =
-                "Product added successfully!";
 
         }
 
 
 
         // =================================
-        // RESET FORM
+        // RESET
         // =================================
 
         resetProductForm();
 
 
         // =================================
-        // RELOAD PRODUCTS
+        // RELOAD
         // =================================
 
         await loadProducts();
@@ -786,7 +722,6 @@ productForm.addEventListener(
 
 async function loadProducts() {
 
-
     productsList.innerHTML = `
 
         <p class="loading">
@@ -796,16 +731,12 @@ async function loadProducts() {
     `;
 
 
-
     const {
         data,
         error
     } =
-
         await supabaseClient
-            .from(
-                "products"
-            )
+            .from("products")
             .select("*")
             .order(
                 "created_at",
@@ -816,11 +747,10 @@ async function loadProducts() {
             );
 
 
-
     if (error) {
 
         console.error(
-            "LOAD PRODUCTS ERROR:",
+            "Load products error:",
             error
         );
 
@@ -838,7 +768,6 @@ async function loadProducts() {
             </p>
 
         `;
-
 
         return;
 
@@ -861,7 +790,6 @@ async function loadProducts() {
 
         `;
 
-
         return;
 
     }
@@ -876,12 +804,10 @@ async function loadProducts() {
     data.forEach(
         product => {
 
-
             const item =
-                document
-                    .createElement(
-                        "div"
-                    );
+                document.createElement(
+                    "div"
+                );
 
 
             item.className =
@@ -897,13 +823,9 @@ async function loadProducts() {
             item.innerHTML = `
 
                 <img
-
                     src="${image}"
-
                     class="product-image"
-
                     alt="${product.name}"
-
                 >
 
 
@@ -938,13 +860,11 @@ async function loadProducts() {
 
 
                     <div
-
                         class="product-status ${
                             product.is_available
                                 ? "available"
                                 : "unavailable"
                         }"
-
                     >
 
                         ${
@@ -970,45 +890,64 @@ async function loadProducts() {
                     class="product-actions"
                 >
 
-
                     <button
-
+                        type="button"
                         class="edit-btn"
-
-                        onclick="
-                            editProduct(
-                                '${product.id}'
-                            )
-                        "
-
+                        data-id="${product.id}"
                     >
-
                         Edit
-
                     </button>
-
 
 
                     <button
-
+                        type="button"
                         class="delete-btn"
-
-                        onclick="
-                            deleteProduct(
-                                '${product.id}'
-                            )
-                        "
-
+                        data-id="${product.id}"
                     >
-
                         Delete
-
                     </button>
-
 
                 </div>
 
             `;
+
+
+
+            // EDIT BUTTON
+
+            item
+                .querySelector(
+                    ".edit-btn"
+                )
+                .addEventListener(
+                    "click",
+                    () => {
+
+                        editProduct(
+                            product.id
+                        );
+
+                    }
+                );
+
+
+
+            // DELETE BUTTON
+
+            item
+                .querySelector(
+                    ".delete-btn"
+                )
+                .addEventListener(
+                    "click",
+                    () => {
+
+                        deleteProduct(
+                            product.id
+                        );
+
+                    }
+                );
 
 
 
@@ -1028,10 +967,7 @@ async function loadProducts() {
 // EDIT PRODUCT
 // ========================================
 
-async function editProduct(
-    id
-) {
-
+async function editProduct(id) {
 
     productMessage.textContent =
         "Loading product...";
@@ -1041,11 +977,8 @@ async function editProduct(
         data: product,
         error
     } =
-
         await supabaseClient
-            .from(
-                "products"
-            )
+            .from("products")
             .select("*")
             .eq(
                 "id",
@@ -1054,19 +987,16 @@ async function editProduct(
             .single();
 
 
-
     if (error) {
 
         console.error(
-            "Edit product error:",
+            "Edit load error:",
             error
         );
-
 
         productMessage.textContent =
             "Failed to load product: " +
             error.message;
-
 
         return;
 
@@ -1086,7 +1016,6 @@ async function editProduct(
             product.name || "";
 
 
-
     document
         .getElementById(
             "productDescription"
@@ -1095,14 +1024,12 @@ async function editProduct(
             product.description || "";
 
 
-
     document
         .getElementById(
             "productPrice"
         )
         .value =
-            product.price ?? 0;
-
+            product.price ?? "";
 
 
     document
@@ -1113,7 +1040,6 @@ async function editProduct(
             product.stock ?? 0;
 
 
-
     document
         .getElementById(
             "productCategory"
@@ -1122,16 +1048,12 @@ async function editProduct(
             product.category || "Other";
 
 
-
     document
         .getElementById(
             "productAvailable"
         )
         .checked =
-            Boolean(
-                product.is_available
-            );
-
+            product.is_available === true;
 
 
     editingProductId.value =
@@ -1140,7 +1062,7 @@ async function editProduct(
 
 
     // =================================
-    // SHOW CURRENT IMAGE
+    // IMAGE PREVIEW
     // =================================
 
     if (product.image_url) {
@@ -1148,31 +1070,33 @@ async function editProduct(
         imagePreview.innerHTML = `
 
             <img
-
                 src="${product.image_url}"
-
                 alt="Current Product Image"
-
             >
 
             <p>
-                Current product image.
-                Choose a new image to replace it.
+                Current image.
+                Select a new image only if you want to replace it.
             </p>
 
         `;
 
     } else {
 
-        imagePreview.innerHTML =
-            "<p>No product image.</p>";
+        imagePreview.innerHTML = `
+
+            <p>
+                No product image.
+            </p>
+
+        `;
 
     }
 
 
 
     // =================================
-    // CHANGE FORM MODE
+    // CHANGE FORM TO EDIT MODE
     // =================================
 
     formTitle.textContent =
@@ -1198,19 +1122,15 @@ async function editProduct(
     // SCROLL TO FORM
     // =================================
 
-    document
-        .getElementById(
-            "productForm"
-        )
-        .scrollIntoView({
+    productForm.scrollIntoView({
 
-            behavior:
-                "smooth",
+        behavior:
+            "smooth",
 
-            block:
-                "start"
+        block:
+            "start"
 
-        });
+    });
 
 }
 
@@ -1235,10 +1155,7 @@ cancelEditBtn.addEventListener(
 // DELETE PRODUCT
 // ========================================
 
-async function deleteProduct(
-    id
-) {
-
+async function deleteProduct(id) {
 
     const confirmed =
         confirm(
@@ -1253,21 +1170,16 @@ async function deleteProduct(
     }
 
 
-
     const {
         error
     } =
-
         await supabaseClient
-            .from(
-                "products"
-            )
+            .from("products")
             .delete()
             .eq(
                 "id",
                 id
             );
-
 
 
     if (error) {
@@ -1283,17 +1195,14 @@ async function deleteProduct(
             error.message
         );
 
-
         return;
 
     }
 
 
-
     alert(
         "Product deleted successfully."
     );
-
 
 
     await loadProducts();

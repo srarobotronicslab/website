@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Checkout | SRA Robotronics Lab
+    </title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="cart.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<header class="header">
+
+    <div class="nav-container">
+
+
+        <a
+            href="store.html"
+            class="brand"
+        >
+
+            <img
+                src="logo.jpg"
+                alt="SRA Robotronics Lab"
+            >
+
+            <span>
+                SRA Robotronics Lab
+            </span>
+
+        </a>
+
+
+        <a
+            href="cart.html"
+            class="back-store"
+        >
+
+            ← Back to Cart
+
+        </a>
+
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================
+     CHECKOUT
+========================================= -->
+
+<main class="checkout-page">
+
+
+    <div class="page-header">
+
+        <p class="section-label">
+            CHECKOUT
+        </p>
+
+        <h1>
+            Complete Your Order
+        </h1>
+
+        <p>
+            Enter your delivery information
+            and select your payment method.
+        </p>
+
+    </div>
+
+
+
+    <div class="checkout-layout">
+
+
+        <!-- =====================================
+             CUSTOMER FORM
+        ====================================== -->
+
+        <section class="checkout-card">
+
+
+            <h2>
+                Delivery Information
+            </h2>
+
+
+            <form id="checkoutForm">
+
+
+                <!-- NAME -->
+
+                <div class="form-group">
+
+                    <label for="customerName">
+
+                        Full Name
+
+                    </label>
+
+
+                    <input
+
+                        type="text"
+
+                        id="customerName"
+
+                        placeholder="Enter your full name"
+
+                        required
+
+                    >
+
+                </div>
+
+
+
+                <!-- PHONE -->
+
+                <div class="form-group">
+
+                    <label for="customerPhone">
+
+                        Phone Number
+
+                    </label>
+
+
+                    <input
+
+                        type="tel"
+
+                        id="customerPhone"
+
+                        placeholder="01XXXXXXXXX"
+
+                        required
+
+                    >
+
+                </div>
+
+
+
+                <!-- ADDRESS -->
+
+                <div class="form-group">
+
+                    <label for="customerAddress">
+
+                        Delivery Address
+
+                    </label>
+
+
+                    <textarea
+
+                        id="customerAddress"
+
+                        rows="4"
+
+                        placeholder="House, Road, Area, District"
+
+                        required
+
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- PAYMENT -->
+
+                <div class="form-group">
+
+                    <label>
+
+                        Payment Method
+
+                    </label>
+
+
+                    <div class="payment-options">
+
+
+                        <!-- COD -->
+
+                        <label class="payment-option">
+
+                            <input
+
+                                type="radio"
+
+                                name="paymentMethod"
+
+                                value="COD"
+
+                                checked
+
+                            >
+
+                            <span>
+
+                                Cash on Delivery
+
+                            </span>
+
+                        </label>
+
+
+
+                        <!-- BKASH -->
+
+                        <label class="payment-option">
+
+                            <input
+
+                                type="radio"
+
+                                name="paymentMethod"
+
+                                value="bKash"
+
+                            >
+
+                            <span>
+
+                                bKash
+
+                            </span>
+
+                        </label>
+
+
+
+                        <!-- NAGAD -->
+
+                        <label class="payment-option">
+
+                            <input
+
+                                type="radio"
+
+                                name="paymentMethod"
+
+                                value="Nagad"
+
+                            >
+
+                            <span>
+
+                                Nagad
+
+                            </span>
+
+                        </label>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================
+                     PAYMENT INSTRUCTIONS
+                ================================== -->
+
+                <div
+
+                    id="paymentInstructions"
+
+                    class="payment-instructions"
+
+                >
+
+
+                    <h3>
+
+                        Delivery Charge Payment
+
+                    </h3>
+
+
+                    <p>
+
+                        For Cash on Delivery orders,
+                        please pay the ৳100 delivery
+                        charge in advance.
+
+                    </p>
+
+
+                    <div class="payment-number">
+
+                        bKash:
+
+                        <strong>
+                            01303614563
+                        </strong>
+
+                    </div>
+
+
+                    <p>
+
+                        Send ৳100 to the number above,
+                        then enter the last 2 digits
+                        of the sender's phone number.
+
+                    </p>
+
+
+                </div>
+
+
+
+                <!-- SENDER LAST TWO DIGITS -->
+
+                <div
+
+                    class="form-group"
+
+                    id="senderDigitsGroup"
+
+                >
+
+                    <label for="senderLastTwo">
+
+                        Last 2 Digits of Sender Phone
+
+                    </label>
+
+
+                    <input
+
+                        type="text"
+
+                        id="senderLastTwo"
+
+                        maxlength="2"
+
+                        inputmode="numeric"
+
+                        placeholder="e.g. 45"
+
+                        required
+
+                    >
+
+                </div>
+
+
+
+                <!-- SUBMIT -->
+
+                <button
+
+                    type="submit"
+
+                    class="place-order-btn"
+
+                    id="placeOrderBtn"
+
+                >
+
+                    Place Order
+
+                </button>
+
+
+                <p
+
+                    id="checkoutMessage"
+
+                    class="checkout-message"
+
+                ></p>
+
+
+            </form>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             ORDER SUMMARY
+        ====================================== -->
+
+        <aside class="checkout-summary">
+
+
+            <h2>
+
+                Your Order
+
+            </h2>
+
+
+            <div
+
+                id="checkoutItems"
+
+                class="checkout-items"
+
+            ></div>
+
+
+            <div class="summary-divider"></div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong id="checkoutSubtotal">
+                    ৳0
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Delivery Fee
+                </span>
+
+                <strong>
+                    ৳100
+                </strong>
+
+            </div>
+
+
+            <div class="summary-total">
+
+                <span>
+                    Total
+                </span>
+
+                <strong id="checkoutTotal">
+                    ৳100
+                </strong>
+
+            </div>
+
+
+        </aside>
+
+
+    </div>
+
+
+</main>
+
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<footer class="footer">
+
+    <p>
+
+        ©
+        <span id="year"></span>
+        SRA Robotronics Lab
+
+    </p>
+
+</footer>
+
+
+
+<!-- =========================================
+     SUPABASE
+========================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<!-- =========================================
+     CHECKOUT JS
+========================================= -->
+
+<script src="checkout.js"></script>
+
+
+</body>
+
+</html>

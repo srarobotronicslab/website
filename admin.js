@@ -55,6 +55,29 @@ const refreshBtn =
     document.getElementById("refreshBtn");
 
 
+// NEW ELEMENTS
+
+const editingProductId =
+    document.getElementById(
+        "editingProductId"
+    );
+
+const formTitle =
+    document.getElementById(
+        "formTitle"
+    );
+
+const submitProductBtn =
+    document.getElementById(
+        "submitProductBtn"
+    );
+
+const cancelEditBtn =
+    document.getElementById(
+        "cancelEditBtn"
+    );
+
+
 
 // ========================================
 // CHECK LOGIN
@@ -110,7 +133,6 @@ function showAdmin() {
     adminSection.classList.remove(
         "hidden"
     );
-
 
     loadProducts();
 
@@ -237,10 +259,6 @@ productImage.addEventListener(
             productImage.files[0];
 
 
-        imagePreview.innerHTML =
-            "";
-
-
         if (!file) {
 
             return;
@@ -269,7 +287,38 @@ productImage.addEventListener(
 
 
 // ========================================
-// ADD PRODUCT
+// RESET FORM
+// ========================================
+
+function resetProductForm() {
+
+    productForm.reset();
+
+    editingProductId.value =
+        "";
+
+    imagePreview.innerHTML =
+        "";
+
+    formTitle.textContent =
+        "Add New Product";
+
+    submitProductBtn.textContent =
+        "Add Product";
+
+    cancelEditBtn.classList.add(
+        "hidden"
+    );
+
+    productMessage.textContent =
+        "";
+
+}
+
+
+
+// ========================================
+// ADD / UPDATE PRODUCT
 // ========================================
 
 productForm.addEventListener(
@@ -341,6 +390,11 @@ productForm.addEventListener(
             productImage.files[0];
 
 
+        const productId =
+            editingProductId.value;
+
+
+
         // --------------------------------
         // VALIDATION
         // --------------------------------
@@ -368,14 +422,45 @@ productForm.addEventListener(
         }
 
 
+        if (
+            isNaN(stock) ||
+            stock < 0
+        ) {
+
+            productMessage.textContent =
+                "Please enter a valid stock quantity.";
+
+            return;
+
+        }
+
+
+
+        // =================================
+        // DETERMINE MODE
+        // =================================
+
+        const isEditing =
+            Boolean(productId);
+
+
         productMessage.textContent =
+
+            isEditing
+
+            ?
+
+            "Updating product..."
+
+            :
+
             "Adding product...";
 
 
 
-        // --------------------------------
+        // =================================
         // IMAGE URL
-        // --------------------------------
+        // =================================
 
         let imageURL =
             null;
@@ -383,7 +468,51 @@ productForm.addEventListener(
 
 
         // =================================
-        // UPLOAD IMAGE
+        // IF EDITING
+        // GET CURRENT IMAGE
+        // =================================
+
+        if (isEditing) {
+
+
+            const {
+                data: existingProduct,
+                error: existingError
+            } =
+
+                await supabaseClient
+                    .from("products")
+                    .select("image_url")
+                    .eq(
+                        "id",
+                        productId
+                    )
+                    .single();
+
+
+            if (existingError) {
+
+                productMessage.textContent =
+                    "Failed to load current product.";
+
+                console.error(
+                    existingError
+                );
+
+                return;
+
+            }
+
+
+            imageURL =
+                existingProduct.image_url;
+
+        }
+
+
+
+        // =================================
+        // UPLOAD NEW IMAGE
         // =================================
 
         if (imageFile) {
@@ -449,9 +578,7 @@ productForm.addEventListener(
 
 
 
-            // --------------------------------
-            // GET PUBLIC IMAGE URL
-            // --------------------------------
+            // GET PUBLIC URL
 
             const {
                 data:
@@ -469,109 +596,181 @@ productForm.addEventListener(
 
 
             imageURL =
-                publicURLData
-                    .publicUrl;
+                publicURLData.publicUrl;
 
         }
 
 
 
         // =================================
-        // INSERT PRODUCT
+        // UPDATE EXISTING PRODUCT
         // =================================
 
-        const {
-            data:
-                insertedProduct,
-
-            error
-        } =
-
-            await supabaseClient
-                .from(
-                    "products"
-                )
-                .insert({
-
-                    name:
-                        name,
-
-                    description:
-                        description,
-
-                    price:
-                        price,
-
-                    category:
-                        category,
-
-                    image_url:
-                        imageURL,
-
-                    stock:
-                        stock,
-
-                    is_available:
-                        isAvailable
-
-                })
-
-                .select()
-                .single();
+        if (isEditing) {
 
 
-
-        // =================================
-        // HANDLE ERROR
-        // =================================
-
-        if (error) {
-
-            console.error(
-                "Add product error:",
+            const {
+                data,
                 error
+            } =
+
+                await supabaseClient
+                    .from(
+                        "products"
+                    )
+                    .update({
+
+                        name:
+                            name,
+
+                        description:
+                            description,
+
+                        price:
+                            price,
+
+                        category:
+                            category,
+
+                        image_url:
+                            imageURL,
+
+                        stock:
+                            stock,
+
+                        is_available:
+                            isAvailable
+
+                    })
+                    .eq(
+                        "id",
+                        productId
+                    )
+                    .select()
+                    .single();
+
+
+
+            if (error) {
+
+                console.error(
+                    "Update error:",
+                    error
+                );
+
+
+                productMessage.textContent =
+                    "Failed to update product: " +
+                    error.message;
+
+
+                return;
+
+            }
+
+
+
+            console.log(
+                "Product updated:",
+                data
             );
 
 
             productMessage.textContent =
-                "Failed to add product: " +
-                error.message;
-
-
-            return;
+                "Product updated successfully!";
 
         }
 
 
 
         // =================================
-        // SUCCESS
+        // INSERT NEW PRODUCT
         // =================================
 
-        console.log(
-            "Product added:",
-            insertedProduct
-        );
+        else {
 
 
-        productMessage.textContent =
-            "Product added successfully!";
+            const {
+                data:
+                    insertedProduct,
+
+                error
+            } =
+
+                await supabaseClient
+                    .from(
+                        "products"
+                    )
+                    .insert({
+
+                        name:
+                            name,
+
+                        description:
+                            description,
+
+                        price:
+                            price,
+
+                        category:
+                            category,
+
+                        image_url:
+                            imageURL,
+
+                        stock:
+                            stock,
+
+                        is_available:
+                            isAvailable
+
+                    })
+                    .select()
+                    .single();
 
 
-        // Reset form
 
-        productForm.reset();
+            if (error) {
+
+                console.error(
+                    "Add product error:",
+                    error
+                );
 
 
-        // Clear preview
+                productMessage.textContent =
+                    "Failed to add product: " +
+                    error.message;
 
-        imagePreview.innerHTML =
-            "";
+
+                return;
+
+            }
+
+
+
+            console.log(
+                "Product added:",
+                insertedProduct
+            );
+
+
+            productMessage.textContent =
+                "Product added successfully!";
+
+        }
 
 
 
         // =================================
-        // RELOAD PRODUCT LIST
+        // RESET FORM
+        // =================================
+
+        resetProductForm();
+
+
+        // =================================
+        // RELOAD PRODUCTS
         // =================================
 
         await loadProducts();
@@ -586,6 +785,7 @@ productForm.addEventListener(
 // ========================================
 
 async function loadProducts() {
+
 
     productsList.innerHTML = `
 
@@ -617,10 +817,6 @@ async function loadProducts() {
 
 
 
-    // =================================
-    // DATABASE ERROR
-    // =================================
-
     if (error) {
 
         console.error(
@@ -650,21 +846,6 @@ async function loadProducts() {
 
 
 
-    // =================================
-    // DEBUG
-    // =================================
-
-    console.log(
-        "PRODUCTS FROM SUPABASE:",
-        data
-    );
-
-
-
-    // =================================
-    // NO PRODUCTS
-    // =================================
-
     if (
         !data ||
         data.length === 0
@@ -687,18 +868,10 @@ async function loadProducts() {
 
 
 
-    // =================================
-    // CLEAR LIST
-    // =================================
-
     productsList.innerHTML =
         "";
 
 
-
-    // =================================
-    // DISPLAY PRODUCTS
-    // =================================
 
     data.forEach(
         product => {
@@ -713,7 +886,6 @@ async function loadProducts() {
 
             item.className =
                 "product-item";
-
 
 
             const image =
@@ -740,9 +912,7 @@ async function loadProducts() {
                 >
 
                     <h3>
-
                         ${product.name}
-
                     </h3>
 
 
@@ -795,21 +965,48 @@ async function loadProducts() {
                 </div>
 
 
-                <button
 
-                    class="delete-btn"
-
-                    onclick="
-                        deleteProduct(
-                            '${product.id}'
-                        )
-                    "
-
+                <div
+                    class="product-actions"
                 >
 
-                    Delete
 
-                </button>
+                    <button
+
+                        class="edit-btn"
+
+                        onclick="
+                            editProduct(
+                                '${product.id}'
+                            )
+                        "
+
+                    >
+
+                        Edit
+
+                    </button>
+
+
+
+                    <button
+
+                        class="delete-btn"
+
+                        onclick="
+                            deleteProduct(
+                                '${product.id}'
+                            )
+                        "
+
+                    >
+
+                        Delete
+
+                    </button>
+
+
+                </div>
 
             `;
 
@@ -824,6 +1021,213 @@ async function loadProducts() {
     );
 
 }
+
+
+
+// ========================================
+// EDIT PRODUCT
+// ========================================
+
+async function editProduct(
+    id
+) {
+
+
+    productMessage.textContent =
+        "Loading product...";
+
+
+    const {
+        data: product,
+        error
+    } =
+
+        await supabaseClient
+            .from(
+                "products"
+            )
+            .select("*")
+            .eq(
+                "id",
+                id
+            )
+            .single();
+
+
+
+    if (error) {
+
+        console.error(
+            "Edit product error:",
+            error
+        );
+
+
+        productMessage.textContent =
+            "Failed to load product: " +
+            error.message;
+
+
+        return;
+
+    }
+
+
+
+    // =================================
+    // FILL FORM
+    // =================================
+
+    document
+        .getElementById(
+            "productName"
+        )
+        .value =
+            product.name || "";
+
+
+
+    document
+        .getElementById(
+            "productDescription"
+        )
+        .value =
+            product.description || "";
+
+
+
+    document
+        .getElementById(
+            "productPrice"
+        )
+        .value =
+            product.price ?? 0;
+
+
+
+    document
+        .getElementById(
+            "productStock"
+        )
+        .value =
+            product.stock ?? 0;
+
+
+
+    document
+        .getElementById(
+            "productCategory"
+        )
+        .value =
+            product.category || "Other";
+
+
+
+    document
+        .getElementById(
+            "productAvailable"
+        )
+        .checked =
+            Boolean(
+                product.is_available
+            );
+
+
+
+    editingProductId.value =
+        product.id;
+
+
+
+    // =================================
+    // SHOW CURRENT IMAGE
+    // =================================
+
+    if (product.image_url) {
+
+        imagePreview.innerHTML = `
+
+            <img
+
+                src="${product.image_url}"
+
+                alt="Current Product Image"
+
+            >
+
+            <p>
+                Current product image.
+                Choose a new image to replace it.
+            </p>
+
+        `;
+
+    } else {
+
+        imagePreview.innerHTML =
+            "<p>No product image.</p>";
+
+    }
+
+
+
+    // =================================
+    // CHANGE FORM MODE
+    // =================================
+
+    formTitle.textContent =
+        "Edit Product";
+
+
+    submitProductBtn.textContent =
+        "Update Product";
+
+
+    cancelEditBtn.classList.remove(
+        "hidden"
+    );
+
+
+    productMessage.textContent =
+        "Editing: " +
+        product.name;
+
+
+
+    // =================================
+    // SCROLL TO FORM
+    // =================================
+
+    document
+        .getElementById(
+            "productForm"
+        )
+        .scrollIntoView({
+
+            behavior:
+                "smooth",
+
+            block:
+                "start"
+
+        });
+
+}
+
+
+
+// ========================================
+// CANCEL EDIT
+// ========================================
+
+cancelEditBtn.addEventListener(
+    "click",
+    () => {
+
+        resetProductForm();
+
+    }
+);
 
 
 
@@ -899,7 +1303,7 @@ async function deleteProduct(
 
 
 // ========================================
-// REFRESH BUTTON
+// REFRESH
 // ========================================
 
 refreshBtn.addEventListener(
@@ -914,7 +1318,7 @@ refreshBtn.addEventListener(
 
 
 // ========================================
-// START APPLICATION
+// START
 // ========================================
 
 checkUser();

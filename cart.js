@@ -39,6 +39,9 @@ const emptyCart =
 const cartContent =
     document.getElementById("cartContent");
 
+const yearElement =
+    document.getElementById("year");
+
 
 // ========================================
 // LOAD CART
@@ -49,15 +52,28 @@ function loadCart() {
     try {
 
         cart = JSON.parse(
-            localStorage.getItem("cart") || "[]"
+
+            localStorage.getItem(
+                "cart"
+            ) || "[]"
+
         );
 
     } catch (error) {
 
         console.error(
-            "Failed to load cart:",
+            "Cart loading error:",
             error
         );
+
+        cart = [];
+
+    }
+
+
+    if (
+        !Array.isArray(cart)
+    ) {
 
         cart = [];
 
@@ -76,8 +92,13 @@ function loadCart() {
 function saveCart() {
 
     localStorage.setItem(
+
         "cart",
-        JSON.stringify(cart)
+
+        JSON.stringify(
+            cart
+        )
+
     );
 
 
@@ -92,15 +113,15 @@ function saveCart() {
 
 function renderCart() {
 
+
     // ====================================
-    // CHECK EMPTY CART
+    // EMPTY CART
     // ====================================
 
     if (
         cart.length === 0
     ) {
 
-        // Show empty cart section
 
         if (emptyCart) {
 
@@ -110,8 +131,6 @@ function renderCart() {
         }
 
 
-        // Hide cart content
-
         if (cartContent) {
 
             cartContent.style.display =
@@ -120,12 +139,26 @@ function renderCart() {
         }
 
 
-        // Disable checkout
-
         if (checkoutBtn) {
 
             checkoutBtn.disabled =
                 true;
+
+        }
+
+
+        if (cartSubtotal) {
+
+            cartSubtotal.textContent =
+                "৳0";
+
+        }
+
+
+        if (cartTotal) {
+
+            cartTotal.textContent =
+                "৳0";
 
         }
 
@@ -171,7 +204,6 @@ function renderCart() {
 
 
     cart.forEach(
-
         item => {
 
             const price =
@@ -187,10 +219,11 @@ function renderCart() {
 
 
             subtotal +=
-                price * quantity;
+
+                price *
+                quantity;
 
         }
-
     );
 
 
@@ -199,12 +232,13 @@ function renderCart() {
     // ====================================
 
     const grandTotal =
+
         subtotal +
         DELIVERY_FEE;
 
 
     // ====================================
-    // UPDATE SUBTOTAL
+    // UPDATE TOTALS
     // ====================================
 
     if (cartSubtotal) {
@@ -215,10 +249,6 @@ function renderCart() {
     }
 
 
-    // ====================================
-    // UPDATE TOTAL
-    // ====================================
-
     if (cartTotal) {
 
         cartTotal.textContent =
@@ -228,7 +258,7 @@ function renderCart() {
 
 
     // ====================================
-    // CLEAR OLD ITEMS
+    // CLEAR ITEMS
     // ====================================
 
     if (!cartItems) {
@@ -238,15 +268,15 @@ function renderCart() {
     }
 
 
-    cartItems.innerHTML = "";
+    cartItems.innerHTML =
+        "";
 
 
     // ====================================
-    // DISPLAY CART ITEMS
+    // DISPLAY ITEMS
     // ====================================
 
     cart.forEach(
-
         (item, index) => {
 
 
@@ -263,15 +293,13 @@ function renderCart() {
 
 
             const itemTotal =
+
                 price *
                 quantity;
 
 
-            // =================================
-            // CREATE ITEM
-            // =================================
-
             const itemElement =
+
                 document.createElement(
                     "div"
                 );
@@ -285,14 +313,13 @@ function renderCart() {
             // IMAGE
             // =================================
 
-            let imageHTML = "";
+            const imageHTML =
 
-
-            if (
                 item.image_url
-            ) {
 
-                imageHTML = `
+                ?
+
+                `
 
                     <img
 
@@ -308,9 +335,11 @@ function renderCart() {
 
                     >
 
-                `;
+                `
 
-            }
+                :
+
+                "";
 
 
             // =================================
@@ -339,14 +368,6 @@ function renderCart() {
 
                         Unit Price:
                         ৳${price}
-
-                    </p>
-
-
-                    <p>
-
-                        Quantity:
-                        ${quantity}
 
                     </p>
 
@@ -436,21 +457,16 @@ function renderCart() {
             `;
 
 
-            // =================================
-            // ADD TO CART ITEMS
-            // =================================
-
             cartItems.appendChild(
                 itemElement
             );
 
         }
-
     );
 
 
     // ====================================
-    // ADD BUTTON EVENTS
+    // BUTTON EVENTS
     // ====================================
 
     const actionButtons =
@@ -461,22 +477,20 @@ function renderCart() {
 
 
     actionButtons.forEach(
-
         button => {
 
-
             button.addEventListener(
-
                 "click",
-
                 () => {
 
 
                     const action =
+
                         button.dataset.action;
 
 
                     const index =
+
                         Number(
                             button.dataset.index
                         );
@@ -518,11 +532,9 @@ function renderCart() {
                     }
 
                 }
-
             );
 
         }
-
     );
 
 }
@@ -532,9 +544,7 @@ function renderCart() {
 // INCREASE QUANTITY
 // ========================================
 
-function increaseQuantity(
-    index
-) {
+function increaseQuantity(index) {
 
 
     const item =
@@ -549,20 +559,18 @@ function increaseQuantity(
 
 
     const currentQuantity =
+
         Number(
             item.quantity
         ) || 1;
 
 
     const stock =
+
         Number(
             item.stock
         ) || 999999;
 
-
-    // ====================================
-    // STOCK CHECK
-    // ====================================
 
     if (
         currentQuantity >=
@@ -584,11 +592,8 @@ function increaseQuantity(
     }
 
 
-    // ====================================
-    // INCREASE
-    // ====================================
-
     item.quantity =
+
         currentQuantity + 1;
 
 
@@ -601,9 +606,7 @@ function increaseQuantity(
 // DECREASE QUANTITY
 // ========================================
 
-function decreaseQuantity(
-    index
-) {
+function decreaseQuantity(index) {
 
 
     const item =
@@ -618,14 +621,11 @@ function decreaseQuantity(
 
 
     const currentQuantity =
+
         Number(
             item.quantity
         ) || 1;
 
-
-    // ====================================
-    // REMOVE IF ONE
-    // ====================================
 
     if (
         currentQuantity <= 1
@@ -640,11 +640,8 @@ function decreaseQuantity(
     }
 
 
-    // ====================================
-    // DECREASE
-    // ====================================
-
     item.quantity =
+
         currentQuantity - 1;
 
 
@@ -657,39 +654,10 @@ function decreaseQuantity(
 // REMOVE ITEM
 // ========================================
 
-function removeFromCart(
-    index
-) {
+function removeFromCart(index) {
 
 
-    if (
-        !cart[index]
-    ) {
-
-        return;
-
-    }
-
-
-    const itemName =
-        cart[index].name;
-
-
-    const confirmed =
-        confirm(
-
-            "Remove " +
-
-            itemName +
-
-            " from your cart?"
-
-        );
-
-
-    if (
-        !confirmed
-    ) {
+    if (!cart[index]) {
 
         return;
 
@@ -711,14 +679,10 @@ function removeFromCart(
 // CLEAR CART
 // ========================================
 
-if (
-    clearCartBtn
-) {
+if (clearCartBtn) {
 
     clearCartBtn.addEventListener(
-
         "click",
-
         () => {
 
 
@@ -732,6 +696,7 @@ if (
 
 
             const confirmed =
+
                 confirm(
 
                     "Are you sure you want to clear your cart?"
@@ -754,7 +719,6 @@ if (
             saveCart();
 
         }
-
     );
 
 }
@@ -764,30 +728,19 @@ if (
 // CHECKOUT
 // ========================================
 
-if (
-    checkoutBtn
-) {
-
+if (checkoutBtn) {
 
     checkoutBtn.addEventListener(
-
         "click",
-
         () => {
 
-
-            // =================================
-            // CHECK EMPTY
-            // =================================
 
             if (
                 cart.length === 0
             ) {
 
                 alert(
-
                     "Your cart is empty."
-
                 );
 
                 return;
@@ -795,9 +748,8 @@ if (
             }
 
 
-            // =================================
-            // SAVE CART AGAIN
-            // =================================
+            // Make sure latest cart
+            // is saved
 
             localStorage.setItem(
 
@@ -810,15 +762,10 @@ if (
             );
 
 
-            // =================================
-            // GO TO CHECKOUT
-            // =================================
-
             window.location.href =
                 "checkout.html";
 
         }
-
     );
 
 }
@@ -828,10 +775,7 @@ if (
 // ESCAPE HTML
 // ========================================
 
-function escapeHTML(
-    value
-) {
-
+function escapeHTML(value) {
 
     if (
         value === null ||
@@ -850,9 +794,7 @@ function escapeHTML(
 
 
     div.textContent =
-        String(
-            value
-        );
+        String(value);
 
 
     return div.innerHTML;
@@ -861,21 +803,15 @@ function escapeHTML(
 
 
 // ========================================
-// CURRENT YEAR
+// YEAR
 // ========================================
 
-const yearElement =
-    document.getElementById(
-        "year"
-    );
-
-
-if (
-    yearElement
-) {
+if (yearElement) {
 
     yearElement.textContent =
-        new Date().getFullYear();
+
+        new Date()
+            .getFullYear();
 
 }
 

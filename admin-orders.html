@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Orders | SRA Robotronics Lab</title>
+
+    <link
+        rel="stylesheet"
+        href="admin-orders.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- =====================================
+         SIDEBAR
+    ====================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                🤖
+            </div>
+
+            <div>
+
+                <h2>
+                    SRA Robotronics
+                </h2>
+
+                <span>
+                    Admin Panel
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="#"
+                class="nav-item active"
+            >
+                📦 Orders
+            </a>
+
+            <a
+                href="store.html"
+                class="nav-item"
+            >
+                🛒 Store
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <span>
+                Admin Dashboard
+            </span>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================
+         MAIN CONTENT
+    ====================================== -->
+
+    <main class="main-content">
+
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>
+                    Orders
+                </h1>
+
+                <p>
+                    Manage and track customer orders
+                </p>
+
+            </div>
+
+
+            <button
+                id="refreshBtn"
+                class="refresh-btn"
+            >
+
+                ↻ Refresh
+
+            </button>
+
+        </header>
+
+
+
+        <!-- =====================================
+             DASHBOARD STATISTICS
+        ====================================== -->
+
+        <section class="stats-grid">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📦
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Orders
+                    </span>
+
+                    <strong id="totalOrders">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon pending">
+                    ⏳
+                </div>
+
+                <div>
+
+                    <span>
+                        Pending
+                    </span>
+
+                    <strong id="pendingOrders">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon processing">
+                    ⚙️
+                </div>
+
+                <div>
+
+                    <span>
+                        Processing
+                    </span>
+
+                    <strong id="processingOrders">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon shipped">
+                    🚚
+                </div>
+
+                <div>
+
+                    <span>
+                        Shipped
+                    </span>
+
+                    <strong id="shippedOrders">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon delivered">
+                    ✅
+                </div>
+
+                <div>
+
+                    <span>
+                        Delivered
+                    </span>
+
+                    <strong id="deliveredOrders">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card revenue">
+
+                <div class="stat-icon">
+                    ৳
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Revenue
+                    </span>
+
+                    <strong id="totalRevenue">
+                        ৳0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             FILTERS
+        ====================================== -->
+
+        <section class="orders-panel">
+
+
+            <div class="orders-toolbar">
+
+
+                <div class="search-wrapper">
+
+                    <span>
+                        🔍
+                    </span>
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search by name, phone or order ID..."
+                    >
+
+                </div>
+
+
+
+                <select
+                    id="statusFilter"
+                >
+
+                    <option value="all">
+                        All Order Status
+                    </option>
+
+                    <option value="pending">
+                        Pending
+                    </option>
+
+                    <option value="confirmed">
+                        Confirmed
+                    </option>
+
+                    <option value="processing">
+                        Processing
+                    </option>
+
+                    <option value="shipped">
+                        Shipped
+                    </option>
+
+                    <option value="delivered">
+                        Delivered
+                    </option>
+
+                    <option value="cancelled">
+                        Cancelled
+                    </option>
+
+                </select>
+
+
+
+                <select
+                    id="paymentFilter"
+                >
+
+                    <option value="all">
+                        All Payment Status
+                    </option>
+
+                    <option value="pending">
+                        Pending
+                    </option>
+
+                    <option value="submitted">
+                        Submitted
+                    </option>
+
+                    <option value="verified">
+                        Verified
+                    </option>
+
+                    <option value="failed">
+                        Failed
+                    </option>
+
+                    <option value="refunded">
+                        Refunded
+                    </option>
+
+                </select>
+
+
+            </div>
+
+
+
+            <!-- =====================================
+                 ORDERS TABLE
+            ====================================== -->
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Order
+                            </th>
+
+                            <th>
+                                Customer
+                            </th>
+
+                            <th>
+                                Phone
+                            </th>
+
+                            <th>
+                                Total
+                            </th>
+
+                            <th>
+                                Payment
+                            </th>
+
+                            <th>
+                                Order Status
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="ordersTableBody">
+
+                        <tr>
+
+                            <td
+                                colspan="8"
+                                class="loading"
+                            >
+
+                                Loading orders...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================
+         ORDER DETAILS MODAL
+    ====================================== -->
+
+    <div
+        id="orderModal"
+        class="modal"
+    >
+
+        <div class="modal-content">
+
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>
+                        Order Details
+                    </h2>
+
+                    <span
+                        id="modalOrderId"
+                    >
+                        -
+                    </span>
+
+                </div>
+
+
+                <button
+                    id="closeModalBtn"
+                    class="close-btn"
+                >
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+
+            <div
+                id="orderDetails"
+                class="order-details"
+            >
+
+                <!-- Generated by JS -->
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================
+         MESSAGE
+    ====================================== -->
+
+    <div
+        id="adminMessage"
+        class="admin-message"
+    >
+
+    </div>
+
+
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- ADMIN JS -->
+
+    <script src="admin-orders.js"></script>
+
+
+</body>
+
+</html>

@@ -17,13 +17,54 @@ const supabaseClient =
 
 
 // ========================================
-// CONFIGURATION
+// DELIVERY FEES
 // ========================================
 
-const DELIVERY_FEE = 100;
+const INSIDE_DHAKA_FEE = 80;
+
+const OUTSIDE_DHAKA_FEE = 150;
+
+
+// ========================================
+// PAYMENT NUMBERS
+// ========================================
 
 const BKASH_NUMBER =
     "01303614563";
+
+const NOGOD_NUMBER =
+    "01712108137";
+
+
+// ========================================
+// CART
+// ========================================
+
+let cart = [];
+
+try {
+
+    cart = JSON.parse(
+        localStorage.getItem("cart") || "[]"
+    );
+
+} catch (error) {
+
+    console.error(
+        "Cart loading error:",
+        error
+    );
+
+    cart = [];
+
+}
+
+
+if (!Array.isArray(cart)) {
+
+    cart = [];
+
+}
 
 
 // ========================================
@@ -45,6 +86,11 @@ const checkoutSubtotal =
         "checkoutSubtotal"
     );
 
+const checkoutDelivery =
+    document.getElementById(
+        "checkoutDelivery"
+    );
+
 const checkoutTotal =
     document.getElementById(
         "checkoutTotal"
@@ -55,14 +101,9 @@ const paymentInstructions =
         "paymentInstructions"
     );
 
-const senderDigitsGroup =
+const placeOrderBtn =
     document.getElementById(
-        "senderDigitsGroup"
-    );
-
-const senderLastTwo =
-    document.getElementById(
-        "senderLastTwo"
+        "placeOrderBtn"
     );
 
 const checkoutMessage =
@@ -70,60 +111,86 @@ const checkoutMessage =
         "checkoutMessage"
     );
 
-const placeOrderBtn =
+const paymentLastTwo =
     document.getElementById(
-        "placeOrderBtn"
+        "paymentLastTwo"
+    );
+
+const yearElement =
+    document.getElementById(
+        "year"
     );
 
 
 // ========================================
-// LOAD CART
+// GET DELIVERY LOCATION
 // ========================================
 
-let cart =
-    JSON.parse(
-        localStorage.getItem(
-            "cart"
-        ) || "[]"
-    );
+function getDeliveryLocation() {
 
+    const selected =
+        document.querySelector(
+            'input[name="deliveryLocation"]:checked'
+        );
 
-// ========================================
-// CHECK CART
-// ========================================
-
-if (
-    cart.length === 0
-) {
-
-    alert(
-        "Your cart is empty."
-    );
-
-    window.location.href =
-        "store.html";
+    return selected
+        ? selected.value
+        : "inside";
 
 }
 
 
 // ========================================
-// DISPLAY ORDER
+// GET PAYMENT METHOD
 // ========================================
 
-function displayOrder() {
+function getPaymentMethod() {
+
+    const selected =
+        document.querySelector(
+            'input[name="paymentMethod"]:checked'
+        );
+
+    return selected
+        ? selected.value
+        : "cod";
+
+}
 
 
-    checkoutItems.innerHTML =
-        "";
+// ========================================
+// GET DELIVERY FEE
+// ========================================
+
+function getDeliveryFee() {
+
+    const location =
+        getDeliveryLocation();
 
 
-    let subtotal = 0;
+    if (
+        location === "outside"
+    ) {
+
+        return OUTSIDE_DHAKA_FEE;
+
+    }
 
 
-    cart.forEach(
+    return INSIDE_DHAKA_FEE;
 
-        item => {
+}
 
+
+// ========================================
+// CALCULATE SUBTOTAL
+// ========================================
+
+function calculateSubtotal() {
+
+    return cart.reduce(
+
+        (total, item) => {
 
             const price =
                 Number(
@@ -137,50 +204,284 @@ function displayOrder() {
                 ) || 1;
 
 
-            const itemSubtotal =
+            return (
+                total +
+                price * quantity
+            );
+
+        },
+
+        0
+
+    );
+
+}
+
+
+// ========================================
+// UPDATE PAYMENT INSTRUCTIONS
+// ========================================
+
+function updatePaymentInstructions() {
+
+    const method =
+        getPaymentMethod();
+
+
+    const deliveryFee =
+        getDeliveryFee();
+
+
+    const subtotal =
+        calculateSubtotal();
+
+
+    const total =
+        subtotal +
+        deliveryFee;
+
+
+    // ====================================
+    // COD
+    // ====================================
+
+    if (
+        method === "cod"
+    ) {
+
+        paymentInstructions.innerHTML = `
+
+            <strong>
+                Cash on Delivery
+            </strong>
+
+            <br><br>
+
+            Please pay the delivery charge
+            of
+
+            <strong>
+                ৳${deliveryFee}
+            </strong>
+
+            in advance to:
+
+            <br><br>
+
+            <strong>
+                bKash / Payment:
+                ${BKASH_NUMBER}
+            </strong>
+
+            <br><br>
+
+            After sending the money,
+            enter the last 2 digits of
+            the phone number used for
+            the payment below.
+
+        `;
+
+    }
+
+
+    // ====================================
+    // BKASH
+    // ====================================
+
+    else if (
+        method === "bkash"
+    ) {
+
+        paymentInstructions.innerHTML = `
+
+            <strong>
+                bKash Payment
+            </strong>
+
+            <br><br>
+
+            Please pay the full order amount
+            of
+
+            <strong>
+                ৳${total}
+            </strong>
+
+            to:
+
+            <br><br>
+
+            <strong>
+                bKash / Payment:
+                ${BKASH_NUMBER}
+            </strong>
+
+            <br><br>
+
+            After sending the money,
+            enter the last 2 digits of
+            the phone number used for
+            the payment below.
+
+        `;
+
+    }
+
+
+    // ====================================
+    // NAGAD
+    // ====================================
+
+    else if (
+        method === "nogod"
+    ) {
+
+        paymentInstructions.innerHTML = `
+
+            <strong>
+                Nagad Payment
+            </strong>
+
+            <br><br>
+
+            Please pay the full order amount
+            of
+
+            <strong>
+                ৳${total}
+            </strong>
+
+            to:
+
+            <br><br>
+
+            <strong>
+                Nagad / Payment:
+                ${NOGOD_NUMBER}
+            </strong>
+
+            <br><br>
+
+            After sending the money,
+            enter the last 2 digits of
+            the phone number used for
+            the payment below.
+
+        `;
+
+    }
+
+}
+
+
+// ========================================
+// RENDER CART
+// ========================================
+
+function renderCheckoutCart() {
+
+    if (
+        cart.length === 0
+    ) {
+
+        checkoutItems.innerHTML = `
+
+            <p>
+                Your cart is empty.
+            </p>
+
+        `;
+
+        placeOrderBtn.disabled =
+            true;
+
+        return;
+
+    }
+
+
+    let subtotal = 0;
+
+
+    checkoutItems.innerHTML =
+        "";
+
+
+    cart.forEach(
+
+        item => {
+
+            const price =
+                Number(
+                    item.price
+                ) || 0;
+
+
+            const quantity =
+                Number(
+                    item.quantity
+                ) || 1;
+
+
+            const itemTotal =
                 price *
                 quantity;
 
 
             subtotal +=
-                itemSubtotal;
+                itemTotal;
 
 
-            const element =
+            const itemElement =
                 document.createElement(
                     "div"
                 );
 
 
-            element.className =
+            itemElement.className =
                 "checkout-item";
 
 
-            element.innerHTML = `
+            itemElement.innerHTML = `
 
                 <div>
 
-                    <strong>
-                        ${item.name}
-                    </strong>
+                    <div
+                        class="checkout-item-name"
+                    >
 
-                    <small>
-                        × ${quantity}
-                    </small>
+                        ${escapeHTML(
+                            item.name
+                        )}
+
+                    </div>
+
+                    <div
+                        class="checkout-item-quantity"
+                    >
+
+                        Quantity:
+                        ${quantity}
+
+                    </div>
 
                 </div>
 
-                <strong>
 
-                    ৳${itemSubtotal}
+                <div
+                    class="checkout-item-price"
+                >
 
-                </strong>
+                    ৳${itemTotal}
+
+                </div>
 
             `;
 
 
             checkoutItems.appendChild(
-                element
+                itemElement
             );
 
         }
@@ -188,193 +489,77 @@ function displayOrder() {
     );
 
 
+    const deliveryFee =
+        getDeliveryFee();
+
+
+    const total =
+        subtotal +
+        deliveryFee;
+
+
     checkoutSubtotal.textContent =
         "৳" + subtotal;
 
 
+    checkoutDelivery.textContent =
+        "৳" + deliveryFee;
+
+
     checkoutTotal.textContent =
-        "৳" +
-        (
-            subtotal +
-            DELIVERY_FEE
-        );
+        "৳" + total;
+
+
+    updatePaymentInstructions();
 
 }
 
 
-displayOrder();
-
-
 // ========================================
-// PAYMENT METHOD
+// LOCATION CHANGE
 // ========================================
 
-const paymentMethods =
-    document.querySelectorAll(
-        'input[name="paymentMethod"]'
+document
+    .querySelectorAll(
+        'input[name="deliveryLocation"]'
+    )
+    .forEach(
+
+        radio => {
+
+            radio.addEventListener(
+                "change",
+                renderCheckoutCart
+            );
+
+        }
+
     );
 
 
-paymentMethods.forEach(
+// ========================================
+// PAYMENT CHANGE
+// ========================================
 
-    method => {
+document
+    .querySelectorAll(
+        'input[name="paymentMethod"]'
+    )
+    .forEach(
 
+        radio => {
 
-        method.addEventListener(
+            radio.addEventListener(
 
-            "change",
+                "change",
 
-            () => {
+                updatePaymentInstructions
 
+            );
 
-                const selected =
-                    document.querySelector(
-                        'input[name="paymentMethod"]:checked'
-                    ).value;
+        }
 
-
-                if (
-                    selected ===
-                    "COD"
-                ) {
-
-
-                    paymentInstructions.innerHTML = `
-
-                        <h3>
-                            Delivery Charge Payment
-                        </h3>
-
-                        <p>
-
-                            For Cash on Delivery orders,
-                            please pay the ৳100 delivery
-                            charge in advance.
-
-                        </p>
-
-                        <div class="payment-number">
-
-                            bKash:
-
-                            <strong>
-                                ${BKASH_NUMBER}
-                            </strong>
-
-                        </div>
-
-                        <p>
-
-                            Send ৳100 to the number above,
-                            then enter the last 2 digits
-                            of the sender's phone number.
-
-                        </p>
-
-                    `;
-
-
-                    senderDigitsGroup.style.display =
-                        "block";
-
-
-                    senderLastTwo.required =
-                        true;
-
-
-                }
-
-                else if (
-                    selected ===
-                    "bKash"
-                ) {
-
-
-                    paymentInstructions.innerHTML = `
-
-                        <h3>
-                            bKash Payment
-                        </h3>
-
-                        <p>
-
-                            Please send the required
-                            payment to:
-
-                        </p>
-
-                        <div class="payment-number">
-
-                            bKash:
-
-                            <strong>
-                                ${BKASH_NUMBER}
-                            </strong>
-
-                        </div>
-
-                        <p>
-
-                            After sending the payment,
-                            enter the last 2 digits
-                            of the sender's phone number.
-
-                        </p>
-
-                    `;
-
-
-                    senderDigitsGroup.style.display =
-                        "block";
-
-
-                    senderLastTwo.required =
-                        true;
-
-                }
-
-                else {
-
-
-                    paymentInstructions.innerHTML = `
-
-                        <h3>
-                            Nagad Payment
-                        </h3>
-
-                        <p>
-
-                            Please send the required
-                            payment to our Nagad number.
-
-                        </p>
-
-                        <p>
-
-                            Nagad payment details
-                            will be added soon.
-
-                        </p>
-
-                    `;
-
-
-                    senderDigitsGroup.style.display =
-                        "block";
-
-
-                    senderLastTwo.required =
-                        true;
-
-                }
-
-            }
-
-        );
-
-    }
-
-);
+    );
 
 
 // ========================================
@@ -385,42 +570,71 @@ checkoutForm.addEventListener(
 
     "submit",
 
-    async event => {
-
+    async function(event) {
 
         event.preventDefault();
 
 
+        if (
+            cart.length === 0
+        ) {
+
+            showMessage(
+
+                "Your cart is empty.",
+
+                "error"
+
+            );
+
+            return;
+
+        }
+
+
         // =================================
-        // CUSTOMER DETAILS
+        // CUSTOMER INFORMATION
         // =================================
 
         const customerName =
-            document.getElementById(
-                "customerName"
-            ).value.trim();
+            document
+                .getElementById(
+                    "customerName"
+                )
+                .value
+                .trim();
 
 
-        const phone =
-            document.getElementById(
-                "customerPhone"
-            ).value.trim();
+        const customerPhone =
+            document
+                .getElementById(
+                    "customerPhone"
+                )
+                .value
+                .trim();
 
 
-        const address =
-            document.getElementById(
-                "customerAddress"
-            ).value.trim();
+        const customerAddress =
+            document
+                .getElementById(
+                    "customerAddress"
+                )
+                .value
+                .trim();
+
+
+        const deliveryLocation =
+            getDeliveryLocation();
 
 
         const paymentMethod =
-            document.querySelector(
-                'input[name="paymentMethod"]:checked'
-            ).value;
+            getPaymentMethod();
 
 
-        const lastTwo =
-            senderLastTwo.value.trim();
+        const paymentLastTwoValue =
+            paymentLastTwo
+                .value
+                .trim();
 
 
         // =================================
@@ -428,12 +642,37 @@ checkoutForm.addEventListener(
         // =================================
 
         if (
-            lastTwo.length !== 2 ||
-            !/^\d{2}$/.test(lastTwo)
+            !/^[0-9]{11}$/.test(
+                customerPhone
+            )
         ) {
 
-            checkoutMessage.textContent =
-                "Please enter exactly the last 2 digits of the sender's phone number.";
+            showMessage(
+
+                "Please enter a valid 11-digit phone number.",
+
+                "error"
+
+            );
+
+            return;
+
+        }
+
+
+        if (
+            !/^[0-9]{2}$/.test(
+                paymentLastTwoValue
+            )
+        ) {
+
+            showMessage(
+
+                "Please enter exactly the last 2 digits of the payment phone number.",
+
+                "error"
+
+            );
 
             return;
 
@@ -444,38 +683,17 @@ checkoutForm.addEventListener(
         // CALCULATE TOTAL
         // =================================
 
-        let subtotal =
-            0;
+        const subtotal =
+            calculateSubtotal();
 
 
-        cart.forEach(
-
-            item => {
-
-                subtotal +=
-
-                    (
-                        Number(
-                            item.price
-                        ) || 0
-                    )
-
-                    *
-
-                    (
-                        Number(
-                            item.quantity
-                        ) || 1
-                    );
-
-            }
-
-        );
+        const deliveryFee =
+            getDeliveryFee();
 
 
         const total =
             subtotal +
-            DELIVERY_FEE;
+            deliveryFee;
 
 
         // =================================
@@ -490,8 +708,7 @@ checkoutForm.addEventListener(
             "Placing Order...";
 
 
-        checkoutMessage.textContent =
-            "";
+        clearMessage();
 
 
         try {
@@ -502,11 +719,8 @@ checkoutForm.addEventListener(
             // =================================
 
             const {
-
                 data: order,
-
                 error: orderError
-
             } =
 
                 await supabaseClient
@@ -520,39 +734,41 @@ checkoutForm.addEventListener(
                         customer_name:
                             customerName,
 
-                        phone:
-                            phone,
+                        customer_phone:
+                            customerPhone,
 
-                        delivery_address:
-                            address,
+                        address:
+                            customerAddress,
+
+                        delivery_location:
+                            deliveryLocation,
 
                         payment_method:
                             paymentMethod,
 
-                        payment_status:
-                            "submitted",
-
-                        order_status:
-                            "pending",
-
-                        payment_sender_last_two:
-                            lastTwo,
-
-                        delivery_fee:
-                            DELIVERY_FEE,
+                        payment_last_two:
+                            paymentLastTwoValue,
 
                         subtotal:
                             subtotal,
 
-                        total_amount:
-                            total
+                        delivery_fee:
+                            deliveryFee,
+
+                        total:
+                            total,
+
+                        payment_status:
+                            "pending",
+
+                        order_status:
+                            "pending"
 
                     })
 
                     .select()
 
                     .single();
-
 
 
             if (
@@ -562,7 +778,6 @@ checkoutForm.addEventListener(
                 throw orderError;
 
             }
-
 
 
             // =================================
@@ -584,43 +799,23 @@ checkoutForm.addEventListener(
                         product_name:
                             item.name,
 
-                        product_price:
+                        price:
                             Number(
                                 item.price
-                            ),
+                            ) || 0,
 
                         quantity:
                             Number(
                                 item.quantity
-                            ) || 1,
-
-                        subtotal:
-
-                            (
-                                Number(
-                                    item.price
-                                )
-
-                                *
-
-                                (
-                                    Number(
-                                        item.quantity
-                                    ) || 1
-                                )
-                            )
+                            ) || 1
 
                     })
 
                 );
 
 
-
             const {
-
-                error:
-                    itemError
-
+                error: itemsError
             } =
 
                 await supabaseClient
@@ -634,15 +829,13 @@ checkoutForm.addEventListener(
                     );
 
 
-
             if (
-                itemError
+                itemsError
             ) {
 
-                throw itemError;
+                throw itemsError;
 
             }
-
 
 
             // =================================
@@ -654,15 +847,14 @@ checkoutForm.addEventListener(
             );
 
 
-            checkoutMessage.className =
-                "checkout-message success";
+            showMessage(
 
+                "Order placed successfully! Your order ID is #" +
+                order.id,
 
-            checkoutMessage.textContent =
+                "success"
 
-                "Order placed successfully! " +
-
-                "We will contact you shortly.";
+            );
 
 
             checkoutForm.reset();
@@ -684,10 +876,7 @@ checkoutForm.addEventListener(
 
         }
 
-        catch (
-            error
-        ) {
-
+        catch (error) {
 
             console.error(
                 "Order error:",
@@ -695,15 +884,14 @@ checkoutForm.addEventListener(
             );
 
 
-            checkoutMessage.className =
-                "checkout-message error";
-
-
-            checkoutMessage.textContent =
+            showMessage(
 
                 "Failed to place order: " +
+                error.message,
 
-                error.message;
+                "error"
+
+            );
 
 
             placeOrderBtn.disabled =
@@ -715,19 +903,90 @@ checkoutForm.addEventListener(
 
         }
 
-
     }
 
 );
 
 
 // ========================================
+// SHOW MESSAGE
+// ========================================
+
+function showMessage(
+    message,
+    type
+) {
+
+    checkoutMessage.textContent =
+        message;
+
+
+    checkoutMessage.className =
+
+        "checkout-message " +
+        type;
+
+}
+
+
+// ========================================
+// CLEAR MESSAGE
+// ========================================
+
+function clearMessage() {
+
+    checkoutMessage.textContent =
+        "";
+
+    checkoutMessage.className =
+        "checkout-message";
+
+}
+
+
+// ========================================
+// ESCAPE HTML
+// ========================================
+
+function escapeHTML(
+    value
+) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        String(
+            value || ""
+        );
+
+
+    return div.innerHTML;
+
+}
+
+
+// ========================================
 // YEAR
 // ========================================
 
-document.getElementById(
-    "year"
-).textContent =
+if (
+    yearElement
+) {
 
-    new Date()
-        .getFullYear();
+    yearElement.textContent =
+
+        new Date()
+            .getFullYear();
+
+}
+
+
+// ========================================
+// START
+// ========================================
+
+renderCheckoutCart();

@@ -8,17 +8,36 @@ let cart = JSON.parse(
 
 
 // ========================================
+// DELIVERY FEE
+// ========================================
+
+const DELIVERY_FEE = 100;
+
+
+// ========================================
 // ELEMENTS
 // ========================================
 
 const cartItems =
     document.getElementById("cartItems");
 
+const cartSubtotal =
+    document.getElementById("cartSubtotal");
+
 const cartTotal =
     document.getElementById("cartTotal");
 
 const checkoutBtn =
     document.getElementById("checkoutBtn");
+
+const clearCartBtn =
+    document.getElementById("clearCartBtn");
+
+const emptyCart =
+    document.getElementById("emptyCart");
+
+const cartContent =
+    document.getElementById("cartContent");
 
 
 // ========================================
@@ -27,10 +46,38 @@ const checkoutBtn =
 
 function loadCart() {
 
-    // Reload latest cart from localStorage
+    try {
 
-    cart = JSON.parse(
-        localStorage.getItem("cart") || "[]"
+        cart = JSON.parse(
+            localStorage.getItem("cart") || "[]"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Failed to load cart:",
+            error
+        );
+
+        cart = [];
+
+    }
+
+
+    renderCart();
+
+}
+
+
+// ========================================
+// SAVE CART
+// ========================================
+
+function saveCart() {
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
     );
 
 
@@ -45,45 +92,35 @@ function loadCart() {
 
 function renderCart() {
 
-    if (!cartItems) {
-        return;
-    }
-
-
-    // EMPTY CART
+    // ====================================
+    // CHECK EMPTY CART
+    // ====================================
 
     if (
         cart.length === 0
     ) {
 
-        cartItems.innerHTML = `
+        // Show empty cart section
 
-            <div class="empty-cart">
+        if (emptyCart) {
 
-                <h3>
-                    Your cart is empty
-                </h3>
-
-                <p>
-                    Add some products from our store.
-                </p>
-
-                <a href="store.html">
-                    Continue Shopping
-                </a>
-
-            </div>
-
-        `;
-
-
-        if (cartTotal) {
-
-            cartTotal.textContent =
-                "৳0";
+            emptyCart.style.display =
+                "block";
 
         }
 
+
+        // Hide cart content
+
+        if (cartContent) {
+
+            cartContent.style.display =
+                "none";
+
+        }
+
+
+        // Disable checkout
 
         if (checkoutBtn) {
 
@@ -99,14 +136,114 @@ function renderCart() {
 
 
     // ====================================
-    // CART HAS ITEMS
+    // SHOW CART
     // ====================================
 
-    let total = 0;
+    if (emptyCart) {
+
+        emptyCart.style.display =
+            "none";
+
+    }
+
+
+    if (cartContent) {
+
+        cartContent.style.display =
+            "grid";
+
+    }
+
+
+    if (checkoutBtn) {
+
+        checkoutBtn.disabled =
+            false;
+
+    }
+
+
+    // ====================================
+    // CALCULATE SUBTOTAL
+    // ====================================
+
+    let subtotal = 0;
+
+
+    cart.forEach(
+
+        item => {
+
+            const price =
+                Number(
+                    item.price
+                ) || 0;
+
+
+            const quantity =
+                Number(
+                    item.quantity
+                ) || 1;
+
+
+            subtotal +=
+                price * quantity;
+
+        }
+
+    );
+
+
+    // ====================================
+    // GRAND TOTAL
+    // ====================================
+
+    const grandTotal =
+        subtotal +
+        DELIVERY_FEE;
+
+
+    // ====================================
+    // UPDATE SUBTOTAL
+    // ====================================
+
+    if (cartSubtotal) {
+
+        cartSubtotal.textContent =
+            "৳" + subtotal;
+
+    }
+
+
+    // ====================================
+    // UPDATE TOTAL
+    // ====================================
+
+    if (cartTotal) {
+
+        cartTotal.textContent =
+            "৳" + grandTotal;
+
+    }
+
+
+    // ====================================
+    // CLEAR OLD ITEMS
+    // ====================================
+
+    if (!cartItems) {
+
+        return;
+
+    }
 
 
     cartItems.innerHTML = "";
 
+
+    // ====================================
+    // DISPLAY CART ITEMS
+    // ====================================
 
     cart.forEach(
 
@@ -126,12 +263,13 @@ function renderCart() {
 
 
             const itemTotal =
-                price * quantity;
+                price *
+                quantity;
 
 
-            total +=
-                itemTotal;
-
+            // =================================
+            // CREATE ITEM
+            // =================================
 
             const itemElement =
                 document.createElement(
@@ -143,9 +281,50 @@ function renderCart() {
                 "cart-item";
 
 
+            // =================================
+            // IMAGE
+            // =================================
+
+            let imageHTML = "";
+
+
+            if (
+                item.image_url
+            ) {
+
+                imageHTML = `
+
+                    <img
+
+                        src="${escapeHTML(
+                            item.image_url
+                        )}"
+
+                        alt="${escapeHTML(
+                            item.name
+                        )}"
+
+                        class="cart-item-image"
+
+                    >
+
+                `;
+
+            }
+
+
+            // =================================
+            // ITEM HTML
+            // =================================
+
             itemElement.innerHTML = `
 
-                <div class="cart-item-info">
+                ${imageHTML}
+
+
+                <div
+                    class="cart-item-info"
+                >
 
                     <h3>
 
@@ -155,38 +334,77 @@ function renderCart() {
 
                     </h3>
 
+
                     <p>
 
-                        ৳${price} × ${quantity}
+                        Unit Price:
+                        ৳${price}
+
+                    </p>
+
+
+                    <p>
+
+                        Quantity:
+                        ${quantity}
 
                     </p>
 
                 </div>
 
 
-                <div class="cart-item-controls">
+                <div
+                    class="cart-item-controls"
+                >
 
-                    <button
-                        type="button"
-                        onclick="decreaseQuantity(${index})"
+
+                    <div
+                        class="quantity-controls"
                     >
-                        −
-                    </button>
 
 
-                    <span>
+                        <button
 
-                        ${quantity}
+                            type="button"
 
-                    </span>
+                            class="quantity-btn"
+
+                            data-action="decrease"
+
+                            data-index="${index}"
+
+                        >
+
+                            −
+
+                        </button>
 
 
-                    <button
-                        type="button"
-                        onclick="increaseQuantity(${index})"
-                    >
-                        +
-                    </button>
+                        <span>
+
+                            ${quantity}
+
+                        </span>
+
+
+                        <button
+
+                            type="button"
+
+                            class="quantity-btn"
+
+                            data-action="increase"
+
+                            data-index="${index}"
+
+                        >
+
+                            +
+
+                        </button>
+
+
+                    </div>
 
 
                     <strong>
@@ -197,19 +415,30 @@ function renderCart() {
 
 
                     <button
+
                         type="button"
+
                         class="remove-btn"
-                        onclick="removeFromCart(${index})"
+
+                        data-action="remove"
+
+                        data-index="${index}"
+
                     >
 
                         Remove
 
                     </button>
 
+
                 </div>
 
             `;
 
+
+            // =================================
+            // ADD TO CART ITEMS
+            // =================================
 
             cartItems.appendChild(
                 itemElement
@@ -221,27 +450,80 @@ function renderCart() {
 
 
     // ====================================
-    // TOTAL
+    // ADD BUTTON EVENTS
     // ====================================
 
-    if (cartTotal) {
+    const actionButtons =
 
-        cartTotal.textContent =
-            "৳" + total;
+        cartItems.querySelectorAll(
+            "[data-action]"
+        );
 
-    }
+
+    actionButtons.forEach(
+
+        button => {
 
 
-    // ====================================
-    // ENABLE CHECKOUT
-    // ====================================
+            button.addEventListener(
 
-    if (checkoutBtn) {
+                "click",
 
-        checkoutBtn.disabled =
-            false;
+                () => {
 
-    }
+
+                    const action =
+                        button.dataset.action;
+
+
+                    const index =
+                        Number(
+                            button.dataset.index
+                        );
+
+
+                    if (
+                        action ===
+                        "increase"
+                    ) {
+
+                        increaseQuantity(
+                            index
+                        );
+
+                    }
+
+
+                    else if (
+                        action ===
+                        "decrease"
+                    ) {
+
+                        decreaseQuantity(
+                            index
+                        );
+
+                    }
+
+
+                    else if (
+                        action ===
+                        "remove"
+                    ) {
+
+                        removeFromCart(
+                            index
+                        );
+
+                    }
+
+                }
+
+            );
+
+        }
+
+    );
 
 }
 
@@ -254,19 +536,16 @@ function increaseQuantity(
     index
 ) {
 
+
     const item =
         cart[index];
 
 
     if (!item) {
+
         return;
+
     }
-
-
-    const stock =
-        Number(
-            item.stock
-        ) || 999999;
 
 
     const currentQuantity =
@@ -275,19 +554,39 @@ function increaseQuantity(
         ) || 1;
 
 
+    const stock =
+        Number(
+            item.stock
+        ) || 999999;
+
+
+    // ====================================
+    // STOCK CHECK
+    // ====================================
+
     if (
         currentQuantity >=
         stock
     ) {
 
         alert(
-            "You cannot add more than the available stock."
+
+            "You cannot add more than " +
+
+            stock +
+
+            " unit(s) of this product."
+
         );
 
         return;
 
     }
 
+
+    // ====================================
+    // INCREASE
+    // ====================================
 
     item.quantity =
         currentQuantity + 1;
@@ -306,12 +605,15 @@ function decreaseQuantity(
     index
 ) {
 
+
     const item =
         cart[index];
 
 
     if (!item) {
+
         return;
+
     }
 
 
@@ -320,6 +622,10 @@ function decreaseQuantity(
             item.quantity
         ) || 1;
 
+
+    // ====================================
+    // REMOVE IF ONE
+    // ====================================
 
     if (
         currentQuantity <= 1
@@ -333,6 +639,10 @@ function decreaseQuantity(
 
     }
 
+
+    // ====================================
+    // DECREASE
+    // ====================================
 
     item.quantity =
         currentQuantity - 1;
@@ -351,6 +661,41 @@ function removeFromCart(
     index
 ) {
 
+
+    if (
+        !cart[index]
+    ) {
+
+        return;
+
+    }
+
+
+    const itemName =
+        cart[index].name;
+
+
+    const confirmed =
+        confirm(
+
+            "Remove " +
+
+            itemName +
+
+            " from your cart?"
+
+        );
+
+
+    if (
+        !confirmed
+    ) {
+
+        return;
+
+    }
+
+
     cart.splice(
         index,
         1
@@ -363,23 +708,54 @@ function removeFromCart(
 
 
 // ========================================
-// SAVE CART
+// CLEAR CART
 // ========================================
 
-function saveCart() {
+if (
+    clearCartBtn
+) {
 
-    localStorage.setItem(
+    clearCartBtn.addEventListener(
 
-        "cart",
+        "click",
 
-        JSON.stringify(
-            cart
-        )
+        () => {
+
+
+            if (
+                cart.length === 0
+            ) {
+
+                return;
+
+            }
+
+
+            const confirmed =
+                confirm(
+
+                    "Are you sure you want to clear your cart?"
+
+                );
+
+
+            if (
+                !confirmed
+            ) {
+
+                return;
+
+            }
+
+
+            cart = [];
+
+
+            saveCart();
+
+        }
 
     );
-
-
-    renderCart();
 
 }
 
@@ -392,24 +768,51 @@ if (
     checkoutBtn
 ) {
 
+
     checkoutBtn.addEventListener(
 
         "click",
 
         () => {
 
+
+            // =================================
+            // CHECK EMPTY
+            // =================================
+
             if (
                 cart.length === 0
             ) {
 
                 alert(
+
                     "Your cart is empty."
+
                 );
 
                 return;
 
             }
 
+
+            // =================================
+            // SAVE CART AGAIN
+            // =================================
+
+            localStorage.setItem(
+
+                "cart",
+
+                JSON.stringify(
+                    cart
+                )
+
+            );
+
+
+            // =================================
+            // GO TO CHECKOUT
+            // =================================
 
             window.location.href =
                 "checkout.html";
@@ -429,6 +832,17 @@ function escapeHTML(
     value
 ) {
 
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
     const div =
         document.createElement(
             "div"
@@ -437,11 +851,31 @@ function escapeHTML(
 
     div.textContent =
         String(
-            value || ""
+            value
         );
 
 
     return div.innerHTML;
+
+}
+
+
+// ========================================
+// CURRENT YEAR
+// ========================================
+
+const yearElement =
+    document.getElementById(
+        "year"
+    );
+
+
+if (
+    yearElement
+) {
+
+    yearElement.textContent =
+        new Date().getFullYear();
 
 }
 

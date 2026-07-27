@@ -6,7 +6,7 @@ const SUPABASE_URL =
     "https://xzhpbisrzhgbeiptdkfd.supabase.co/";
 
 const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6aHBiaXNyemhnYmVpcHRka2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NzE1NDcsImV4cCI6MjEwMDU0NzU0N30.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
+    "YOUR_SUPABASE_ANON_KEY";
 
 
 const supabaseClient =
@@ -17,7 +17,16 @@ const supabaseClient =
 
 
 // ========================================
-// VARIABLES
+// CART
+// ========================================
+
+let cart = JSON.parse(
+    localStorage.getItem("cart") || "[]"
+);
+
+
+// ========================================
+// PRODUCTS
 // ========================================
 
 let products = [];
@@ -28,6 +37,15 @@ let selectedCategory = "all";
 // ========================================
 // ELEMENTS
 // ========================================
+
+const header =
+    document.querySelector(".header");
+
+const menuButton =
+    document.getElementById("menuButton");
+
+const topNav =
+    document.querySelector(".top-nav");
 
 const productGrid =
     document.getElementById("productGrid");
@@ -44,95 +62,146 @@ const categoryButtons =
 const cartCount =
     document.getElementById("cartCount");
 
+const cartButton =
+    document.querySelector(".cart-button");
+
+const yearElement =
+    document.getElementById("year");
+
 
 // ========================================
-// CHECK USER
+// HEADER SCROLL EFFECT
 // ========================================
 
-async function getCurrentUser() {
+if (header) {
 
-    const {
-        data: { user },
-        error
-    } = await supabaseClient.auth.getUser();
+    window.addEventListener(
+        "scroll",
+        () => {
 
-    if (error) {
+            if (window.scrollY > 20) {
 
-        console.error(
-            "User check error:",
-            error
-        );
+                header.style.boxShadow =
+                    "0 8px 30px rgba(0,0,0,0.08)";
 
-        return null;
+            } else {
 
-    }
+                header.style.boxShadow =
+                    "none";
 
-    return user;
+            }
+
+        }
+    );
 
 }
 
 
 // ========================================
-// LOAD CART COUNT
+// MOBILE MENU
 // ========================================
 
-async function loadCartCount() {
+if (
+    menuButton &&
+    topNav
+) {
 
-    const user =
-        await getCurrentUser();
+    menuButton.addEventListener(
+        "click",
+        () => {
 
+            if (
+                topNav.style.display === "flex"
+            ) {
 
-    // User is not logged in
+                topNav.style.display =
+                    "none";
 
-    if (!user) {
+            } else {
 
-        if (cartCount) {
+                topNav.style.display =
+                    "flex";
 
-            cartCount.textContent = "0";
+                topNav.style.position =
+                    "absolute";
+
+                topNav.style.top =
+                    "68px";
+
+                topNav.style.left =
+                    "20px";
+
+                topNav.style.right =
+                    "20px";
+
+                topNav.style.padding =
+                    "15px";
+
+                topNav.style.flexDirection =
+                    "column";
+
+                topNav.style.background =
+                    "#fefefe";
+
+                topNav.style.borderRadius =
+                    "15px";
+
+                topNav.style.boxShadow =
+                    "0 15px 40px rgba(0,0,0,0.12)";
+
+            }
 
         }
+    );
+
+}
+
+
+// ========================================
+// CART COUNT
+// ========================================
+
+function updateCartCount() {
+
+    if (!cartCount) {
 
         return;
 
     }
 
 
-    const {
-        count,
-        error
-    } = await supabaseClient
-        .from("cart_items")
-        .select(
-            "id",
-            {
-                count: "exact",
-                head: true
-            }
-        )
-        .eq(
-            "user_id",
-            user.id
-        );
+    let totalQuantity = 0;
 
 
-    if (error) {
+    cart.forEach(
+        item => {
 
-        console.error(
-            "Cart count error:",
-            error
-        );
+            totalQuantity +=
+                Number(item.quantity) || 1;
 
-        return;
-
-    }
+        }
+    );
 
 
-    if (cartCount) {
+    cartCount.textContent =
+        totalQuantity;
 
-        cartCount.textContent =
-            count || 0;
+}
 
-    }
+
+// ========================================
+// SAVE CART
+// ========================================
+
+function saveCart() {
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+
+    updateCartCount();
 
 }
 
@@ -143,10 +212,19 @@ async function loadCartCount() {
 
 async function loadProducts() {
 
+    if (!productGrid) {
+
+        return;
+
+    }
+
+
     productGrid.innerHTML = `
 
         <p class="loading">
+
             Loading products...
+
         </p>
 
     `;
@@ -156,12 +234,16 @@ async function loadProducts() {
         data,
         error
     } = await supabaseClient
+
         .from("products")
+
         .select("*")
+
         .eq(
             "is_available",
             true
         )
+
         .order(
             "created_at",
             {
@@ -184,9 +266,11 @@ async function loadProducts() {
 
                 Failed to load products.
 
-                <br>
+                <br><br>
 
-                ${error.message}
+                ${escapeHTML(
+                    error.message
+                )}
 
             </p>
 
@@ -212,26 +296,53 @@ async function loadProducts() {
 
 function displayProducts() {
 
+    if (!productGrid) {
+
+        return;
+
+    }
+
+
     const searchTerm =
 
-        searchInput.value
-            .toLowerCase()
-            .trim();
+        searchInput
+
+            ? searchInput.value
+                .toLowerCase()
+                .trim()
+
+            : "";
 
 
     const filteredProducts =
 
         products.filter(
-
             product => {
+
+
+                const name =
+
+                    (
+                        product.name ||
+                        ""
+                    )
+                    .toLowerCase();
+
+
+                const category =
+
+                    (
+                        product.category ||
+                        ""
+                    )
+                    .toLowerCase();
+
 
                 const matchesSearch =
 
-                    product.name
-                        .toLowerCase()
-                        .includes(
-                            searchTerm
-                        );
+                    name.includes(
+                        searchTerm
+                    );
 
 
                 const matchesCategory =
@@ -241,30 +352,26 @@ function displayProducts() {
 
                     ||
 
-                    (
-                        product.category &&
-                        product.category
-                            .toLowerCase()
-                            ===
-                        selectedCategory
-                            .toLowerCase()
-                    );
+                    category ===
+
+                    selectedCategory
+                        .toLowerCase();
 
 
                 return (
 
-                    matchesSearch
-
-                    &&
-
+                    matchesSearch &&
                     matchesCategory
 
                 );
 
             }
-
         );
 
+
+    // ====================================
+    // NO RESULTS
+    // ====================================
 
     if (
         filteredProducts.length === 0
@@ -273,25 +380,38 @@ function displayProducts() {
         productGrid.innerHTML =
             "";
 
-        noResults.style.display =
-            "block";
+
+        if (noResults) {
+
+            noResults.style.display =
+                "block";
+
+        }
 
         return;
 
     }
 
 
-    noResults.style.display =
-        "none";
+    if (noResults) {
+
+        noResults.style.display =
+            "none";
+
+    }
 
 
     productGrid.innerHTML =
         "";
 
 
-    filteredProducts.forEach(
+    // ====================================
+    // PRODUCT CARDS
+    // ====================================
 
+    filteredProducts.forEach(
         product => {
+
 
             const card =
                 document.createElement(
@@ -301,6 +421,16 @@ function displayProducts() {
 
             card.className =
                 "product-card";
+
+
+            const stock =
+                Number(
+                    product.stock
+                ) || 0;
+
+
+            const inStock =
+                stock > 0;
 
 
             // =================================
@@ -315,15 +445,19 @@ function displayProducts() {
 
                 `
 
-                <img
+                    <img
 
-                    src="${product.image_url}"
+                        src="${escapeHTML(
+                            product.image_url
+                        )}"
 
-                    alt="${product.name}"
+                        alt="${escapeHTML(
+                            product.name
+                        )}"
 
-                    class="product-image"
+                        class="product-image"
 
-                >
+                    >
 
                 `
 
@@ -331,15 +465,15 @@ function displayProducts() {
 
                 `
 
-                <div
-                    class="product-image"
-                >
+                    <div
+                        class="product-image"
+                    >
 
-                    <span>
-                        Product Image
-                    </span>
+                        <span>
+                            Product Image
+                        </span>
 
-                </div>
+                    </div>
 
                 `;
 
@@ -350,17 +484,17 @@ function displayProducts() {
 
             const stockHTML =
 
-                product.stock > 0
+                inStock
 
                 ?
 
                 `
 
-                <span class="stock">
+                    <span class="stock">
 
-                    In Stock
+                        In Stock
 
-                </span>
+                    </span>
 
                 `
 
@@ -368,17 +502,17 @@ function displayProducts() {
 
                 `
 
-                <span class="stock">
+                    <span class="stock">
 
-                    Out of Stock
+                        Out of Stock
 
-                </span>
+                    </span>
 
                 `;
 
 
             // =================================
-            // CARD
+            // CARD HTML
             // =================================
 
             card.innerHTML = `
@@ -395,17 +529,19 @@ function displayProducts() {
                         class="product-category"
                     >
 
-                        ${
+                        ${escapeHTML(
                             product.category ||
                             "Other"
-                        }
+                        )}
 
                     </span>
 
 
                     <h3>
 
-                        ${product.name}
+                        ${escapeHTML(
+                            product.name
+                        )}
 
                     </h3>
 
@@ -414,10 +550,10 @@ function displayProducts() {
                         class="product-description"
                     >
 
-                        ${
+                        ${escapeHTML(
                             product.description ||
                             "No description available."
-                        }
+                        )}
 
                     </p>
 
@@ -426,16 +562,20 @@ function displayProducts() {
                         class="product-bottom"
                     >
 
+
                         <strong
                             class="price"
                         >
 
-                            ৳${product.price}
+                            ৳${Number(
+                                product.price
+                            )}
 
                         </strong>
 
 
                         ${stockHTML}
+
 
                     </div>
 
@@ -449,7 +589,7 @@ function displayProducts() {
 
                             class="add-cart"
 
-                            data-product-id="${product.id}"
+                            type="button"
 
                         >
 
@@ -462,7 +602,7 @@ function displayProducts() {
 
                             class="buy-now"
 
-                            data-product-id="${product.id}"
+                            type="button"
 
                         >
 
@@ -479,20 +619,41 @@ function displayProducts() {
             `;
 
 
-            // =================================
-            // ADD TO CART EVENT
-            // =================================
+            const addCartButton =
 
-            const addButton =
                 card.querySelector(
                     ".add-cart"
                 );
 
 
-            addButton.addEventListener(
+            const buyNowButton =
 
+                card.querySelector(
+                    ".buy-now"
+                );
+
+
+            // =================================
+            // OUT OF STOCK
+            // =================================
+
+            if (!inStock) {
+
+                addCartButton.disabled =
+                    true;
+
+                buyNowButton.disabled =
+                    true;
+
+            }
+
+
+            // =================================
+            // ADD TO CART
+            // =================================
+
+            addCartButton.addEventListener(
                 "click",
-
                 () => {
 
                     addToCart(
@@ -500,24 +661,15 @@ function displayProducts() {
                     );
 
                 }
-
             );
 
 
             // =================================
-            // BUY NOW EVENT
+            // BUY NOW
             // =================================
 
-            const buyButton =
-                card.querySelector(
-                    ".buy-now"
-                );
-
-
-            buyButton.addEventListener(
-
+            buyNowButton.addEventListener(
                 "click",
-
                 () => {
 
                     buyNow(
@@ -525,25 +677,7 @@ function displayProducts() {
                     );
 
                 }
-
             );
-
-
-            // =================================
-            // DISABLE IF OUT OF STOCK
-            // =================================
-
-            if (
-                product.stock <= 0
-            ) {
-
-                addButton.disabled =
-                    true;
-
-                buyButton.disabled =
-                    true;
-
-            }
 
 
             productGrid.appendChild(
@@ -551,7 +685,6 @@ function displayProducts() {
             );
 
         }
-
     );
 
 }
@@ -561,25 +694,18 @@ function displayProducts() {
 // ADD TO CART
 // ========================================
 
-async function addToCart(
-    product
-) {
+function addToCart(product) {
+
+    const stock =
+        Number(
+            product.stock
+        ) || 0;
 
 
-    // ------------------------------------
-    // CHECK LOGIN
-    // ------------------------------------
-
-    const user =
-        await getCurrentUser();
-
-
-    if (!user) {
+    if (stock <= 0) {
 
         alert(
-
-            "Please log in or create an account before adding products to your cart."
-
+            "This product is currently out of stock."
         );
 
         return;
@@ -587,70 +713,46 @@ async function addToCart(
     }
 
 
-    // ------------------------------------
-    // CHECK EXISTING CART ITEM
-    // ------------------------------------
+    // ====================================
+    // FIND EXISTING ITEM
+    // ====================================
 
-    const {
-        data: existingItem,
-        error: checkError
-    } = await supabaseClient
-        .from("cart_items")
-        .select("*")
-        .eq(
-            "user_id",
-            user.id
-        )
-        .eq(
-            "product_id",
-            product.id
-        )
-        .maybeSingle();
+    const existingItem =
 
+        cart.find(
+            item =>
 
-    if (checkError) {
-
-        console.error(
-            "Cart check error:",
-            checkError
+                String(item.id) ===
+                String(product.id)
         );
 
 
-        alert(
-
-            "Could not check your cart:\n" +
-
-            checkError.message
-
-        );
-
-        return;
-
-    }
-
-
-    // ------------------------------------
-    // PRODUCT ALREADY IN CART
-    // ------------------------------------
+    // ====================================
+    // EXISTING ITEM
+    // ====================================
 
     if (existingItem) {
 
 
-        const newQuantity =
+        const currentQuantity =
 
-            existingItem.quantity + 1;
+            Number(
+                existingItem.quantity
+            ) || 1;
 
-
-        // Don't exceed stock
 
         if (
-            newQuantity >
-            product.stock
+            currentQuantity >=
+            stock
         ) {
 
             alert(
 
-                "You cannot add more than the available stock."
+                "You cannot add more than " +
+
+                stock +
+
+                " unit(s) of this product."
 
             );
 
@@ -659,86 +761,53 @@ async function addToCart(
         }
 
 
-        const {
-            error: updateError
-        } = await supabaseClient
-            .from("cart_items")
-            .update({
+        existingItem.quantity =
 
-                quantity:
-                    newQuantity
+            currentQuantity + 1;
 
-            })
-            .eq(
-                "id",
-                existingItem.id
-            );
-
-
-        if (updateError) {
-
-            alert(
-
-                "Failed to update cart:\n" +
-
-                updateError.message
-
-            );
-
-            return;
-
-        }
 
     }
 
-
-    // ------------------------------------
-    // NEW CART ITEM
-    // ------------------------------------
+    // ====================================
+    // NEW ITEM
+    // ====================================
 
     else {
 
 
-        const {
-            error: insertError
-        } = await supabaseClient
-            .from("cart_items")
-            .insert({
+        cart.push({
 
-                user_id:
-                    user.id,
+            id:
+                product.id,
 
-                product_id:
-                    product.id,
+            name:
+                product.name,
 
-                quantity:
-                    1
+            price:
+                Number(
+                    product.price
+                ),
 
-            });
+            quantity:
+                1,
 
+            stock:
+                stock,
 
-        if (insertError) {
+            image_url:
+                product.image_url ||
+                null
 
-            alert(
-
-                "Failed to add product to cart:\n" +
-
-                insertError.message
-
-            );
-
-            return;
-
-        }
+        });
 
     }
 
 
-    // ------------------------------------
-    // UPDATE CART COUNT
-    // ------------------------------------
+    // ====================================
+    // SAVE TO LOCAL STORAGE
+    // ====================================
 
-    await loadCartCount();
+    saveCart();
 
 
     alert(
@@ -756,21 +825,18 @@ async function addToCart(
 // BUY NOW
 // ========================================
 
-async function buyNow(
-    product
-) {
+function buyNow(product) {
+
+    const stock =
+        Number(
+            product.stock
+        ) || 0;
 
 
-    const user =
-        await getCurrentUser();
-
-
-    if (!user) {
+    if (stock <= 0) {
 
         alert(
-
-            "Please log in or create an account before purchasing."
-
+            "This product is currently out of stock."
         );
 
         return;
@@ -778,44 +844,41 @@ async function buyNow(
     }
 
 
-    // For now we save a temporary Buy Now
-    // item in localStorage.
+    cart = [
 
-    const buyNowProduct = {
+        {
 
-        product_id:
-            product.id,
+            id:
+                product.id,
 
-        name:
-            product.name,
+            name:
+                product.name,
 
-        price:
-            product.price,
+            price:
+                Number(
+                    product.price
+                ),
 
-        image_url:
-            product.image_url,
+            quantity:
+                1,
 
-        quantity:
-            1
+            stock:
+                stock,
 
-    };
+            image_url:
+                product.image_url ||
+                null
 
+        }
 
-    localStorage.setItem(
-
-        "buyNowProduct",
-
-        JSON.stringify(
-            buyNowProduct
-        )
-
-    );
+    ];
 
 
-    // Redirect to checkout later
+    saveCart();
+
 
     window.location.href =
-        "checkout.html";
+        "cart.html";
 
 }
 
@@ -827,15 +890,12 @@ async function buyNow(
 if (searchInput) {
 
     searchInput.addEventListener(
-
         "input",
-
         () => {
 
             displayProducts();
 
         }
-
     );
 
 }
@@ -846,18 +906,14 @@ if (searchInput) {
 // ========================================
 
 categoryButtons.forEach(
-
     button => {
 
         button.addEventListener(
-
             "click",
-
             function () {
 
 
                 categoryButtons.forEach(
-
                     btn => {
 
                         btn.classList.remove(
@@ -865,7 +921,6 @@ categoryButtons.forEach(
                         );
 
                     }
-
                 );
 
 
@@ -875,29 +930,75 @@ categoryButtons.forEach(
 
 
                 selectedCategory =
-                    this.dataset.category;
+
+                    this.dataset.category ||
+                    "all";
 
 
                 displayProducts();
 
             }
-
         );
 
     }
-
 );
+
+
+// ========================================
+// CART BUTTON
+// ========================================
+
+if (cartButton) {
+
+    cartButton.addEventListener(
+        "click",
+        event => {
+
+            event.preventDefault();
+
+            window.location.href =
+                "cart.html";
+
+        }
+    );
+
+}
+
+
+// ========================================
+// ESCAPE HTML
+// ========================================
+
+function escapeHTML(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        String(value);
+
+
+    return div.innerHTML;
+
+}
 
 
 // ========================================
 // YEAR
 // ========================================
-
-const yearElement =
-    document.getElementById(
-        "year"
-    );
-
 
 if (yearElement) {
 
@@ -910,9 +1011,9 @@ if (yearElement) {
 
 
 // ========================================
-// START
+// INITIALIZE
 // ========================================
 
-loadProducts();
+updateCartCount();
 
-loadCartCount();
+loadProducts();

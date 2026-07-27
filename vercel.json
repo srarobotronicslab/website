@@ -1,8 +1,44 @@
 {
   "rewrites": [
     {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
       "source": "/store",
       "destination": "/store.html"
+    },
+    {
+      "source": "/cart",
+      "destination": "/cart.html"
+    },
+    {
+      "source": "/checkout",
+      "destination": "/checkout.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/courses",
+      "destination": "/courses.html"
+    },
+    {
+      "source": "/tutorials",
+      "destination": "/tutorials.html"
+    },
+    {
+      "source": "/faq",
+      "destination": "/faq.html"
     }
   ]
 }

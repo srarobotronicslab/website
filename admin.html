@@ -10,7 +10,634 @@
         <!-- Hidden product ID used when editing -->
         <input
             type="hidden"
-            id="editingProductId"
+            id="editingProductId"<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SRA Robotronics Lab - Admin</title>
+
+    <link
+        rel="stylesheet"
+        href="admin.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     LOGIN SECTION
+========================================= -->
+
+<section
+    id="loginSection"
+    class="login-section"
+>
+
+    <div class="login-card">
+
+
+        <img
+            src="logo.jpg"
+            alt="SRA Robotronics Lab"
+            class="login-logo"
+        >
+
+
+        <h1>
+            Admin Login
+        </h1>
+
+
+        <p class="login-subtitle">
+            SRA Robotronics Lab
+        </p>
+
+
+
+        <!-- LOGIN FORM -->
+
+        <form id="loginForm">
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter admin email"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter password"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- LOGIN BUTTON -->
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Login
+            </button>
+
+
+
+            <!-- LOGIN MESSAGE -->
+
+            <p
+                id="loginMessage"
+                class="message"
+            ></p>
+
+
+        </form>
+
+
+    </div>
+
+</section>
+
+
+
+
+
+<!-- =========================================
+     ADMIN SECTION
+========================================= -->
+
+<section
+    id="adminSection"
+    class="admin-section hidden"
+>
+
+
+    <!-- =====================================
+         ADMIN HEADER
+    ====================================== -->
+
+    <header class="admin-header">
+
+
+        <div>
+
+            <h1>
+                SRA Robotronics Lab
+            </h1>
+
+            <p>
+                Product Management
+            </p>
+
+        </div>
+
+
+
+        <!-- LOGOUT -->
+
+        <button
+            id="logoutBtn"
+            class="logout-btn"
+            type="button"
+        >
+            Logout
+        </button>
+
+
+    </header>
+
+
+
+
+
+    <!-- =====================================
+         MAIN ADMIN CONTAINER
+    ====================================== -->
+
+    <main class="admin-container">
+
+
+
+
+
+        <!-- =====================================
+             ADD / EDIT PRODUCT
+        ====================================== -->
+
+        <section class="admin-card">
+
+
+            <!-- FORM TITLE -->
+
+            <h2 id="formTitle">
+                Add New Product
+            </h2>
+
+
+
+            <!-- PRODUCT FORM -->
+
+            <form id="productForm">
+
+
+                <!-- =================================
+                     HIDDEN PRODUCT ID
+                     Used only while editing
+                ================================== -->
+
+                <input
+                    type="hidden"
+                    id="editingProductId"
+                >
+
+
+
+
+
+                <!-- =================================
+                     PRODUCT NAME
+                ================================== -->
+
+                <div class="form-group">
+
+
+                    <label for="productName">
+                        Product Name
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="productName"
+                        placeholder="Example: Arduino Nano"
+                        required
+                    >
+
+
+                </div>
+
+
+
+
+
+                <!-- =================================
+                     DESCRIPTION
+                ================================== -->
+
+                <div class="form-group">
+
+
+                    <label for="productDescription">
+                        Description
+                    </label>
+
+
+                    <textarea
+                        id="productDescription"
+                        placeholder="Enter product description"
+                        rows="4"
+                    ></textarea>
+
+
+                </div>
+
+
+
+
+
+                <!-- =================================
+                     PRICE + STOCK
+                ================================== -->
+
+                <div class="form-row">
+
+
+                    <!-- PRICE -->
+
+                    <div class="form-group">
+
+
+                        <label for="productPrice">
+                            Price (BDT)
+                        </label>
+
+
+                        <input
+                            type="number"
+                            id="productPrice"
+                            placeholder="500"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+
+
+                    </div>
+
+
+
+                    <!-- STOCK -->
+
+                    <div class="form-group">
+
+
+                        <label for="productStock">
+                            Stock
+                        </label>
+
+
+                        <input
+                            type="number"
+                            id="productStock"
+                            placeholder="10"
+                            min="0"
+                            step="1"
+                            value="0"
+                            required
+                        >
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <!-- =================================
+                     CATEGORY
+                ================================== -->
+
+                <div class="form-group">
+
+
+                    <label for="productCategory">
+                        Category
+                    </label>
+
+
+                    <select
+                        id="productCategory"
+                    >
+
+
+                        <option value="Robotics">
+                            Robotics
+                        </option>
+
+
+                        <option value="Electronics">
+                            Electronics
+                        </option>
+
+
+                        <option value="Arduino">
+                            Arduino
+                        </option>
+
+
+                        <option value="Sensors">
+                            Sensors
+                        </option>
+
+
+                        <option value="Motors">
+                            Motors
+                        </option>
+
+
+                        <option value="Kits">
+                            Kits
+                        </option>
+
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+
+                    </select>
+
+
+                </div>
+
+
+
+
+
+                <!-- =================================
+                     PRODUCT IMAGE
+                ================================== -->
+
+                <div class="form-group">
+
+
+                    <label for="productImage">
+                        Product Image
+                    </label>
+
+
+                    <input
+                        type="file"
+                        id="productImage"
+                        accept="image/*"
+                    >
+
+
+                    <small id="imageHelp">
+
+                        When editing, leave this empty
+                        to keep the current image.
+
+                    </small>
+
+
+                </div>
+
+
+
+
+
+                <!-- =================================
+                     IMAGE PREVIEW
+                ================================== -->
+
+                <div
+                    id="imagePreview"
+                    class="image-preview"
+                ></div>
+
+
+
+
+
+                <!-- =================================
+                     AVAILABILITY
+                ================================== -->
+
+                <label class="checkbox-label">
+
+
+                    <input
+                        type="checkbox"
+                        id="productAvailable"
+                        checked
+                    >
+
+
+                    <span>
+                        Product is available
+                    </span>
+
+
+                </label>
+
+
+
+
+
+                <!-- =================================
+                     FORM BUTTONS
+                ================================== -->
+
+                <div class="form-actions">
+
+
+                    <!-- ADD / UPDATE BUTTON -->
+
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                        id="submitProductBtn"
+                    >
+
+                        Add Product
+
+                    </button>
+
+
+
+                    <!-- CANCEL EDIT -->
+
+                    <button
+                        type="button"
+                        class="cancel-btn hidden"
+                        id="cancelEditBtn"
+                    >
+
+                        Cancel Edit
+
+                    </button>
+
+
+                </div>
+
+
+
+
+
+                <!-- =================================
+                     PRODUCT MESSAGE
+                ================================== -->
+
+                <p
+                    id="productMessage"
+                    class="message"
+                ></p>
+
+
+            </form>
+
+
+        </section>
+
+
+
+
+
+
+
+        <!-- =====================================
+             PRODUCT LIST
+        ====================================== -->
+
+        <section class="admin-card">
+
+
+            <!-- PRODUCTS HEADER -->
+
+            <div class="products-header">
+
+
+                <div>
+
+
+                    <h2>
+                        Products
+                    </h2>
+
+
+                    <p>
+                        Manage products currently
+                        in your store.
+                    </p>
+
+
+                </div>
+
+
+
+
+                <!-- REFRESH BUTTON -->
+
+                <button
+                    id="refreshBtn"
+                    class="refresh-btn"
+                    type="button"
+                >
+
+                    ↻ Refresh
+
+                </button>
+
+
+            </div>
+
+
+
+
+
+            <!-- =================================
+                 PRODUCTS WILL LOAD HERE
+            ================================== -->
+
+            <div id="productsList">
+
+
+                <p class="loading">
+
+                    Loading products...
+
+                </p>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</section>
+
+
+
+
+
+<!-- =========================================
+     SUPABASE JAVASCRIPT
+========================================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+
+
+
+
+<!-- =========================================
+     ADMIN JAVASCRIPT
+========================================= -->
+
+<script
+    src="admin.js"
+></script>
+
+
+</body>
+
+</html>
         >
 
 

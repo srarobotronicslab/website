@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Shopping Cart - SRA Robotronics Lab
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="cart.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<header class="cart-header">
+
+    <a
+        href="index.html"
+        class="logo-link"
+    >
+
+        <img
+            src="logo.jpg"
+            alt="SRA Robotronics Lab"
+        >
+
+        <span>
+            SRA Robotronics Lab
+        </span>
+
+    </a>
+
+
+    <a
+        href="store.html"
+        class="continue-shopping"
+    >
+
+        ← Continue Shopping
+
+    </a>
+
+</header>
+
+
+
+<!-- =========================================
+     MAIN
+========================================= -->
+
+<main class="cart-container">
+
+
+    <div class="cart-title">
+
+        <h1>
+            Your Cart
+        </h1>
+
+        <p>
+            Review your products before checkout.
+        </p>
+
+    </div>
+
+
+
+    <!-- =====================================
+         LOADING
+    ====================================== -->
+
+    <div
+        id="loadingMessage"
+        class="message"
+    >
+
+        Loading your cart...
+
+    </div>
+
+
+
+    <!-- =====================================
+         LOGIN MESSAGE
+    ====================================== -->
+
+    <div
+        id="loginMessage"
+        class="message hidden"
+    >
+
+        <h2>
+            Please Log In
+        </h2>
+
+        <p>
+            You need to log in to view your cart.
+        </p>
+
+        <a
+            href="auth.html"
+            class="primary-btn"
+        >
+
+            Login / Register
+
+        </a>
+
+    </div>
+
+
+
+    <!-- =====================================
+         EMPTY CART
+    ====================================== -->
+
+    <div
+        id="emptyCart"
+        class="empty-cart hidden"
+    >
+
+        <div class="empty-icon">
+            🛒
+        </div>
+
+        <h2>
+            Your cart is empty
+        </h2>
+
+        <p>
+            Looks like you haven't added anything yet.
+        </p>
+
+        <a
+            href="store.html"
+            class="primary-btn"
+        >
+
+            Browse Products
+
+        </a>
+
+    </div>
+
+
+
+    <!-- =====================================
+         CART CONTENT
+    ====================================== -->
+
+    <div
+        id="cartContent"
+        class="cart-content hidden"
+    >
+
+
+        <!-- CART ITEMS -->
+
+        <section class="cart-items-section">
+
+            <h2>
+                Cart Items
+            </h2>
+
+
+            <div
+                id="cartItems"
+                class="cart-items"
+            ></div>
+
+        </section>
+
+
+
+        <!-- SUMMARY -->
+
+        <aside class="cart-summary">
+
+            <h2>
+                Order Summary
+            </h2>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Products
+                </span>
+
+                <strong
+                    id="productTotal"
+                >
+                    ৳0
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Delivery
+                </span>
+
+                <strong>
+                    Calculated at checkout
+                </strong>
+
+            </div>
+
+
+            <div class="summary-divider"></div>
+
+
+            <div class="summary-total">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong
+                    id="cartTotal"
+                >
+                    ৳0
+                </strong>
+
+            </div>
+
+
+            <button
+                id="checkoutBtn"
+                class="checkout-btn"
+            >
+
+                Proceed to Checkout →
+
+            </button>
+
+
+        </aside>
+
+
+    </div>
+
+
+</main>
+
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<footer>
+
+    <p>
+
+        ©
+        <span id="year"></span>
+        SRA Robotronics Lab.
+
+        Humans Innovate. Machines Repeat.
+
+    </p>
+
+</footer>
+
+
+
+<!-- =========================================
+     SUPABASE
+========================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<!-- =========================================
+     CART JAVASCRIPT
+========================================= -->
+
+<script src="cart.js"></script>
+
+
+</body>
+
+</html>

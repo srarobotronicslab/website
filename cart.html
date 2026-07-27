@@ -84,7 +84,9 @@
 <main class="cart-page">
 
 
-    <div class="page-header">
+    <!-- PAGE HEADER -->
+
+    <section class="page-header">
 
         <p class="section-label">
             YOUR CART
@@ -99,7 +101,7 @@
             to checkout.
         </p>
 
-    </div>
+    </section>
 
 
 
@@ -145,20 +147,29 @@
     <section
         id="cartContent"
         class="cart-layout"
-        style="display:none;"
     >
 
 
-        <!-- CART ITEMS -->
+        <!-- =================================
+             CART ITEMS
+        ================================== -->
 
         <div class="cart-card">
 
 
             <div class="cart-card-header">
 
-                <h2>
-                    Cart Items
-                </h2>
+                <div>
+
+                    <h2>
+                        Cart Items
+                    </h2>
+
+                    <p id="cartItemCount">
+                        0 items
+                    </p>
+
+                </div>
 
 
                 <button
@@ -174,6 +185,9 @@
             </div>
 
 
+
+            <!-- ITEMS WILL BE INSERTED HERE -->
+
             <div
                 id="cartItems"
                 class="cart-items"
@@ -184,7 +198,9 @@
 
 
 
-        <!-- CART SUMMARY -->
+        <!-- =================================
+             ORDER SUMMARY
+        ================================== -->
 
         <aside class="cart-summary">
 
@@ -213,7 +229,7 @@
                     Delivery
                 </span>
 
-                <strong>
+                <strong id="deliveryFee">
                     ৳100
                 </strong>
 
@@ -236,12 +252,27 @@
             </div>
 
 
-            <p class="delivery-note">
+            <div class="delivery-note">
 
-                ৳100 delivery charge is payable
-                in advance.
+                <strong>
+                    Delivery Information
+                </strong>
 
-            </p>
+                <p>
+
+                    A ৳100 delivery charge must
+                    be paid in advance.
+
+                </p>
+
+                <p>
+
+                    The remaining product amount
+                    can be paid using Cash on Delivery.
+
+                </p>
+
+            </div>
 
 
             <button
@@ -250,7 +281,11 @@
                 type="button"
             >
 
-                Proceed to Checkout →
+                Proceed to Checkout
+
+                <span>
+                    →
+                </span>
 
             </button>
 
@@ -271,26 +306,29 @@
 
 <footer class="footer">
 
-    <p>
+
+    <div>
 
         ©
         <span id="year"></span>
         SRA Robotronics Lab
 
-    </p>
+    </div>
 
-    <p>
+
+    <div>
 
         Humans Innovate, Machines Repeat
 
-    </p>
+    </div>
+
 
 </footer>
 
 
 
 <!-- =========================================
-     CART JS
+     JAVASCRIPT
 ========================================= -->
 
 <script src="cart.js"></script>

@@ -3,12 +3,13 @@
 // ========================================
 
 const SUPABASE_URL =
-    "https://xzhpbisrzhgbeiptdkfd.supabase.co/";
+    "https://xzhpbisrzhgbeiptdkfd.supabase.co";
 
 const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6aHBiaXNyemhnYmVpcHRka2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NzE1NDcsImV4cCI6MjEwMDU0NzU0N30.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm9xemhnYmVpcHRka2ZkIiwicm9sIjoiYW5vbiIsImlhdCI6MTc4NDk3MTU0NywiZXhwIjoyMTAwNTQ3NTQ3fQ.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
 
 
+// Create Supabase client
 const supabaseClient =
     supabase.createClient(
         SUPABASE_URL,
@@ -51,7 +52,7 @@ try {
 } catch (error) {
 
     console.error(
-        "Cart loading error:",
+        "Error loading cart:",
         error
     );
 
@@ -206,7 +207,10 @@ function calculateSubtotal() {
 
             return (
                 total +
-                price * quantity
+                (
+                    price *
+                    quantity
+                )
             );
 
         },
@@ -219,10 +223,39 @@ function calculateSubtotal() {
 
 
 // ========================================
+// CALCULATE TOTAL
+// ========================================
+
+function calculateTotal() {
+
+    const subtotal =
+        calculateSubtotal();
+
+
+    const deliveryFee =
+        getDeliveryFee();
+
+
+    return (
+        subtotal +
+        deliveryFee
+    );
+
+}
+
+
+// ========================================
 // UPDATE PAYMENT INSTRUCTIONS
 // ========================================
 
 function updatePaymentInstructions() {
+
+    if (!paymentInstructions) {
+
+        return;
+
+    }
+
 
     const method =
         getPaymentMethod();
@@ -251,34 +284,46 @@ function updatePaymentInstructions() {
 
         paymentInstructions.innerHTML = `
 
-            <strong>
-                Cash on Delivery
-            </strong>
+            <div class="payment-instruction-content">
 
-            <br><br>
+                <h3>
+                    Cash on Delivery
+                </h3>
 
-            Please pay the delivery charge
-            of
+                <p>
+                    Pay only the delivery charge
+                    in advance.
+                </p>
 
-            <strong>
-                ৳${deliveryFee}
-            </strong>
+                <div class="payment-amount">
 
-            in advance to:
+                    Delivery Charge:
+                    <strong>
+                        ৳${deliveryFee}
+                    </strong>
 
-            <br><br>
+                </div>
 
-            <strong>
-                bKash / Payment:
-                ${BKASH_NUMBER}
-            </strong>
+                <p>
+                    Send the delivery charge to:
+                </p>
 
-            <br><br>
+                <div class="payment-number">
 
-            After sending the money,
-            enter the last 2 digits of
-            the phone number used for
-            the payment below.
+                    bKash:
+                    <strong>
+                        ${BKASH_NUMBER}
+                    </strong>
+
+                </div>
+
+                <p>
+                    After completing the payment,
+                    enter the last 2 digits of your
+                    transaction ID below.
+                </p>
+
+            </div>
 
         `;
 
@@ -295,34 +340,45 @@ function updatePaymentInstructions() {
 
         paymentInstructions.innerHTML = `
 
-            <strong>
-                bKash Payment
-            </strong>
+            <div class="payment-instruction-content">
 
-            <br><br>
+                <h3>
+                    bKash Payment
+                </h3>
 
-            Please pay the full order amount
-            of
+                <p>
+                    Please pay the full order amount.
+                </p>
 
-            <strong>
-                ৳${total}
-            </strong>
+                <div class="payment-amount">
 
-            to:
+                    Total Amount:
+                    <strong>
+                        ৳${total}
+                    </strong>
 
-            <br><br>
+                </div>
 
-            <strong>
-                bKash / Payment:
-                ${BKASH_NUMBER}
-            </strong>
+                <p>
+                    Send the payment to:
+                </p>
 
-            <br><br>
+                <div class="payment-number">
 
-            After sending the money,
-            enter the last 2 digits of
-            the phone number used for
-            the payment below.
+                    bKash:
+                    <strong>
+                        ${BKASH_NUMBER}
+                    </strong>
+
+                </div>
+
+                <p>
+                    After completing the payment,
+                    enter the last 2 digits of your
+                    transaction ID below.
+                </p>
+
+            </div>
 
         `;
 
@@ -339,34 +395,45 @@ function updatePaymentInstructions() {
 
         paymentInstructions.innerHTML = `
 
-            <strong>
-                Nagad Payment
-            </strong>
+            <div class="payment-instruction-content">
 
-            <br><br>
+                <h3>
+                    Nagad Payment
+                </h3>
 
-            Please pay the full order amount
-            of
+                <p>
+                    Please pay the full order amount.
+                </p>
 
-            <strong>
-                ৳${total}
-            </strong>
+                <div class="payment-amount">
 
-            to:
+                    Total Amount:
+                    <strong>
+                        ৳${total}
+                    </strong>
 
-            <br><br>
+                </div>
 
-            <strong>
-                Nagad / Payment:
-                ${NOGOD_NUMBER}
-            </strong>
+                <p>
+                    Send the payment to:
+                </p>
 
-            <br><br>
+                <div class="payment-number">
 
-            After sending the money,
-            enter the last 2 digits of
-            the phone number used for
-            the payment below.
+                    Nagad:
+                    <strong>
+                        ${NOGOD_NUMBER}
+                    </strong>
+
+                </div>
+
+                <p>
+                    After completing the payment,
+                    enter the last 2 digits of your
+                    transaction ID below.
+                </p>
+
+            </div>
 
         `;
 
@@ -376,27 +443,93 @@ function updatePaymentInstructions() {
 
 
 // ========================================
-// RENDER CART
+// RENDER CHECKOUT CART
 // ========================================
 
 function renderCheckoutCart() {
+
+    // ====================================
+    // EMPTY CART
+    // ====================================
 
     if (
         cart.length === 0
     ) {
 
-        checkoutItems.innerHTML = `
+        if (checkoutItems) {
 
-            <p>
-                Your cart is empty.
-            </p>
+            checkoutItems.innerHTML = `
 
-        `;
+                <div class="empty-checkout">
 
-        placeOrderBtn.disabled =
-            true;
+                    <h3>
+                        Your cart is empty
+                    </h3>
+
+                    <p>
+                        Please add products before
+                        proceeding to checkout.
+                    </p>
+
+                    <a
+                        href="store.html"
+                        class="back-store-btn"
+                    >
+                        Browse Store
+                    </a>
+
+                </div>
+
+            `;
+
+        }
+
+
+        if (placeOrderBtn) {
+
+            placeOrderBtn.disabled =
+                true;
+
+        }
+
+
+        if (checkoutSubtotal) {
+
+            checkoutSubtotal.textContent =
+                "৳0";
+
+        }
+
+
+        if (checkoutDelivery) {
+
+            checkoutDelivery.textContent =
+                "৳0";
+
+        }
+
+
+        if (checkoutTotal) {
+
+            checkoutTotal.textContent =
+                "৳0";
+
+        }
+
 
         return;
+
+    }
+
+
+    // ====================================
+    // CART HAS ITEMS
+    // ====================================
+
+    if (placeOrderBtn) {
+
+        placeOrderBtn.disabled =
+            false;
 
     }
 
@@ -404,9 +537,17 @@ function renderCheckoutCart() {
     let subtotal = 0;
 
 
-    checkoutItems.innerHTML =
-        "";
+    if (checkoutItems) {
 
+        checkoutItems.innerHTML =
+            "";
+
+    }
+
+
+    // ====================================
+    // DISPLAY ITEMS
+    // ====================================
 
     cart.forEach(
 
@@ -433,6 +574,13 @@ function renderCheckoutCart() {
                 itemTotal;
 
 
+            if (!checkoutItems) {
+
+                return;
+
+            }
+
+
             const itemElement =
                 document.createElement(
                     "div"
@@ -445,37 +593,36 @@ function renderCheckoutCart() {
 
             itemElement.innerHTML = `
 
-                <div>
+                <div
+                    class="checkout-item-info"
+                >
 
-                    <div
-                        class="checkout-item-name"
-                    >
+                    <h3>
 
                         ${escapeHTML(
                             item.name
                         )}
 
-                    </div>
+                    </h3>
 
-                    <div
-                        class="checkout-item-quantity"
-                    >
+                    <p>
 
-                        Quantity:
+                        ৳${price}
+                        ×
                         ${quantity}
 
-                    </div>
+                    </p>
 
                 </div>
 
 
-                <div
+                <strong
                     class="checkout-item-price"
                 >
 
                     ৳${itemTotal}
 
-                </div>
+                </strong>
 
             `;
 
@@ -489,26 +636,54 @@ function renderCheckoutCart() {
     );
 
 
+    // ====================================
+    // DELIVERY
+    // ====================================
+
     const deliveryFee =
         getDeliveryFee();
 
+
+    // ====================================
+    // GRAND TOTAL
+    // ====================================
 
     const total =
         subtotal +
         deliveryFee;
 
 
-    checkoutSubtotal.textContent =
-        "৳" + subtotal;
+    // ====================================
+    // UPDATE SUMMARY
+    // ====================================
+
+    if (checkoutSubtotal) {
+
+        checkoutSubtotal.textContent =
+            "৳" + subtotal;
+
+    }
 
 
-    checkoutDelivery.textContent =
-        "৳" + deliveryFee;
+    if (checkoutDelivery) {
+
+        checkoutDelivery.textContent =
+            "৳" + deliveryFee;
+
+    }
 
 
-    checkoutTotal.textContent =
-        "৳" + total;
+    if (checkoutTotal) {
 
+        checkoutTotal.textContent =
+            "৳" + total;
+
+    }
+
+
+    // ====================================
+    // PAYMENT INSTRUCTIONS
+    // ====================================
 
     updatePaymentInstructions();
 
@@ -516,7 +691,7 @@ function renderCheckoutCart() {
 
 
 // ========================================
-// LOCATION CHANGE
+// DELIVERY LOCATION CHANGE
 // ========================================
 
 document
@@ -528,8 +703,15 @@ document
         radio => {
 
             radio.addEventListener(
+
                 "change",
-                renderCheckoutCart
+
+                () => {
+
+                    renderCheckoutCart();
+
+                }
+
             );
 
         }
@@ -538,7 +720,7 @@ document
 
 
 // ========================================
-// PAYMENT CHANGE
+// PAYMENT METHOD CHANGE
 // ========================================
 
 document
@@ -553,7 +735,11 @@ document
 
                 "change",
 
-                updatePaymentInstructions
+                () => {
+
+                    updatePaymentInstructions();
+
+                }
 
             );
 
@@ -566,346 +752,464 @@ document
 // SUBMIT ORDER
 // ========================================
 
-checkoutForm.addEventListener(
+if (checkoutForm) {
 
-    "submit",
+    checkoutForm.addEventListener(
 
-    async function(event) {
+        "submit",
 
-        event.preventDefault();
+        async function(event) {
 
-
-        if (
-            cart.length === 0
-        ) {
-
-            showMessage(
-
-                "Your cart is empty.",
-
-                "error"
-
-            );
-
-            return;
-
-        }
-
-
-        // =================================
-        // CUSTOMER INFORMATION
-        // =================================
-
-        const customerName =
-            document
-                .getElementById(
-                    "customerName"
-                )
-                .value
-                .trim();
-
-
-        const customerPhone =
-            document
-                .getElementById(
-                    "customerPhone"
-                )
-                .value
-                .trim();
-
-
-        const customerAddress =
-            document
-                .getElementById(
-                    "customerAddress"
-                )
-                .value
-                .trim();
-
-
-        const deliveryLocation =
-            getDeliveryLocation();
-
-
-        const paymentMethod =
-            getPaymentMethod();
-
-
-        const paymentLastTwoValue =
-            paymentLastTwo
-                .value
-                .trim();
-
-
-        // =================================
-        // VALIDATION
-        // =================================
-
-        if (
-            !/^[0-9]{11}$/.test(
-                customerPhone
-            )
-        ) {
-
-            showMessage(
-
-                "Please enter a valid 11-digit phone number.",
-
-                "error"
-
-            );
-
-            return;
-
-        }
-
-
-        if (
-            !/^[0-9]{2}$/.test(
-                paymentLastTwoValue
-            )
-        ) {
-
-            showMessage(
-
-                "Please enter exactly the last 2 digits of the payment phone number.",
-
-                "error"
-
-            );
-
-            return;
-
-        }
-
-
-        // =================================
-        // CALCULATE TOTAL
-        // =================================
-
-        const subtotal =
-            calculateSubtotal();
-
-
-        const deliveryFee =
-            getDeliveryFee();
-
-
-        const total =
-            subtotal +
-            deliveryFee;
-
-
-        // =================================
-        // DISABLE BUTTON
-        // =================================
-
-        placeOrderBtn.disabled =
-            true;
-
-
-        placeOrderBtn.textContent =
-            "Placing Order...";
-
-
-        clearMessage();
-
-
-        try {
+            event.preventDefault();
 
 
             // =================================
-            // CREATE ORDER
+            // CHECK CART
             // =================================
-
-            const {
-                data: order,
-                error: orderError
-            } =
-
-                await supabaseClient
-
-                    .from(
-                        "orders"
-                    )
-
-                    .insert({
-
-                        customer_name:
-                            customerName,
-
-                        customer_phone:
-                            customerPhone,
-
-                        address:
-                            customerAddress,
-
-                        delivery_location:
-                            deliveryLocation,
-
-                        payment_method:
-                            paymentMethod,
-
-                        payment_last_two:
-                            paymentLastTwoValue,
-
-                        subtotal:
-                            subtotal,
-
-                        delivery_fee:
-                            deliveryFee,
-
-                        total_amount: 
-                            total,
-
-                        payment_status:
-                            "pending",
-
-                        order_status:
-                            "pending"
-
-                    })
-
-                    .select()
-
-                    .single();
-
 
             if (
-                orderError
+                cart.length === 0
             ) {
 
-                throw orderError;
+                showMessage(
+
+                    "Your cart is empty.",
+
+                    "error"
+
+                );
+
+                return;
 
             }
 
 
             // =================================
-            // CREATE ORDER ITEMS
+            // CUSTOMER INFORMATION
             // =================================
 
-            const orderItems =
+            const customerName =
+                document
+                    .getElementById(
+                        "customerName"
+                    )
+                    ?.value
+                    .trim();
 
-                cart.map(
 
-                    item => ({
+            const customerPhone =
+                document
+                    .getElementById(
+                        "customerPhone"
+                    )
+                    ?.value
+                    .trim();
 
-                        order_id:
-                            order.id,
 
-                        product_id:
-                            item.id,
+            const customerAddress =
+                document
+                    .getElementById(
+                        "customerAddress"
+                    )
+                    ?.value
+                    .trim();
 
-                        product_name:
-                            item.name,
 
-                        price:
-                            Number(
-                                item.price
-                            ) || 0,
+            const deliveryLocation =
+                getDeliveryLocation();
 
-                        quantity:
-                            Number(
-                                item.quantity
-                            ) || 1
 
-                    })
+            const paymentMethod =
+                getPaymentMethod();
+
+
+            const paymentLastTwoValue =
+                paymentLastTwo
+                    ?.value
+                    .trim();
+
+
+            // =================================
+            // VALIDATION
+            // =================================
+
+            if (
+                !customerName
+            ) {
+
+                showMessage(
+
+                    "Please enter your name.",
+
+                    "error"
+
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !customerPhone
+            ) {
+
+                showMessage(
+
+                    "Please enter your phone number.",
+
+                    "error"
+
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !/^[0-9]{11}$/.test(
+                    customerPhone
+                )
+            ) {
+
+                showMessage(
+
+                    "Please enter a valid 11-digit Bangladeshi phone number.",
+
+                    "error"
+
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !customerAddress
+            ) {
+
+                showMessage(
+
+                    "Please enter your delivery address.",
+
+                    "error"
+
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !/^[0-9]{2}$/.test(
+                    paymentLastTwoValue || ""
+                )
+            ) {
+
+                showMessage(
+
+                    "Please enter exactly 2 digits of your transaction ID.",
+
+                    "error"
+
+                );
+
+                return;
+
+            }
+
+
+            // =================================
+            // CALCULATE ORDER
+            // =================================
+
+            const subtotal =
+                calculateSubtotal();
+
+
+            const deliveryFee =
+                getDeliveryFee();
+
+
+            const total =
+                subtotal +
+                deliveryFee;
+
+
+            // =================================
+            // DISABLE BUTTON
+            // =================================
+
+            if (placeOrderBtn) {
+
+                placeOrderBtn.disabled =
+                    true;
+
+                placeOrderBtn.textContent =
+                    "Placing Order...";
+
+            }
+
+
+            clearMessage();
+
+
+            try {
+
+                // =================================
+                // CREATE ORDER
+                // =================================
+
+                const orderData = {
+
+                    customer_name:
+                        customerName,
+
+                    customer_phone:
+                        customerPhone,
+
+                    address:
+                        customerAddress,
+
+                    delivery_location:
+                        deliveryLocation,
+
+                    payment_method:
+                        paymentMethod,
+
+                    payment_last_two:
+                        paymentLastTwoValue,
+
+                    subtotal:
+                        subtotal,
+
+                    delivery_fee:
+                        deliveryFee,
+
+                    total_amount:
+                        total,
+
+                    payment_status:
+                        "pending",
+
+                    order_status:
+                        "pending"
+
+                };
+
+
+                console.log(
+                    "Submitting order:",
+                    orderData
+                );
+
+
+                const {
+
+                    data: order,
+
+                    error: orderError
+
+                } =
+
+                    await supabaseClient
+
+                        .from(
+                            "orders"
+                        )
+
+                        .insert(
+                            [orderData]
+                        )
+
+                        .select()
+
+                        .single();
+
+
+                if (
+                    orderError
+                ) {
+
+                    console.error(
+                        "Order insert error:",
+                        orderError
+                    );
+
+                    throw new Error(
+                        orderError.message
+                    );
+
+                }
+
+
+                if (
+                    !order ||
+                    !order.id
+                ) {
+
+                    throw new Error(
+                        "Order was created but no order ID was returned."
+                    );
+
+                }
+
+
+                // =================================
+                // CREATE ORDER ITEMS
+                // =================================
+
+                const orderItems =
+
+                    cart.map(
+
+                        item => ({
+
+                            order_id:
+                                order.id,
+
+                            product_id:
+                                item.id,
+
+                            product_name:
+                                item.name,
+
+                            price:
+                                Number(
+                                    item.price
+                                ) || 0,
+
+                            quantity:
+                                Number(
+                                    item.quantity
+                                ) || 1
+
+                        })
+
+                    );
+
+
+                const {
+
+                    error: itemsError
+
+                } =
+
+                    await supabaseClient
+
+                        .from(
+                            "order_items"
+                        )
+
+                        .insert(
+                            orderItems
+                        );
+
+
+                if (
+                    itemsError
+                ) {
+
+                    console.error(
+                        "Order items error:",
+                        itemsError
+                    );
+
+                    throw new Error(
+                        itemsError.message
+                    );
+
+                }
+
+
+                // =================================
+                // SUCCESS
+                // =================================
+
+                localStorage.removeItem(
+                    "cart"
+                );
+
+
+                cart = [];
+
+
+                showMessage(
+
+                    "Order placed successfully! Order ID: #" +
+                    order.id,
+
+                    "success"
 
                 );
 
 
-            const {
-                error: itemsError
-            } =
+                if (placeOrderBtn) {
 
-                await supabaseClient
+                    placeOrderBtn.textContent =
+                        "Order Placed ✓";
 
-                    .from(
-                        "order_items"
-                    )
-
-                    .insert(
-                        orderItems
-                    );
+                }
 
 
-            if (
-                itemsError
-            ) {
+                // =================================
+                // REDIRECT
+                // =================================
 
-                throw itemsError;
+                setTimeout(
+
+                    () => {
+
+                        window.location.href =
+                            "store.html";
+
+                    },
+
+                    3000
+
+                );
 
             }
 
 
-            // =================================
-            // SUCCESS
-            // =================================
+            catch (error) {
 
-            localStorage.removeItem(
-                "cart"
-            );
-
-
-            showMessage(
-
-                "Order placed successfully! Your order ID is #" +
-                order.id,
-
-                "success"
-
-            );
+                console.error(
+                    "Complete order error:",
+                    error
+                );
 
 
-            checkoutForm.reset();
+                showMessage(
+
+                    "Failed to place order: " +
+                    error.message,
+
+                    "error"
+
+                );
 
 
-            setTimeout(
+                if (placeOrderBtn) {
 
-                () => {
+                    placeOrderBtn.disabled =
+                        false;
 
-                    window.location.href =
-                        "store.html";
+                    placeOrderBtn.textContent =
+                        "Place Order";
 
-                },
+                }
 
-                3000
-
-            );
-
+            }
 
         }
 
-        catch (error) {
+    );
 
-            console.error(
-                "Order error:",
-                error
-            );
-
-
-            showMessage(
-
-                "Failed to place order: " +
-                error.message,
-
-                "error"
-
-            );
-
-
-            placeOrderBtn.disabled =
-                false;
-
-
-            placeOrderBtn.textContent =
-                "Place Order";
-
-        }
-
-    }
-
-);
+}
 
 
 // ========================================
@@ -916,6 +1220,17 @@ function showMessage(
     message,
     type
 ) {
+
+    if (!checkoutMessage) {
+
+        alert(
+            message
+        );
+
+        return;
+
+    }
+
 
     checkoutMessage.textContent =
         message;
@@ -935,6 +1250,13 @@ function showMessage(
 
 function clearMessage() {
 
+    if (!checkoutMessage) {
+
+        return;
+
+    }
+
+
     checkoutMessage.textContent =
         "";
 
@@ -952,6 +1274,16 @@ function escapeHTML(
     value
 ) {
 
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
     const div =
         document.createElement(
             "div"
@@ -960,7 +1292,7 @@ function escapeHTML(
 
     div.textContent =
         String(
-            value || ""
+            value
         );
 
 
@@ -973,9 +1305,7 @@ function escapeHTML(
 // YEAR
 // ========================================
 
-if (
-    yearElement
-) {
+if (yearElement) {
 
     yearElement.textContent =
 
@@ -986,7 +1316,7 @@ if (
 
 
 // ========================================
-// START
+// INITIALIZE
 // ========================================
 
 renderCheckoutCart();

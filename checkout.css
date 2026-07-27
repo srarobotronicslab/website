@@ -1,0 +1,779 @@
+/* =========================================
+   RESET
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+
+    font-family: "Inter", Arial, sans-serif;
+
+    background: #f5f5f2;
+    color: #222;
+
+    line-height: 1.6;
+
+    overflow-x: hidden;
+}
+
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header {
+    width: 100%;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e5e5e2;
+}
+
+.nav-container {
+
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 1rem 4%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 2%;
+}
+
+.brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.7rem;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+    min-width: 0;
+}
+
+.brand img {
+
+    width: 3rem;
+    height: 3rem;
+
+    object-fit: cover;
+
+    border-radius: 0.7rem;
+
+    flex-shrink: 0;
+}
+
+.brand span {
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.back-cart {
+
+    padding: 0.7rem 1rem;
+
+    border: 1px solid #d9d9d5;
+
+    border-radius: 0.7rem;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+    color: #36454f;
+
+    white-space: nowrap;
+
+    transition: 0.2s ease;
+}
+
+.back-cart:hover {
+
+    background: #36454f;
+
+    color: white;
+}
+
+
+/* =========================================
+   MAIN
+========================================= */
+
+.checkout-page {
+
+    width: 100%;
+
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 4rem 4%;
+}
+
+
+/* =========================================
+   PAGE HEADER
+========================================= */
+
+.page-header {
+
+    text-align: center;
+
+    margin-bottom: 3rem;
+}
+
+.section-label {
+
+    font-size: 0.75rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.15rem;
+
+    color: #68747b;
+
+    margin-bottom: 0.7rem;
+}
+
+.page-header h1 {
+
+    font-size: clamp(
+        2rem,
+        5vw,
+        3rem
+    );
+
+    line-height: 1.2;
+
+    margin-bottom: 0.8rem;
+}
+
+.page-header p:last-child {
+
+    color: #777;
+}
+
+
+/* =========================================
+   CHECKOUT LAYOUT
+========================================= */
+
+.checkout-layout {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.6fr)
+        minmax(280px, 0.9fr);
+
+    gap: 3%;
+
+    align-items: start;
+}
+
+
+/* =========================================
+   CARDS
+========================================= */
+
+.checkout-card,
+.order-summary {
+
+    width: 100%;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e5e2;
+
+    border-radius: 1.2rem;
+
+    padding: clamp(
+        1.3rem,
+        3vw,
+        2.2rem
+    );
+
+    box-shadow:
+        0 0.6rem 2rem
+        rgba(0, 0, 0, 0.05);
+
+    min-width: 0;
+}
+
+.checkout-card h2,
+.order-summary h2 {
+
+    font-size: 1.4rem;
+
+    margin-bottom: 2rem;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.form-group {
+
+    width: 100%;
+
+    margin-bottom: 1.4rem;
+}
+
+.form-group label {
+
+    display: block;
+
+    font-weight: 600;
+
+    margin-bottom: 0.5rem;
+
+    font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group textarea {
+
+    width: 100%;
+
+    padding: 0.85rem 1rem;
+
+    border: 1px solid #d8d8d5;
+
+    border-radius: 0.7rem;
+
+    background: #ffffff;
+
+    outline: none;
+
+    font-size: 0.95rem;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.form-group textarea {
+
+    resize: vertical;
+
+    min-height: 6rem;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+
+    border-color: #36454f;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(54, 69, 79, 0.1);
+}
+
+
+/* =========================================
+   LOCATION
+========================================= */
+
+.location-options {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 1rem;
+}
+
+.radio-option {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.6rem;
+
+    padding: 0.9rem 1rem;
+
+    border: 1px solid #d8d8d5;
+
+    border-radius: 0.7rem;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.radio-option:hover {
+
+    border-color: #36454f;
+
+    background: #f7f8f7;
+}
+
+.radio-option input {
+
+    accent-color: #36454f;
+}
+
+
+/* =========================================
+   PAYMENT OPTIONS
+========================================= */
+
+.payment-options {
+
+    display: grid;
+
+    gap: 0.8rem;
+}
+
+.payment-option {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.8rem;
+
+    padding: 1rem;
+
+    border: 1px solid #d8d8d5;
+
+    border-radius: 0.8rem;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.payment-option:hover {
+
+    border-color: #36454f;
+
+    background: #f7f8f7;
+}
+
+.payment-option input {
+
+    accent-color: #36454f;
+
+    flex-shrink: 0;
+}
+
+.payment-option div {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.payment-option strong {
+
+    font-size: 0.95rem;
+}
+
+.payment-option small {
+
+    color: #777;
+
+    font-size: 0.8rem;
+}
+
+
+/* =========================================
+   PAYMENT INSTRUCTIONS
+========================================= */
+
+.payment-instructions {
+
+    width: 100%;
+
+    margin: 1.2rem 0;
+
+    padding: 1.2rem;
+
+    background: #f0f4f5;
+
+    border-left: 4px solid #36454f;
+
+    border-radius: 0.7rem;
+
+    color: #4e5b61;
+
+    font-size: 0.9rem;
+
+    line-height: 1.7;
+}
+
+.payment-instructions strong {
+
+    color: #222;
+
+    font-size: 1rem;
+}
+
+
+/* =========================================
+   INPUT HELP
+========================================= */
+
+.input-help {
+
+    display: block;
+
+    margin-top: 0.4rem;
+
+    color: #777;
+
+    font-size: 0.78rem;
+}
+
+
+/* =========================================
+   PLACE ORDER
+========================================= */
+
+.place-order-btn {
+
+    width: 100%;
+
+    margin-top: 1rem;
+
+    padding: 1rem;
+
+    border: none;
+
+    border-radius: 0.7rem;
+
+    background: #36454f;
+
+    color: white;
+
+    font-size: 1rem;
+
+    font-weight: 700;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.place-order-btn:hover {
+
+    background: #29363e;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 0.5rem 1.5rem
+        rgba(0, 0, 0, 0.15);
+}
+
+.place-order-btn:disabled {
+
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.checkout-message {
+
+    margin-top: 1rem;
+
+    padding: 0.8rem 1rem;
+
+    border-radius: 0.6rem;
+
+    font-size: 0.9rem;
+
+    display: none;
+}
+
+.checkout-message.success {
+
+    display: block;
+
+    background: #e8f6ed;
+
+    color: #216e3a;
+}
+
+.checkout-message.error {
+
+    display: block;
+
+    background: #fdecec;
+
+    color: #a12b2b;
+}
+
+
+/* =========================================
+   ORDER ITEMS
+========================================= */
+
+.checkout-items {
+
+    margin-bottom: 1.5rem;
+}
+
+.checkout-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 1rem;
+
+    padding: 0.8rem 0;
+
+    border-bottom: 1px solid #eeeeeb;
+}
+
+.checkout-item-name {
+
+    min-width: 0;
+
+    font-size: 0.9rem;
+
+    overflow-wrap: anywhere;
+}
+
+.checkout-item-quantity {
+
+    color: #777;
+
+    font-size: 0.8rem;
+}
+
+.checkout-item-price {
+
+    white-space: nowrap;
+
+    font-weight: 600;
+}
+
+
+/* =========================================
+   SUMMARY
+========================================= */
+
+.summary-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 1rem;
+
+    padding: 0.6rem 0;
+
+    color: #666;
+}
+
+.summary-row strong {
+
+    color: #222;
+
+    white-space: nowrap;
+}
+
+.summary-divider {
+
+    width: 100%;
+
+    height: 1px;
+
+    background: #e5e5e2;
+
+    margin: 1.2rem 0;
+}
+
+.summary-total {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 1rem;
+
+    font-size: 1.3rem;
+
+    font-weight: 800;
+}
+
+.summary-total strong {
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer {
+
+    width: 100%;
+
+    background: #36454f;
+
+    color: white;
+
+    padding: 2rem 5%;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 1rem;
+
+    flex-wrap: wrap;
+
+    font-size: 0.8rem;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 850px) {
+
+    .checkout-layout {
+
+        grid-template-columns: 1fr;
+
+        gap: 1.5rem;
+    }
+
+    .order-summary {
+
+        position: static;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .nav-container {
+
+        padding:
+            0.8rem 4%;
+    }
+
+    .brand span {
+
+        max-width: 48vw;
+
+        font-size: 0.85rem;
+    }
+
+    .brand img {
+
+        width: 2.6rem;
+
+        height: 2.6rem;
+    }
+
+    .back-cart {
+
+        padding:
+            0.6rem 0.7rem;
+
+        font-size: 0.78rem;
+    }
+
+    .checkout-page {
+
+        padding:
+            2.5rem 4%;
+    }
+
+    .page-header {
+
+        margin-bottom: 2rem;
+    }
+
+    .checkout-card,
+    .order-summary {
+
+        padding: 1.2rem;
+    }
+
+    .location-options {
+
+        grid-template-columns: 1fr;
+    }
+
+    .footer {
+
+        flex-direction: column;
+    }
+
+}

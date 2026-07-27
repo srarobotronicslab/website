@@ -260,7 +260,7 @@ if (checkoutForm) {
         clearMessage();
 
         try {
-            // 1. Build & Insert Main Order Row
+            // 1. Build & Insert Main Order Row safely
             const orderData = {
                 customer_name: customerName,
                 phone: customerPhone,
@@ -274,16 +274,28 @@ if (checkoutForm) {
                 order_status: "pending"
             };
 
-            const { data: order, error: orderError } = await supabaseClient
+            const { error: orderError } = await supabaseClient
                 .from("orders")
-                .insert(orderData)
-                .select()
-                .single();
+                .insert(orderData);
 
             if (orderError) throw new Error(orderError.message);
-            if (!order || !order.id) throw new Error("Order was created but no order ID was returned.");
 
-            // 2. Map & Safe-Guard Cart Items against NaN/Null fields
+            // 2. Fetch the newly generated Order ID securely
+            const { data: latestOrder, error: fetchError } = await supabaseClient
+                .from("orders")
+                .select("id")
+                .eq("phone", customerPhone)
+                .order("created_at", { ascending: false })
+                .limit(1)
+                .single();
+
+            if (fetchError || !latestOrder) {
+                throw new Error("Order was submitted, but matching verification failed. Please check with support.");
+            }
+
+            const activeOrderId = latestOrder.id;
+
+            // 3. Map & Safe-Guard Cart Items against NaN/Null fields
             const orderItems = cart.map(item => {
                 const price = Number(item.price);
                 const quantity = Number(item.quantity);
@@ -292,26 +304,26 @@ if (checkoutForm) {
                 const itemSubtotal = validPrice * validQuantity;
 
                 return {
-                    order_id: order.id,
+                    order_id: activeOrderId,
                     product_id: item.id || null, 
                     product_name: item.name || "Unknown Product",
                     product_price: validPrice,
                     quantity: validQuantity,
-                    subtotal: itemSubtotal // Guarantees a valid absolute number to satisfy NOT NULL constraints
+                    subtotal: itemSubtotal
                 };
             });
 
-            // 3. Insert Child Order Items
+            // 4. Insert Child Order Items
             const { error: itemsError } = await supabaseClient
                 .from("order_items")
                 .insert(orderItems);
 
             if (itemsError) throw new Error(itemsError.message);
 
-            // 4. Handle Cleanup & Redirect
+            // 5. Handle Cleanup & Redirect
             localStorage.removeItem("cart");
             cart = [];
-            showMessage("Order placed successfully! Order ID: #" + order.id, "success");
+            showMessage("Order placed successfully! Order ID: #" + activeOrderId, "success");
 
             if (placeOrderBtn) placeOrderBtn.textContent = "Order Placed ✓";
             setTimeout(() => { window.location.href = "store.html"; }, 3000);

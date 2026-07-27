@@ -5,21 +5,14 @@
 const SUPABASE_URL =
     "https://xzhpbisrzhgbeiptdkfd.supabase.co";
 
-
 const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6aHBiaXNyemhnYmVpcHRka2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NzE1NDcsImV4cCI6MjEwMDU0NzU0N30.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
-
+    "YOUR_ANON_KEY_HERE";
 
 const supabaseClient =
-
     supabase.createClient(
-
         SUPABASE_URL,
-
         SUPABASE_ANON_KEY
-
     );
-
 
 
 // ========================================
@@ -31,91 +24,54 @@ let orders = [];
 let selectedOrder = null;
 
 
-
 // ========================================
 // DOM ELEMENTS
 // ========================================
 
 const ordersTableBody =
-
     document.getElementById(
-
         "ordersTableBody"
-
     );
-
 
 const searchInput =
-
     document.getElementById(
-
         "searchInput"
-
     );
-
 
 const statusFilter =
-
     document.getElementById(
-
         "statusFilter"
-
     );
-
 
 const paymentFilter =
-
     document.getElementById(
-
         "paymentFilter"
-
     );
-
 
 const refreshBtn =
-
     document.getElementById(
-
         "refreshBtn"
-
     );
-
 
 const orderModal =
-
     document.getElementById(
-
         "orderModal"
-
     );
-
 
 const closeModalBtn =
-
     document.getElementById(
-
         "closeModalBtn"
-
     );
-
 
 const orderDetails =
-
     document.getElementById(
-
         "orderDetails"
-
     );
-
 
 const modalOrderId =
-
     document.getElementById(
-
         "modalOrderId"
-
     );
-
 
 
 // ========================================
@@ -129,11 +85,8 @@ async function loadOrders() {
         <tr>
 
             <td
-
                 colspan="8"
-
                 class="loading"
-
             >
 
                 Loading orders...
@@ -166,9 +119,7 @@ async function loadOrders() {
                     "created_at",
 
                     {
-
                         ascending: false
-
                     }
 
                 );
@@ -185,7 +136,6 @@ async function loadOrders() {
 
 
         updateStatistics();
-
 
         renderOrders();
 
@@ -208,19 +158,14 @@ async function loadOrders() {
             <tr>
 
                 <td
-
                     colspan="8"
-
                     class="loading"
-
                 >
 
                     Failed to load orders:
 
                     ${escapeHTML(
-
                         error.message
-
                     )}
 
                 </td>
@@ -234,7 +179,6 @@ async function loadOrders() {
 }
 
 
-
 // ========================================
 // STATISTICS
 // ========================================
@@ -242,7 +186,6 @@ async function loadOrders() {
 function updateStatistics() {
 
     const total =
-
         orders.length;
 
 
@@ -253,7 +196,6 @@ function updateStatistics() {
             order =>
 
                 order.order_status ===
-
                 "pending"
 
         ).length;
@@ -266,7 +208,6 @@ function updateStatistics() {
             order =>
 
                 order.order_status ===
-
                 "processing"
 
         ).length;
@@ -279,7 +220,6 @@ function updateStatistics() {
             order =>
 
                 order.order_status ===
-
                 "shipped"
 
         ).length;
@@ -292,7 +232,6 @@ function updateStatistics() {
             order =>
 
                 order.order_status ===
-
                 "delivered"
 
         ).length;
@@ -303,23 +242,16 @@ function updateStatistics() {
         orders.reduce(
 
             (
-
                 sum,
-
                 order
-
             ) =>
 
                 sum +
 
                 (
-
                     Number(
-
                         order.total_amount
-
                     ) || 0
-
                 ),
 
             0
@@ -328,44 +260,32 @@ function updateStatistics() {
 
 
     document.getElementById(
-
         "totalOrders"
-
     ).textContent = total;
 
 
     document.getElementById(
-
         "pendingOrders"
-
     ).textContent = pending;
 
 
     document.getElementById(
-
         "processingOrders"
-
     ).textContent = processing;
 
 
     document.getElementById(
-
         "shippedOrders"
-
     ).textContent = shipped;
 
 
     document.getElementById(
-
         "deliveredOrders"
-
     ).textContent = delivered;
 
 
     document.getElementById(
-
         "totalRevenue"
-
     ).textContent =
 
         "৳" +
@@ -373,7 +293,6 @@ function updateStatistics() {
         revenue.toLocaleString();
 
 }
-
 
 
 // ========================================
@@ -410,33 +329,21 @@ function getFilteredOrders() {
                 !search ||
 
                 String(
-
                     order.id
-
                 )
-
                     .toLowerCase()
-
                     .includes(search) ||
 
                 String(
-
                     order.customer_name
-
                 )
-
                     .toLowerCase()
-
                     .includes(search) ||
 
                 String(
-
                     order.phone
-
                 )
-
                     .toLowerCase()
-
                     .includes(search);
 
 
@@ -445,7 +352,6 @@ function getFilteredOrders() {
                 status === "all" ||
 
                 order.order_status ===
-
                 status;
 
 
@@ -454,7 +360,6 @@ function getFilteredOrders() {
                 payment === "all" ||
 
                 order.payment_status ===
-
                 payment;
 
 
@@ -475,7 +380,6 @@ function getFilteredOrders() {
 }
 
 
-
 // ========================================
 // RENDER ORDERS
 // ========================================
@@ -490,7 +394,6 @@ function renderOrders() {
     if (
 
         filteredOrders.length ===
-
         0
 
     ) {
@@ -500,11 +403,8 @@ function renderOrders() {
             <tr>
 
                 <td
-
                     colspan="8"
-
                     class="loading"
-
                 >
 
                     No orders found.
@@ -530,23 +430,16 @@ function renderOrders() {
 
                     const shortId =
 
-                        order.id
-
-                            .substring(
-
-                                0,
-
-                                8
-
-                            );
+                        order.id.substring(
+                            0,
+                            8
+                        );
 
 
                     const date =
 
                         new Date(
-
                             order.created_at
-
                         ).toLocaleString();
 
 
@@ -557,9 +450,7 @@ function renderOrders() {
                             <td>
 
                                 <span
-
                                     class="order-id"
-
                                 >
 
                                     #${shortId}
@@ -572,15 +463,11 @@ function renderOrders() {
                             <td>
 
                                 <span
-
                                     class="customer-name"
-
                                 >
 
                                     ${escapeHTML(
-
                                         order.customer_name
-
                                     )}
 
                                 </span>
@@ -591,9 +478,7 @@ function renderOrders() {
                             <td>
 
                                 ${escapeHTML(
-
                                     order.phone
-
                                 )}
 
                             </td>
@@ -604,9 +489,7 @@ function renderOrders() {
                                 <strong>
 
                                     ৳${Number(
-
                                         order.total_amount
-
                                     ).toLocaleString()}
 
                                 </strong>
@@ -617,19 +500,13 @@ function renderOrders() {
                             <td>
 
                                 <span
-
                                     class="badge ${getBadgeClass(
-
                                         order.payment_status
-
                                     )}"
-
                                 >
 
                                     ${escapeHTML(
-
                                         order.payment_status
-
                                     )}
 
                                 </span>
@@ -640,19 +517,13 @@ function renderOrders() {
                             <td>
 
                                 <span
-
                                     class="badge ${getBadgeClass(
-
                                         order.order_status
-
                                     )}"
-
                                 >
 
                                     ${escapeHTML(
-
                                         order.order_status
-
                                     )}
 
                                 </span>
@@ -663,9 +534,7 @@ function renderOrders() {
                             <td>
 
                                 <span
-
                                     class="date"
-
                                 >
 
                                     ${date}
@@ -681,11 +550,7 @@ function renderOrders() {
 
                                     class="view-btn"
 
-                                    onclick="openOrder('${
-
-                                        order.id
-
-                                    }')"
+                                    onclick="openOrder('${order.id}')"
 
                                 >
 
@@ -708,7 +573,6 @@ function renderOrders() {
 }
 
 
-
 // ========================================
 // OPEN ORDER
 // ========================================
@@ -722,7 +586,6 @@ async function openOrder(orderId) {
             order =>
 
                 order.id ===
-
                 orderId
 
         );
@@ -754,9 +617,7 @@ async function openOrder(orderId) {
 
 
     orderModal.classList.add(
-
         "show"
-
     );
 
 
@@ -773,19 +634,14 @@ async function openOrder(orderId) {
             await supabaseClient
 
                 .from(
-
                     "order_items"
-
                 )
 
                 .select("*")
 
                 .eq(
-
                     "order_id",
-
                     orderId
-
                 );
 
 
@@ -810,9 +666,7 @@ async function openOrder(orderId) {
     catch (error) {
 
         console.error(
-
             error
-
         );
 
 
@@ -823,9 +677,7 @@ async function openOrder(orderId) {
                 Failed to load order items:
 
                 ${escapeHTML(
-
                     error.message
-
                 )}
 
             </p>
@@ -835,7 +687,6 @@ async function openOrder(orderId) {
     }
 
 }
-
 
 
 // ========================================
@@ -859,23 +710,17 @@ function renderOrderDetails(
                 item => `
 
                     <div
-
                         class="item-row"
-
                     >
 
                         <div
-
                             class="item-info"
-
                         >
 
                             <strong>
 
                                 ${escapeHTML(
-
                                     item.product_name
-
                                 )}
 
                             </strong>
@@ -883,9 +728,7 @@ function renderOrderDetails(
                             <span>
 
                                 ৳${Number(
-
                                     item.product_price
-
                                 ).toLocaleString()}
 
                                 ×
@@ -898,15 +741,11 @@ function renderOrderDetails(
 
 
                         <div
-
                             class="item-price"
-
                         >
 
                             ৳${Number(
-
                                 item.subtotal
-
                             ).toLocaleString()}
 
                         </div>
@@ -922,46 +761,27 @@ function renderOrderDetails(
 
     orderDetails.innerHTML = `
 
-
         <!-- CUSTOMER -->
 
-        <div
-
-            class="detail-section"
-
-        >
+        <div class="detail-section">
 
             <h3>
-
                 Customer Information
-
             </h3>
 
 
-            <div
+            <div class="customer-grid">
 
-                class="customer-grid"
-
-            >
-
-                <div
-
-                    class="detail-item"
-
-                >
+                <div class="detail-item">
 
                     <span>
-
                         Name
-
                     </span>
 
                     <strong>
 
                         ${escapeHTML(
-
                             order.customer_name
-
                         )}
 
                     </strong>
@@ -969,24 +789,16 @@ function renderOrderDetails(
                 </div>
 
 
-                <div
-
-                    class="detail-item"
-
-                >
+                <div class="detail-item">
 
                     <span>
-
                         Phone
-
                     </span>
 
                     <strong>
 
                         ${escapeHTML(
-
                             order.phone
-
                         )}
 
                     </strong>
@@ -994,24 +806,16 @@ function renderOrderDetails(
                 </div>
 
 
-                <div
-
-                    class="detail-item"
-
-                >
+                <div class="detail-item">
 
                     <span>
-
                         Delivery Address
-
                     </span>
 
                     <strong>
 
                         ${escapeHTML(
-
                             order.delivery_address
-
                         )}
 
                     </strong>
@@ -1019,24 +823,16 @@ function renderOrderDetails(
                 </div>
 
 
-                <div
-
-                    class="detail-item"
-
-                >
+                <div class="detail-item">
 
                     <span>
-
                         Order Date
-
                     </span>
 
                     <strong>
 
                         ${new Date(
-
                             order.created_at
-
                         ).toLocaleString()}
 
                     </strong>
@@ -1048,19 +844,12 @@ function renderOrderDetails(
         </div>
 
 
-
         <!-- ITEMS -->
 
-        <div
-
-            class="detail-section"
-
-        >
+        <div class="detail-section">
 
             <h3>
-
                 Order Items
-
             </h3>
 
 
@@ -1073,24 +862,16 @@ function renderOrderDetails(
             }
 
 
-            <div
-
-                class="summary-row"
-
-            >
+            <div class="summary-row">
 
                 <span>
-
                     Subtotal
-
                 </span>
 
                 <strong>
 
                     ৳${Number(
-
                         order.subtotal
-
                     ).toLocaleString()}
 
                 </strong>
@@ -1098,24 +879,16 @@ function renderOrderDetails(
             </div>
 
 
-            <div
-
-                class="summary-row"
-
-            >
+            <div class="summary-row">
 
                 <span>
-
                     Delivery Fee
-
                 </span>
 
                 <strong>
 
                     ৳${Number(
-
                         order.delivery_fee
-
                     ).toLocaleString()}
 
                 </strong>
@@ -1123,24 +896,16 @@ function renderOrderDetails(
             </div>
 
 
-            <div
-
-                class="summary-row total"
-
-            >
+            <div class="summary-row total">
 
                 <span>
-
                     Total
-
                 </span>
 
                 <strong>
 
                     ৳${Number(
-
                         order.total_amount
-
                     ).toLocaleString()}
 
                 </strong>
@@ -1150,46 +915,27 @@ function renderOrderDetails(
         </div>
 
 
-
         <!-- PAYMENT -->
 
-        <div
-
-            class="detail-section"
-
-        >
+        <div class="detail-section">
 
             <h3>
-
                 Payment Information
-
             </h3>
 
 
-            <div
+            <div class="customer-grid">
 
-                class="customer-grid"
-
-            >
-
-                <div
-
-                    class="detail-item"
-
-                >
+                <div class="detail-item">
 
                     <span>
-
                         Payment Method
-
                     </span>
 
                     <strong>
 
                         ${escapeHTML(
-
                             order.payment_method
-
                         )}
 
                     </strong>
@@ -1197,16 +943,10 @@ function renderOrderDetails(
                 </div>
 
 
-                <div
-
-                    class="detail-item"
-
-                >
+                <div class="detail-item">
 
                     <span>
-
                         Transaction Last 2
-
                     </span>
 
                     <strong>
@@ -1224,24 +964,16 @@ function renderOrderDetails(
                 </div>
 
 
-                <div
-
-                    class="detail-item"
-
-                >
+                <div class="detail-item">
 
                     <span>
-
                         Payment Status
-
                     </span>
 
                     <strong>
 
                         ${escapeHTML(
-
                             order.payment_status
-
                         )}
 
                     </strong>
@@ -1253,47 +985,26 @@ function renderOrderDetails(
         </div>
 
 
+        <!-- STATUS -->
 
-        <!-- STATUS CONTROLS -->
-
-        <div
-
-            class="detail-section"
-
-        >
+        <div class="detail-section">
 
             <h3>
-
                 Update Order
-
             </h3>
 
 
-            <div
-
-                class="status-controls"
-
-            >
+            <div class="status-controls">
 
 
-                <div
-
-                    class="status-control"
-
-                >
+                <div class="status-control">
 
                     <label>
-
                         Order Status
-
                     </label>
 
 
-                    <select
-
-                        id="modalOrderStatus"
-
-                    >
+                    <select id="modalOrderStatus">
 
                         ${createStatusOptions(
 
@@ -1322,25 +1033,14 @@ function renderOrderDetails(
                 </div>
 
 
-
-                <div
-
-                    class="status-control"
-
-                >
+                <div class="status-control">
 
                     <label>
-
                         Payment Status
-
                     </label>
 
 
-                    <select
-
-                        id="modalPaymentStatus"
-
-                    >
+                    <select id="modalPaymentStatus">
 
                         ${createStatusOptions(
 
@@ -1385,10 +1085,43 @@ function renderOrderDetails(
 
         </div>
 
+
+        <!-- DELETE ORDER -->
+
+        <div class="detail-section delete-section">
+
+            <h3>
+                Danger Zone
+            </h3>
+
+
+            <p>
+
+                Permanently delete this order
+                and all associated order items.
+
+                This action cannot be undone.
+
+            </p>
+
+
+            <button
+
+                class="delete-order-btn"
+
+                onclick="deleteOrder('${order.id}')"
+
+            >
+
+                Delete Order
+
+            </button>
+
+        </div>
+
     `;
 
 }
-
 
 
 // ========================================
@@ -1444,9 +1177,8 @@ function createStatusOptions(
 }
 
 
-
 // ========================================
-// UPDATE ORDER
+// UPDATE ORDER STATUS
 // ========================================
 
 async function updateOrderStatus() {
@@ -1461,18 +1193,14 @@ async function updateOrderStatus() {
     const newOrderStatus =
 
         document.getElementById(
-
             "modalOrderStatus"
-
         ).value;
 
 
     const newPaymentStatus =
 
         document.getElementById(
-
             "modalPaymentStatus"
-
         ).value;
 
 
@@ -1486,20 +1214,14 @@ async function updateOrderStatus() {
 
             await supabaseClient
 
-                .from(
-
-                    "orders"
-
-                )
+                .from("orders")
 
                 .update({
 
                     order_status:
-
                         newOrderStatus,
 
                     payment_status:
-
                         newPaymentStatus
 
                 })
@@ -1541,7 +1263,6 @@ async function updateOrderStatus() {
 
         updateStatistics();
 
-
         renderOrders();
 
         closeModal();
@@ -1575,6 +1296,248 @@ async function updateOrderStatus() {
 }
 
 
+// ========================================
+// DELETE ORDER
+// ========================================
+
+async function deleteOrder(orderId) {
+
+    if (!orderId) {
+
+        return;
+
+    }
+
+
+    const order =
+
+        orders.find(
+
+            item =>
+
+                item.id ===
+                orderId
+
+        );
+
+
+    if (!order) {
+
+        showMessage(
+
+            "Order not found.",
+
+            "error"
+
+        );
+
+        return;
+
+    }
+
+
+    const shortId =
+
+        orderId.substring(
+            0,
+            8
+        );
+
+
+    // ====================================
+    // CONFIRMATION
+    // ====================================
+
+    const confirmed =
+
+        confirm(
+
+            "Are you sure you want to permanently delete Order #" +
+
+            shortId +
+
+            "?\n\n" +
+
+            "Customer: " +
+
+            order.customer_name +
+
+            "\n" +
+
+            "Total: ৳" +
+
+            Number(
+                order.total_amount
+            ).toLocaleString() +
+
+            "\n\n" +
+
+            "This will also delete all order items.\n" +
+
+            "This action cannot be undone."
+
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    try {
+
+        // =================================
+        // DELETE ORDER ITEMS FIRST
+        // =================================
+
+        const {
+
+            error: itemsError
+
+        } =
+
+            await supabaseClient
+
+                .from(
+                    "order_items"
+                )
+
+                .delete()
+
+                .eq(
+
+                    "order_id",
+
+                    orderId
+
+                );
+
+
+        if (itemsError) {
+
+            throw new Error(
+
+                "Failed to delete order items: " +
+
+                itemsError.message
+
+            );
+
+        }
+
+
+        // =================================
+        // DELETE MAIN ORDER
+        // =================================
+
+        const {
+
+            error: orderError
+
+        } =
+
+            await supabaseClient
+
+                .from(
+                    "orders"
+                )
+
+                .delete()
+
+                .eq(
+
+                    "id",
+
+                    orderId
+
+                );
+
+
+        if (orderError) {
+
+            throw new Error(
+
+                "Failed to delete order: " +
+
+                orderError.message
+
+            );
+
+        }
+
+
+        // =================================
+        // REMOVE FROM LOCAL ARRAY
+        // =================================
+
+        orders =
+
+            orders.filter(
+
+                order =>
+
+                    order.id !==
+                    orderId
+
+            );
+
+
+        selectedOrder = null;
+
+
+        // =================================
+        // UPDATE UI
+        // =================================
+
+        updateStatistics();
+
+        renderOrders();
+
+        closeModal();
+
+
+        showMessage(
+
+            "Order #" +
+
+            shortId +
+
+            " deleted successfully.",
+
+            "success"
+
+        );
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+
+            "Delete order error:",
+
+            error
+
+        );
+
+
+        showMessage(
+
+            "Failed to delete order: " +
+
+            error.message,
+
+            "error"
+
+        );
+
+    }
+
+}
+
 
 // ========================================
 // CLOSE MODAL
@@ -1583,9 +1546,7 @@ async function updateOrderStatus() {
 function closeModal() {
 
     orderModal.classList.remove(
-
         "show"
-
     );
 
     selectedOrder = null;
@@ -1611,7 +1572,6 @@ orderModal.addEventListener(
         if (
 
             event.target ===
-
             orderModal
 
         ) {
@@ -1623,7 +1583,6 @@ orderModal.addEventListener(
     }
 
 );
-
 
 
 // ========================================
@@ -1664,7 +1623,6 @@ refreshBtn.addEventListener(
     loadOrders
 
 );
-
 
 
 // ========================================
@@ -1710,7 +1668,6 @@ function showMessage(
 
     }
 
-
     else {
 
         element.style.background =
@@ -1725,9 +1682,7 @@ function showMessage(
         () => {
 
             element.classList.remove(
-
                 "show"
-
             );
 
         },
@@ -1737,7 +1692,6 @@ function showMessage(
     );
 
 }
-
 
 
 // ========================================
@@ -1766,9 +1720,7 @@ function escapeHTML(
     const div =
 
         document.createElement(
-
             "div"
-
         );
 
 
@@ -1780,7 +1732,6 @@ function escapeHTML(
     return div.innerHTML;
 
 }
-
 
 
 // ========================================
@@ -1810,7 +1761,6 @@ function getBadgeClass(
         );
 
 }
-
 
 
 // ========================================

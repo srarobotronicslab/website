@@ -6,10 +6,13 @@ const SUPABASE_URL =
     "https://xzhpbisrzhgbeiptdkfd.supabase.co";
 
 const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6aHBiaXNyemhnYmVpcHRka2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NzE1NDcsImV4cCI6MjEwMDU0NzU0N30.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoieHpoYmNpc3J6aGdiZWlwdGRrZmQiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4NDk3MTU0NywiZXhwIjoxNzgwNTQ3NTQ3fQ.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
 
 
-// Create Supabase client
+// ========================================
+// CREATE SUPABASE CLIENT
+// ========================================
+
 const supabaseClient =
     supabase.createClient(
         SUPABASE_URL,
@@ -170,14 +173,19 @@ function getDatabasePaymentMethod() {
         getPaymentMethod();
 
 
-    if (method === "bkash") {
+    if (
+        method === "bkash"
+    ) {
 
         return "bKash";
 
     }
 
 
-    if (method === "nogod") {
+    if (
+        method === "nogod" ||
+        method === "nagad"
+    ) {
 
         return "Nagad";
 
@@ -221,7 +229,10 @@ function calculateSubtotal() {
 
     return cart.reduce(
 
-        (total, item) => {
+        (
+            total,
+            item
+        ) => {
 
             const price =
                 Number(
@@ -236,11 +247,14 @@ function calculateSubtotal() {
 
 
             return (
+
                 total +
+
                 (
                     price *
                     quantity
                 )
+
             );
 
         },
@@ -258,11 +272,19 @@ function calculateSubtotal() {
 
 function calculateTotal() {
 
+    const subtotal =
+        calculateSubtotal();
+
+
+    const deliveryFee =
+        getDeliveryFee();
+
+
     return (
 
-        calculateSubtotal() +
+        subtotal +
 
-        getDeliveryFee()
+        deliveryFee
 
     );
 
@@ -275,7 +297,9 @@ function calculateTotal() {
 
 function updatePaymentInstructions() {
 
-    if (!paymentInstructions) {
+    if (
+        !paymentInstructions
+    ) {
 
         return;
 
@@ -300,7 +324,7 @@ function updatePaymentInstructions() {
 
 
     // ====================================
-    // COD
+    // CASH ON DELIVERY
     // ====================================
 
     if (
@@ -415,7 +439,8 @@ function updatePaymentInstructions() {
     // ====================================
 
     else if (
-        method === "nogod"
+        method === "nogod" ||
+        method === "nagad"
     ) {
 
         paymentInstructions.innerHTML = `
@@ -481,7 +506,9 @@ function renderCheckoutCart() {
         cart.length === 0
     ) {
 
-        if (checkoutItems) {
+        if (
+            checkoutItems
+        ) {
 
             checkoutItems.innerHTML = `
 
@@ -510,7 +537,9 @@ function renderCheckoutCart() {
         }
 
 
-        if (placeOrderBtn) {
+        if (
+            placeOrderBtn
+        ) {
 
             placeOrderBtn.disabled =
                 true;
@@ -518,7 +547,9 @@ function renderCheckoutCart() {
         }
 
 
-        if (checkoutSubtotal) {
+        if (
+            checkoutSubtotal
+        ) {
 
             checkoutSubtotal.textContent =
                 "৳0";
@@ -526,7 +557,9 @@ function renderCheckoutCart() {
         }
 
 
-        if (checkoutDelivery) {
+        if (
+            checkoutDelivery
+        ) {
 
             checkoutDelivery.textContent =
                 "৳0";
@@ -534,7 +567,9 @@ function renderCheckoutCart() {
         }
 
 
-        if (checkoutTotal) {
+        if (
+            checkoutTotal
+        ) {
 
             checkoutTotal.textContent =
                 "৳0";
@@ -547,7 +582,13 @@ function renderCheckoutCart() {
     }
 
 
-    if (placeOrderBtn) {
+    // ====================================
+    // ENABLE PLACE ORDER BUTTON
+    // ====================================
+
+    if (
+        placeOrderBtn
+    ) {
 
         placeOrderBtn.disabled =
             false;
@@ -558,7 +599,9 @@ function renderCheckoutCart() {
     let subtotal = 0;
 
 
-    if (checkoutItems) {
+    if (
+        checkoutItems
+    ) {
 
         checkoutItems.innerHTML =
             "";
@@ -595,7 +638,9 @@ function renderCheckoutCart() {
                 itemTotal;
 
 
-            if (!checkoutItems) {
+            if (
+                !checkoutItems
+            ) {
 
                 return;
 
@@ -658,12 +703,16 @@ function renderCheckoutCart() {
 
 
     // ====================================
-    // CALCULATE DELIVERY
+    // DELIVERY FEE
     // ====================================
 
     const deliveryFee =
         getDeliveryFee();
 
+
+    // ====================================
+    // GRAND TOTAL
+    // ====================================
 
     const total =
         subtotal +
@@ -674,7 +723,9 @@ function renderCheckoutCart() {
     // UPDATE SUMMARY
     // ====================================
 
-    if (checkoutSubtotal) {
+    if (
+        checkoutSubtotal
+    ) {
 
         checkoutSubtotal.textContent =
             "৳" + subtotal;
@@ -682,7 +733,9 @@ function renderCheckoutCart() {
     }
 
 
-    if (checkoutDelivery) {
+    if (
+        checkoutDelivery
+    ) {
 
         checkoutDelivery.textContent =
             "৳" + deliveryFee;
@@ -690,13 +743,19 @@ function renderCheckoutCart() {
     }
 
 
-    if (checkoutTotal) {
+    if (
+        checkoutTotal
+    ) {
 
         checkoutTotal.textContent =
             "৳" + total;
 
     }
 
+
+    // ====================================
+    // UPDATE PAYMENT INSTRUCTIONS
+    // ====================================
 
     updatePaymentInstructions();
 
@@ -757,7 +816,9 @@ document
 // SUBMIT ORDER
 // ========================================
 
-if (checkoutForm) {
+if (
+    checkoutForm
+) {
 
     checkoutForm.addEventListener(
 
@@ -842,11 +903,16 @@ if (checkoutForm) {
             // VALIDATION
             // =================================
 
-            if (!customerName) {
+            if (
+                !customerName
+            ) {
 
                 showMessage(
+
                     "Please enter your name.",
+
                     "error"
+
                 );
 
                 return;
@@ -861,8 +927,11 @@ if (checkoutForm) {
             ) {
 
                 showMessage(
+
                     "Please enter a valid 11-digit Bangladeshi phone number.",
+
                     "error"
+
                 );
 
                 return;
@@ -870,11 +939,16 @@ if (checkoutForm) {
             }
 
 
-            if (!customerAddress) {
+            if (
+                !customerAddress
+            ) {
 
                 showMessage(
+
                     "Please enter your delivery address.",
+
                     "error"
+
                 );
 
                 return;
@@ -889,8 +963,11 @@ if (checkoutForm) {
             ) {
 
                 showMessage(
+
                     "Please enter exactly 2 digits of your transaction ID.",
+
                     "error"
+
                 );
 
                 return;
@@ -899,7 +976,7 @@ if (checkoutForm) {
 
 
             // =================================
-            // CALCULATE ORDER
+            // CALCULATE ORDER TOTALS
             // =================================
 
             const subtotal =
@@ -919,7 +996,9 @@ if (checkoutForm) {
             // DISABLE BUTTON
             // =================================
 
-            if (placeOrderBtn) {
+            if (
+                placeOrderBtn
+            ) {
 
                 placeOrderBtn.disabled =
                     true;
@@ -937,7 +1016,7 @@ if (checkoutForm) {
 
                 // =================================
                 // CREATE ORDER
-                // EXACT DATABASE COLUMN NAMES
+                // MATCHES DATABASE SCHEMA
                 // =================================
 
                 const orderData = {
@@ -1008,7 +1087,9 @@ if (checkoutForm) {
                         .single();
 
 
-                if (orderError) {
+                if (
+                    orderError
+                ) {
 
                     console.error(
                         "ORDER INSERT ERROR:",
@@ -1035,7 +1116,7 @@ if (checkoutForm) {
 
 
                 console.log(
-                    "Order created:",
+                    "ORDER CREATED SUCCESSFULLY:",
                     order
                 );
 
@@ -1044,27 +1125,68 @@ if (checkoutForm) {
                 // CREATE ORDER ITEMS
                 // =================================
 
-               const orderItems = cart.map(
-    item => ({
-        order_id: order.id,
+                const orderItems =
 
-        product_id: item.id,
+                    cart.map(
 
-        product_name: item.name,
+                        item => {
 
-        product_price:
-            Number(item.price) || 0,
+                            const productPrice =
 
-        quantity:
-            Number(item.quantity) || 1
-    })
-);
+                                Number(
+                                    item.price
+                                ) || 0;
+
+
+                            const quantity =
+
+                                Number(
+                                    item.quantity
+                                ) || 1;
+
+
+                            const itemSubtotal =
+
+                                productPrice *
+                                quantity;
+
+
+                            return {
+
+                                order_id:
+                                    order.id,
+
+                                product_id:
+                                    item.id,
+
+                                product_name:
+                                    item.name,
+
+                                product_price:
+                                    productPrice,
+
+                                quantity:
+                                    quantity,
+
+                                subtotal:
+                                    itemSubtotal
+
+                            };
+
+                        }
+
+                    );
+
 
                 console.log(
-                    "Submitting order items:",
+                    "SUBMITTING ORDER ITEMS:",
                     orderItems
                 );
 
+
+                // =================================
+                // INSERT ORDER ITEMS
+                // =================================
 
                 const {
 
@@ -1083,7 +1205,9 @@ if (checkoutForm) {
                         );
 
 
-                if (itemsError) {
+                if (
+                    itemsError
+                ) {
 
                     console.error(
                         "ORDER ITEMS INSERT ERROR:",
@@ -1095,6 +1219,11 @@ if (checkoutForm) {
                     );
 
                 }
+
+
+                console.log(
+                    "ORDER ITEMS CREATED SUCCESSFULLY"
+                );
 
 
                 // =================================
@@ -1119,7 +1248,9 @@ if (checkoutForm) {
                 );
 
 
-                if (placeOrderBtn) {
+                if (
+                    placeOrderBtn
+                ) {
 
                     placeOrderBtn.textContent =
                         "Order Placed ✓";
@@ -1147,7 +1278,9 @@ if (checkoutForm) {
             }
 
 
-            catch (error) {
+            catch (
+                error
+            ) {
 
                 console.error(
                     "COMPLETE ORDER ERROR:",
@@ -1165,7 +1298,9 @@ if (checkoutForm) {
                 );
 
 
-                if (placeOrderBtn) {
+                if (
+                    placeOrderBtn
+                ) {
 
                     placeOrderBtn.disabled =
                         false;
@@ -1193,7 +1328,9 @@ function showMessage(
     type
 ) {
 
-    if (!checkoutMessage) {
+    if (
+        !checkoutMessage
+    ) {
 
         alert(
             message
@@ -1222,7 +1359,9 @@ function showMessage(
 
 function clearMessage() {
 
-    if (!checkoutMessage) {
+    if (
+        !checkoutMessage
+    ) {
 
         return;
 
@@ -1277,7 +1416,9 @@ function escapeHTML(
 // YEAR
 // ========================================
 
-if (yearElement) {
+if (
+    yearElement
+) {
 
     yearElement.textContent =
 

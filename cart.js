@@ -1,125 +1,453 @@
-Skip to content
-srarobotronicslab
-website
-Repository navigation
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security and quality
-Insights
-Settings
-Files
-Go to file
-t
-T
-README.md
-admin.css
-admin.html
-admin.js
-assets
-cart.css
-cart.html
-cart.js
-index.html
-logo.jpg
-script.js
-store.css
-store.html
-store.js
-styles.css
-website
-/
-cart.js
-in
-main
-
-Edit
-
-Preview
-Indent mode
-
-Spaces
-Indent size
-
-4
-Line wrap mode
-
-No wrap
-Editing cart.js file contents
-  1
-  2
-  3
-  4
-  5
-  6
-  7
-  8
-  9
- 10
- 11
- 12
- 13
- 14
- 15
- 16
- 17
- 18
- 19
- 20
- 21
- 22
- 23
- 24
- 25
- 26
- 27
- 28
- 29
- 30
- 31
- 32
- 33
- 34
- 35
- 36
 // ========================================
-// SUPABASE CONFIGURATION
+// CART
 // ========================================
 
-const SUPABASE_URL =
-    "https://xzhpbisrzhgbeiptdkfd.supabase.co/";
-
-const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInJlZiI6Inh6aHBiaXNyemhnYmVpcHRka2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NzE1NDcsImV4cCI6MjEwMDU0NzU0N30.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
-
-
-const supabaseClient =
-    supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY
-    );
+let cart = JSON.parse(
+    localStorage.getItem("cart") || "[]"
+);
 
 
 // ========================================
 // ELEMENTS
 // ========================================
 
-const loadingMessage =
-    document.getElementById(
-        "loadingMessage"
+const cartItems =
+    document.getElementById("cartItems");
+
+const cartTotal =
+    document.getElementById("cartTotal");
+
+const checkoutBtn =
+    document.getElementById("checkoutBtn");
+
+
+// ========================================
+// LOAD CART
+// ========================================
+
+function loadCart() {
+
+    // Reload latest cart from localStorage
+
+    cart = JSON.parse(
+        localStorage.getItem("cart") || "[]"
     );
 
-const loginMessage =
-    document.getElementById(
-        "loginMessage"
+
+    renderCart();
+
+}
+
+
+// ========================================
+// RENDER CART
+// ========================================
+
+function renderCart() {
+
+    if (!cartItems) {
+        return;
+    }
+
+
+    // EMPTY CART
+
+    if (
+        cart.length === 0
+    ) {
+
+        cartItems.innerHTML = `
+
+            <div class="empty-cart">
+
+                <h3>
+                    Your cart is empty
+                </h3>
+
+                <p>
+                    Add some products from our store.
+                </p>
+
+                <a href="store.html">
+                    Continue Shopping
+                </a>
+
+            </div>
+
+        `;
+
+
+        if (cartTotal) {
+
+            cartTotal.textContent =
+                "৳0";
+
+        }
+
+
+        if (checkoutBtn) {
+
+            checkoutBtn.disabled =
+                true;
+
+        }
+
+
+        return;
+
+    }
+
+
+    // ====================================
+    // CART HAS ITEMS
+    // ====================================
+
+    let total = 0;
+
+
+    cartItems.innerHTML = "";
+
+
+    cart.forEach(
+
+        (item, index) => {
+
+
+            const price =
+                Number(
+                    item.price
+                ) || 0;
+
+
+            const quantity =
+                Number(
+                    item.quantity
+                ) || 1;
+
+
+            const itemTotal =
+                price * quantity;
+
+
+            total +=
+                itemTotal;
+
+
+            const itemElement =
+                document.createElement(
+                    "div"
+                );
+
+
+            itemElement.className =
+                "cart-item";
+
+
+            itemElement.innerHTML = `
+
+                <div class="cart-item-info">
+
+                    <h3>
+
+                        ${escapeHTML(
+                            item.name
+                        )}
+
+                    </h3>
+
+                    <p>
+
+                        ৳${price} × ${quantity}
+
+                    </p>
+
+                </div>
+
+
+                <div class="cart-item-controls">
+
+                    <button
+                        type="button"
+                        onclick="decreaseQuantity(${index})"
+                    >
+                        −
+                    </button>
+
+
+                    <span>
+
+                        ${quantity}
+
+                    </span>
+
+
+                    <button
+                        type="button"
+                        onclick="increaseQuantity(${index})"
+                    >
+                        +
+                    </button>
+
+
+                    <strong>
+
+                        ৳${itemTotal}
+
+                    </strong>
+
+
+                    <button
+                        type="button"
+                        class="remove-btn"
+                        onclick="removeFromCart(${index})"
+                    >
+
+                        Remove
+
+                    </button>
+
+                </div>
+
+            `;
+
+
+            cartItems.appendChild(
+                itemElement
+            );
+
+        }
+
     );
 
-const emptyCart =
-    document.getElementById(
-        "emptyCart"
+
+    // ====================================
+    // TOTAL
+    // ====================================
+
+    if (cartTotal) {
+
+        cartTotal.textContent =
+            "৳" + total;
+
+    }
+
+
+    // ====================================
+    // ENABLE CHECKOUT
+    // ====================================
+
+    if (checkoutBtn) {
+
+        checkoutBtn.disabled =
+            false;
+
+    }
+
+}
+
+
+// ========================================
+// INCREASE QUANTITY
+// ========================================
+
+function increaseQuantity(
+    index
+) {
+
+    const item =
+        cart[index];
+
+
+    if (!item) {
+        return;
+    }
+
+
+    const stock =
+        Number(
+            item.stock
+        ) || 999999;
+
+
+    const currentQuantity =
+        Number(
+            item.quantity
+        ) || 1;
+
+
+    if (
+        currentQuantity >=
+        stock
+    ) {
+
+        alert(
+            "You cannot add more than the available stock."
+        );
+
+        return;
+
+    }
+
+
+    item.quantity =
+        currentQuantity + 1;
+
+
+    saveCart();
+
+}
+
+
+// ========================================
+// DECREASE QUANTITY
+// ========================================
+
+function decreaseQuantity(
+    index
+) {
+
+    const item =
+        cart[index];
+
+
+    if (!item) {
+        return;
+    }
+
+
+    const currentQuantity =
+        Number(
+            item.quantity
+        ) || 1;
+
+
+    if (
+        currentQuantity <= 1
+    ) {
+
+        removeFromCart(
+            index
+        );
+
+        return;
+
+    }
+
+
+    item.quantity =
+        currentQuantity - 1;
+
+
+    saveCart();
+
+}
+
+
+// ========================================
+// REMOVE ITEM
+// ========================================
+
+function removeFromCart(
+    index
+) {
+
+    cart.splice(
+        index,
+        1
     );
-Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
-Editing website/cart.js at main · srarobotronicslab/website
+
+
+    saveCart();
+
+}
+
+
+// ========================================
+// SAVE CART
+// ========================================
+
+function saveCart() {
+
+    localStorage.setItem(
+
+        "cart",
+
+        JSON.stringify(
+            cart
+        )
+
+    );
+
+
+    renderCart();
+
+}
+
+
+// ========================================
+// CHECKOUT
+// ========================================
+
+if (
+    checkoutBtn
+) {
+
+    checkoutBtn.addEventListener(
+
+        "click",
+
+        () => {
+
+            if (
+                cart.length === 0
+            ) {
+
+                alert(
+                    "Your cart is empty."
+                );
+
+                return;
+
+            }
+
+
+            window.location.href =
+                "checkout.html";
+
+        }
+
+    );
+
+}
+
+
+// ========================================
+// ESCAPE HTML
+// ========================================
+
+function escapeHTML(
+    value
+) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        String(
+            value || ""
+        );
+
+
+    return div.innerHTML;
+
+}
+
+
+// ========================================
+// START
+// ========================================
+
+loadCart();

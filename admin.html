@@ -1,16 +1,4 @@
-<section class="admin-card">
-
-    <h2 id="formTitle">
-        Add New Product
-    </h2>
-
-
-    <form id="productForm">
-
-        <!-- Hidden product ID used when editing -->
-        <input
-            type="hidden"
-            id="editingProductId"<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -35,9 +23,9 @@
 <body>
 
 
-<!-- =========================================
+<!-- ==================================================
      LOGIN SECTION
-========================================= -->
+=================================================== -->
 
 <section
     id="loginSection"
@@ -64,8 +52,6 @@
         </p>
 
 
-
-        <!-- LOGIN FORM -->
 
         <form id="loginForm">
 
@@ -138,19 +124,22 @@
 
 
 
-<!-- =========================================
+<!-- ==================================================
      ADMIN SECTION
-========================================= -->
+     
+     HIDDEN UNTIL USER LOGS IN
+=================================================== -->
 
 <section
     id="adminSection"
-    class="admin-section hidden"
+    class="admin-section"
+    style="display: none;"
 >
 
 
-    <!-- =====================================
+    <!-- ==================================================
          ADMIN HEADER
-    ====================================== -->
+    =================================================== -->
 
     <header class="admin-header">
 
@@ -168,9 +157,6 @@
         </div>
 
 
-
-        <!-- LOGOUT -->
-
         <button
             id="logoutBtn"
             class="logout-btn"
@@ -186,9 +172,9 @@
 
 
 
-    <!-- =====================================
-         MAIN ADMIN CONTAINER
-    ====================================== -->
+    <!-- ==================================================
+         MAIN ADMIN AREA
+    =================================================== -->
 
     <main class="admin-container">
 
@@ -196,14 +182,12 @@
 
 
 
-        <!-- =====================================
-             ADD / EDIT PRODUCT
-        ====================================== -->
+        <!-- ==================================================
+             ADD / EDIT PRODUCT FORM
+        =================================================== -->
 
         <section class="admin-card">
 
-
-            <!-- FORM TITLE -->
 
             <h2 id="formTitle">
                 Add New Product
@@ -211,15 +195,16 @@
 
 
 
-            <!-- PRODUCT FORM -->
-
             <form id="productForm">
 
 
-                <!-- =================================
-                     HIDDEN PRODUCT ID
-                     Used only while editing
-                ================================== -->
+                <!--
+                    Product ID
+
+                    Empty = Add new product
+
+                    Contains ID = Edit existing product
+                -->
 
                 <input
                     type="hidden"
@@ -230,9 +215,7 @@
 
 
 
-                <!-- =================================
-                     PRODUCT NAME
-                ================================== -->
+                <!-- PRODUCT NAME -->
 
                 <div class="form-group">
 
@@ -256,9 +239,7 @@
 
 
 
-                <!-- =================================
-                     DESCRIPTION
-                ================================== -->
+                <!-- DESCRIPTION -->
 
                 <div class="form-group">
 
@@ -281,9 +262,7 @@
 
 
 
-                <!-- =================================
-                     PRICE + STOCK
-                ================================== -->
+                <!-- PRICE + STOCK -->
 
                 <div class="form-row">
 
@@ -342,9 +321,7 @@
 
 
 
-                <!-- =================================
-                     CATEGORY
-                ================================== -->
+                <!-- CATEGORY -->
 
                 <div class="form-group">
 
@@ -403,9 +380,7 @@
 
 
 
-                <!-- =================================
-                     PRODUCT IMAGE
-                ================================== -->
+                <!-- PRODUCT IMAGE -->
 
                 <div class="form-group">
 
@@ -436,9 +411,7 @@
 
 
 
-                <!-- =================================
-                     IMAGE PREVIEW
-                ================================== -->
+                <!-- IMAGE PREVIEW -->
 
                 <div
                     id="imagePreview"
@@ -449,9 +422,7 @@
 
 
 
-                <!-- =================================
-                     AVAILABILITY
-                ================================== -->
+                <!-- AVAILABILITY -->
 
                 <label class="checkbox-label">
 
@@ -474,23 +445,19 @@
 
 
 
-                <!-- =================================
-                     FORM BUTTONS
-                ================================== -->
+                <!-- FORM BUTTONS -->
 
                 <div class="form-actions">
 
 
-                    <!-- ADD / UPDATE BUTTON -->
+                    <!-- ADD / UPDATE -->
 
                     <button
                         type="submit"
                         class="primary-btn"
                         id="submitProductBtn"
                     >
-
                         Add Product
-
                     </button>
 
 
@@ -499,12 +466,11 @@
 
                     <button
                         type="button"
-                        class="cancel-btn hidden"
+                        class="cancel-btn"
                         id="cancelEditBtn"
+                        style="display: none;"
                     >
-
                         Cancel Edit
-
                     </button>
 
 
@@ -514,9 +480,7 @@
 
 
 
-                <!-- =================================
-                     PRODUCT MESSAGE
-                ================================== -->
+                <!-- MESSAGE -->
 
                 <p
                     id="productMessage"
@@ -535,9 +499,9 @@
 
 
 
-        <!-- =====================================
+        <!-- ==================================================
              PRODUCT LIST
-        ====================================== -->
+        =================================================== -->
 
         <section class="admin-card">
 
@@ -549,7 +513,6 @@
 
                 <div>
 
-
                     <h2>
                         Products
                     </h2>
@@ -560,22 +523,18 @@
                         in your store.
                     </p>
 
-
                 </div>
 
 
 
-
-                <!-- REFRESH BUTTON -->
+                <!-- REFRESH -->
 
                 <button
                     id="refreshBtn"
                     class="refresh-btn"
                     type="button"
                 >
-
                     ↻ Refresh
-
                 </button>
 
 
@@ -585,19 +544,13 @@
 
 
 
-            <!-- =================================
-                 PRODUCTS WILL LOAD HERE
-            ================================== -->
+            <!-- PRODUCTS LOADED BY JAVASCRIPT -->
 
             <div id="productsList">
 
-
                 <p class="loading">
-
                     Loading products...
-
                 </p>
-
 
             </div>
 
@@ -614,9 +567,9 @@
 
 
 
-<!-- =========================================
-     SUPABASE JAVASCRIPT
-========================================= -->
+<!-- ==================================================
+     SUPABASE
+=================================================== -->
 
 <script
     src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
@@ -626,9 +579,9 @@
 
 
 
-<!-- =========================================
+<!-- ==================================================
      ADMIN JAVASCRIPT
-========================================= -->
+=================================================== -->
 
 <script
     src="admin.js"
@@ -638,209 +591,3 @@
 </body>
 
 </html>
-        >
-
-
-        <!-- PRODUCT NAME -->
-
-        <div class="form-group">
-
-            <label for="productName">
-                Product Name
-            </label>
-
-            <input
-                type="text"
-                id="productName"
-                placeholder="Example: Arduino Nano"
-                required
-            >
-
-        </div>
-
-
-
-        <!-- DESCRIPTION -->
-
-        <div class="form-group">
-
-            <label for="productDescription">
-                Description
-            </label>
-
-            <textarea
-                id="productDescription"
-                placeholder="Enter product description"
-                rows="4"
-            ></textarea>
-
-        </div>
-
-
-
-        <!-- PRICE + STOCK -->
-
-        <div class="form-row">
-
-            <div class="form-group">
-
-                <label for="productPrice">
-                    Price (BDT)
-                </label>
-
-                <input
-                    type="number"
-                    id="productPrice"
-                    placeholder="500"
-                    min="0"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="productStock">
-                    Stock
-                </label>
-
-                <input
-                    type="number"
-                    id="productStock"
-                    placeholder="10"
-                    min="0"
-                    value="0"
-                    required
-                >
-
-            </div>
-
-        </div>
-
-
-
-        <!-- CATEGORY -->
-
-        <div class="form-group">
-
-            <label for="productCategory">
-                Category
-            </label>
-
-            <select id="productCategory">
-
-                <option value="Robotics">
-                    Robotics
-                </option>
-
-                <option value="Electronics">
-                    Electronics
-                </option>
-
-                <option value="Arduino">
-                    Arduino
-                </option>
-
-                <option value="Sensors">
-                    Sensors
-                </option>
-
-                <option value="Motors">
-                    Motors
-                </option>
-
-                <option value="Kits">
-                    Kits
-                </option>
-
-                <option value="Other">
-                    Other
-                </option>
-
-            </select>
-
-        </div>
-
-
-
-        <!-- IMAGE -->
-
-        <div class="form-group">
-
-            <label for="productImage">
-                Product Image
-            </label>
-
-            <input
-                type="file"
-                id="productImage"
-                accept="image/*"
-            >
-
-            <small id="imageHelp">
-                Leave empty when editing to keep the current image.
-            </small>
-
-        </div>
-
-
-
-        <!-- IMAGE PREVIEW -->
-
-        <div
-            id="imagePreview"
-            class="image-preview"
-        ></div>
-
-
-
-        <!-- AVAILABILITY -->
-
-        <label class="checkbox-label">
-
-            <input
-                type="checkbox"
-                id="productAvailable"
-                checked
-            >
-
-            Product is available
-
-        </label>
-
-
-
-        <!-- BUTTONS -->
-
-        <div class="form-actions">
-
-            <button
-                type="submit"
-                class="primary-btn"
-                id="submitProductBtn"
-            >
-                Add Product
-            </button>
-
-
-            <button
-                type="button"
-                class="cancel-btn hidden"
-                id="cancelEditBtn"
-            >
-                Cancel Edit
-            </button>
-
-        </div>
-
-
-        <p
-            id="productMessage"
-            class="message"
-        ></p>
-
-
-    </form>
-
-</section>

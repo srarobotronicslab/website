@@ -1044,35 +1044,21 @@ if (checkoutForm) {
                 // CREATE ORDER ITEMS
                 // =================================
 
-                const orderItems =
+               const orderItems = cart.map(
+    item => ({
+        order_id: order.id,
 
-                    cart.map(
+        product_id: item.id,
 
-                        item => ({
+        product_name: item.name,
 
-                            order_id:
-                                order.id,
+        product_price:
+            Number(item.price) || 0,
 
-                            product_id:
-                                item.id,
-
-                            product_name:
-                                item.name,
-
-                            price:
-                                Number(
-                                    item.price
-                                ) || 0,
-
-                            quantity:
-                                Number(
-                                    item.quantity
-                                ) || 1
-
-                        })
-
-                    );
-
+        quantity:
+            Number(item.quantity) || 1
+    })
+);
 
                 console.log(
                     "Submitting order items:",

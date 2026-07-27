@@ -968,7 +968,7 @@ if (checkoutForm) {
                     customer_name:
                         customerName,
 
-                    customer_phone:
+                    phone:
                         customerPhone,
 
                     address:

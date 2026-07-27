@@ -6,7 +6,7 @@ const SUPABASE_URL =
     "https://xzhpbisrzhgbeiptdkfd.supabase.co";
 
 const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4emhwYmlzcnpoZ2JlaXB0ZGtmZCIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzg0OTcxNTQ3LCJleHAiOjIxMDA1NDc1NDN9.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6aHBiaXNyemhnYmVpcHRka2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NzE1NDcsImV4cCI6MjEwMDU0NzU0N30.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
 
 
 // ========================================

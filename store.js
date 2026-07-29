@@ -6,6 +6,9 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// ========================================
+// STATE MANAGEMENT
+// ========================================
 let cart = [];
 try {
     const savedCart = localStorage.getItem("cart");
@@ -17,6 +20,9 @@ try {
 let products = [];
 let selectedCategory = "all";
 
+// ========================================
+// DOM ELEMENTS
+// ========================================
 const productGrid = document.getElementById("productGrid");
 const searchInput = document.getElementById("searchInput");
 const noResults = document.getElementById("noResults");
@@ -25,7 +31,7 @@ const cartCount = document.getElementById("cartCount");
 const yearElement = document.getElementById("year");
 
 // ========================================
-// UPDATE CART COUNT
+// CART HELPERS
 // ========================================
 function updateCartCount() {
     if (!cartCount) return;
@@ -40,34 +46,49 @@ function updateCartCount() {
 function saveCart() {
     try {
         localStorage.setItem("cart", JSON.stringify(cart));
-    } catch (e) {}
+    } catch (e) {
+        console.error("Failed to save cart to localStorage:", e);
+    }
     updateCartCount();
 }
 
 // ========================================
-// LOAD PRODUCTS FROM SUPABASE
+// LOAD PRODUCTS FROM SUPABASE (WITH DIAGNOSTICS)
 // ========================================
 async function loadProducts() {
     if (!productGrid) return;
     productGrid.innerHTML = `<p class="loading">Loading products...</p>`;
 
     try {
+        // Attempt fetch from Supabase
         const { data, error } = await supabaseClient
             .from("products")
-            .select("*")
-            .eq("is_available", true)
-            .order("created_at", { ascending: false });
+            .select("*");
 
-        if (error) throw error;
+        if (error) {
+            console.error("Supabase Error Details:", error);
+            throw error;
+        }
+
         products = Array.isArray(data) ? data : [];
         displayProducts();
     } catch (error) {
-        productGrid.innerHTML = `<p class="error">Unable to load products.</p>`;
+        console.error("Full Error Object:", error);
+        
+        // DISPLAY EXACT ERROR ON SCREEN
+        productGrid.innerHTML = `
+            <div style="background: #ffe6e6; border: 1px solid #ff4d4d; color: #b30000; padding: 15px; border-radius: 6px; width: 100%;">
+                <h3 style="margin-bottom: 8px;">Failed to fetch products:</h3>
+                <p><strong>Error Message:</strong> ${escapeHTML(error.message || error.error_description || "Unknown Error")}</p>
+                <p><strong>Error Code:</strong> ${escapeHTML(error.code || "N/A")}</p>
+                <p><strong>Details:</strong> ${escapeHTML(error.details || "Check console for more network details")}</p>
+            </div>
+        `;
     }
 }
 
 // ========================================
-// DISPLAY PRODUCTS WITH CATEGORY FILTER
+// DISPLAY & FILTER PRODUCTS
 // ========================================
 function displayProducts() {
     if (!productGrid) return;
@@ -80,10 +101,7 @@ function displayProducts() {
         const category = String(product.category || "Other").toLowerCase();
 
         const matchesSearch = name.includes(searchTerm) || description.includes(searchTerm);
-        
-        // Exact or clean category matching
-        const cleanSelectedCat = selectedCategory.replace(/^\d+\.\s*/, "").toLowerCase();
-        const matchesCategory = selectedCategory === "all" || category.trim().toLowerCase() === cleanSelectedCat;
+        const matchesCategory = selectedCategory === "all" || category.trim().toLowerCase() === selectedCategory.toLowerCase().trim();
 
         return matchesSearch && matchesCategory;
     });
@@ -102,7 +120,7 @@ function displayProducts() {
         card.className = "product-card";
 
         const imageHTML = product.image_url 
-            ? `<img src="${escapeHTML(product.image_url)}" alt="${escapeHTML(product.name)}" class="product-image">`
+            ? `<img src="${escapeHTML(product.image_url)}" alt="${escapeHTML(product.name)}" class="product-image" loading="lazy">`
             : `<div class="image-placeholder">No Image Available</div>`;
 
         card.innerHTML = `
@@ -126,24 +144,38 @@ function displayProducts() {
     });
 }
 
+// ========================================
+// ACTION HANDLERS
+// ========================================
 function addToCart(product) {
     const existing = cart.find(item => String(item.id) === String(product.id));
     if (existing) {
         existing.quantity += 1;
     } else {
-        cart.push({ id: product.id, name: product.name, price: product.price, quantity: 1, image_url: product.image_url });
+        cart.push({ 
+            id: product.id, 
+            name: product.name, 
+            price: product.price, 
+            quantity: 1, 
+            image_url: product.image_url 
+        });
     }
     saveCart();
     alert(`${product.name} added to cart.`);
 }
 
 function buyNow(product) {
-    cart = [{ id: product.id, name: product.name, price: product.price, quantity: 1, image_url: product.image_url }];
+    cart = [{ 
+        id: product.id, 
+        name: product.name, 
+        price: product.price, 
+        quantity: 1, 
+        image_url: product.image_url 
+    }];
     saveCart();
     window.location.href = "cart.html";
 }
 
-// Global Category Selection Trigger
 function selectCategory(catName) {
     selectedCategory = catName;
     categoryButtons.forEach(btn => {
@@ -154,8 +186,25 @@ function selectCategory(catName) {
     displayProducts();
 }
 
-// Event Listeners
-if (searchInput) searchInput.addEventListener("input", displayProducts);
+// ========================================
+// UTILS
+// ========================================
+function escapeHTML(str) {
+    if (!str) return "";
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+// ========================================
+// EVENT LISTENERS & INITIALIZATION
+// ========================================
+if (searchInput) {
+    searchInput.addEventListener("input", displayProducts);
+}
 
 categoryButtons.forEach(button => {
     button.addEventListener("click", () => {
@@ -166,7 +215,9 @@ categoryButtons.forEach(button => {
     });
 });
 
-if (yearElement) yearElement.textContent = new Date().getFullYear();
+if (yearElement) {
+    yearElement.textContent = new Date().getFullYear();
+}
 
 updateCartCount();
 loadProducts();

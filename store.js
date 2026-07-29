@@ -437,14 +437,17 @@ function displayProducts() {
 
                 const matchesCategory =
 
-                    selectedCategory ===
-                    "all"
+    selectedCategory === "all"
 
-                    ||
+    ||
 
-                    category ===
-                    selectedCategory
-                        .toLowerCase();
+    category
+        .trim()
+        .toLowerCase() ===
+
+    selectedCategory
+        .trim()
+        .toLowerCase();
 
 
                 return (

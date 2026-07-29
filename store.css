@@ -137,19 +137,24 @@ a {
     font-size: 0.9rem;
 }
 
-/* CATEGORIES BAR */
+/* =========================================
+   COMPACT CATEGORIES BAR
+========================================= */
 .nav-categories {
     background-color: #383838;
     display: flex;
+    align-items: center;
+    justify-content: space-between; /* Spreads out categories cleanly */
     overflow-x: auto;
-    padding: 5px 10px;
-    gap: 10px;
+    padding: 4px 8px;
+    gap: 2px; /* Ultra-tight gap to ensure maximum fit */
     white-space: nowrap;
     border-top: 1px solid var(--brand-border);
 }
 
+/* Custom subtle scrollbar if screen is very small */
 .nav-categories::-webkit-scrollbar {
-    height: 4px;
+    height: 3px;
 }
 
 .nav-categories::-webkit-scrollbar-thumb {
@@ -160,18 +165,22 @@ a {
     background: none;
     border: 1px solid transparent;
     color: var(--white);
-    padding: 4px 8px;
-    font-size: 0.8rem;
+    padding: 3px 5px; /* Compact padding */
+    font-size: 0.7rem; /* Ultra-compact readable font size */
+    font-weight: 600;
+    letter-spacing: -0.02em; /* Tight letter spacing */
+    font-stretch: condensed;
     cursor: pointer;
-    border-radius: 3px;
-    font-weight: 500;
+    border-radius: 2px;
+    transition: background 0.15s, border-color 0.15s;
+    flex-shrink: 0; /* Prevents text squishing on mobile */
 }
 
-.category:hover, .category.active {
+.category:hover, 
+.category.active {
     border-color: var(--white);
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.15);
 }
-
 /* =========================================
    MAIN CONTENT & BANNER
 ========================================= */

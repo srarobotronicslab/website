@@ -1,642 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-        Store | SRA Robotronics Lab
-    </title>
-
-    <meta
-        name="description"
-        content="Shop robotics components and electronics from SRA Robotronics Lab."
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="store.css"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store | SRA Robotronics Lab</title>
+    <meta name="description" content="Shop robotics components and electronics from SRA Robotronics Lab.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="store.css">
 </head>
-
-
 <body>
 
-
-<!-- =====================================================
-     HEADER
-====================================================== -->
-
-<header class="header">
-
-    <div class="nav-container">
-
-
-        <!-- BRAND -->
-
-        <a
-            href="index.html"
-            class="brand"
-        >
-
-            <img
-                src="logo.jpg"
-                alt="SRA Robotronics Lab"
-            >
-
-            <span>
-                SRA Robotronics Lab
-            </span>
-
-        </a>
-
-
-
-        <!-- NAVIGATION -->
-
-        <nav class="top-nav">
-
-            <a href="index.html">
-                Home
+    <!-- =====================================================
+         MAIN HEADER (AMAZON STYLE)
+    ====================================================== -->
+    <header class="amazon-header">
+        <div class="nav-top">
+            <!-- LOGO PLACE -->
+            <a href="index.html" class="nav-logo">
+                <img src="logo.jpg" alt="SRA Robotronics Lab Logo">
             </a>
 
-            <a href="index.html#tutorials">
-                Tutorials
-            </a>
+            <!-- LOCATION / DELIVERY -->
+            <div class="nav-delivery">
+                <span class="location-icon">📍</span>
+                <div class="delivery-text">
+                    <span class="line-1">Deliver to</span>
+                    <span class="line-2">Fast delivery all over bd</span>
+                </div>
+            </div>
 
-            <a href="index.html#projects">
-                Projects
-            </a>
+            <!-- SEARCH BAR -->
+            <div class="nav-search">
+                <input type="text" id="searchInput" placeholder="Search your required product..." autocomplete="off">
+                <button type="button" class="search-btn">🔍</button>
+            </div>
 
-            <a
-                href="store.html"
-                class="active"
-            >
-                Store
+            <!-- CART -->
+            <a href="cart.html" class="nav-cart">
+                <span class="cart-icon">🛒</span>
+                <span class="cart-count" id="cartCount">0</span>
+                <span class="cart-text">Cart</span>
             </a>
+        </div>
 
-            <a href="index.html#starter-kit">
-                Starter Kit
-            </a>
-
-            <a href="index.html#materials">
-                Materials
-            </a>
-
+        <!-- CATEGORIES SUB-NAVBAR -->
+        <nav class="nav-categories">
+            <button type="button" class="category active" data-category="all">All</button>
+            <button type="button" class="category" data-category="ARDUINO">1. ARDUINO</button>
+            <button type="button" class="category" data-category="ESP">2. ESP</button>
+            <button type="button" class="category" data-category="RASPBERRY PI">3. RASPBERRY PI</button>
+            <button type="button" class="category" data-category="SENSORS">4. SENSORS</button>
+            <button type="button" class="category" data-category="MOTORS & ACTUATORS">5. MOTORS & ACTUATORS</button>
+            <button type="button" class="category" data-category="MOTOR DRIVERS">6. MOTOR DRIVERS</button>
+            <button type="button" class="category" data-category="POWER">7. POWER</button>
+            <button type="button" class="category" data-category="DISPLAYS">8. DISPLAYS</button>
+            <button type="button" class="category" data-category="MECHANICAL PARTS">9. MECHANICAL PARTS</button>
+            <button type="button" class="category" data-category="ELECTRONIC COMPONENTS">10. ELECTRONIC COMPONENTS</button>
+            <button type="button" class="category" data-category="CABLES & CONNECTORS">11. CABLES & CONNECTORS</button>
+            <button type="button" class="category" data-category="COMMUNICATION MODULES">12. COMMUNICATION MODULES</button>
+            <button type="button" class="category" data-category="ROBOTICS KITS">13. ROBOTICS KITS</button>
+            <button type="button" class="category" data-category="TOOLS & ACCESSORIES">14. TOOLS & ACCESSORIES</button>
         </nav>
+    </header>
 
+    <main class="main-content">
+        <!-- BANNER SECTION -->
+        <section class="banner-section">
+            <img src="banner.png" alt="SRA Robotronics Lab Store Banner" class="hero-banner">
+        </section>
 
-
-        <!-- CART -->
-
-        <a
-            href="cart.html"
-            class="cart-button"
-        >
-
-            <span class="cart-icon">
-                🛒
-            </span>
-
-            <span>
-                Cart
-            </span>
-
-            <span
-                class="cart-count"
-                id="cartCount"
-            >
-                0
-            </span>
-
-        </a>
-
-
-
-        <!-- MOBILE MENU -->
-
-        <button
-            class="menu-button"
-            id="menuButton"
-            type="button"
-        >
-
-            ☰
-
-        </button>
-
-
-    </div>
-
-</header>
-
-
-
-<!-- =====================================================
-     STORE HERO
-====================================================== -->
-
-<main>
-
-
-<section class="store-hero">
-
-    <div class="store-hero-content">
-
-
-        <p class="hero-label">
-
-            SRA ROBOTRONICS LAB • STORE
-
-        </p>
-
-
-        <h1>
-
-            Build Something.
-
-        </h1>
-
-
-        <p class="hero-description">
-
-            Find the components and electronics
-            you need to bring your next robotics
-            project to life.
-
-        </p>
-
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     STORE SECTION
-====================================================== -->
-
-<section class="store-section">
-
-    <div class="store-container">
-
-
-        <!-- STORE TOP -->
-
-        <div class="store-top">
-
-
-            <div>
-
-                <p class="section-label">
-
-                    ROBOTICS COMPONENTS
-
-                </p>
-
-
-                <h2>
-
-                    Explore the Store
-
-                </h2>
-
+        <!-- CATEGORY CARDS WITH PICTURES PLACEHOLDER -->
+        <section class="featured-categories-section">
+            <h2 class="section-title">Explore Top Categories</h2>
+            <div class="category-grid">
+                <div class="cat-card" onclick="selectCategory('ARDUINO')">
+                    <div class="cat-img-box"><img src="arduino-cat.png" alt="Arduino" onerror="this.src='placeholder.png'"></div>
+                    <span>Arduino</span>
+                </div>
+                <div class="cat-card" onclick="selectCategory('ESP')">
+                    <div class="cat-img-box"><img src="esp-cat.png" alt="ESP" onerror="this.src='placeholder.png'"></div>
+                    <span>ESP</span>
+                </div>
+                <div class="cat-card" onclick="selectCategory('RASPBERRY PI')">
+                    <div class="cat-img-box"><img src="raspberry-cat.png" alt="Raspberry Pi" onerror="this.src='placeholder.png'"></div>
+                    <span>Raspberry Pi</span>
+                </div>
+                <div class="cat-card" onclick="selectCategory('SENSORS')">
+                    <div class="cat-img-box"><img src="sensors-cat.png" alt="Sensors" onerror="this.src='placeholder.png'"></div>
+                    <span>Sensors</span>
+                </div>
             </div>
+        </section>
 
-
-
-            <!-- SEARCH -->
-
-            <div class="search-box">
-
-
-                <span>
-
-                    🔍
-
-                </span>
-
-
-                <input
-
-                    type="text"
-
-                    id="searchInput"
-
-                    placeholder="Search products..."
-
-                    autocomplete="off"
-
-                >
-
-
+        <!-- SUPABASE PRODUCTS LISTING -->
+        <section class="products-section">
+            <h2 class="section-title">All Products</h2>
+            <div class="product-grid" id="productGrid">
+                <p class="loading">Loading products...</p>
             </div>
-
-
-        </div>
-
-
-
-        <!-- =================================================
-             CATEGORIES
-        ================================================== -->
-
-        <div class="categories">
-
-
-            <button
-
-                type="button"
-
-                class="category active"
-
-                data-category="all"
-
-            >
-
-                All
-
-            </button>
-
-
-
-            <button
-
-                type="button"
-
-                class="category"
-
-                data-category="Robotics"
-
-            >
-
-                Robotics
-
-            </button>
-
-
-
-            <button
-
-                type="button"
-
-                class="category"
-
-                data-category="Electronics"
-
-            >
-
-                Electronics
-
-            </button>
-
-
-
-            <button
-
-                type="button"
-
-                class="category"
-
-                data-category="Arduino"
-
-            >
-
-                Arduino
-
-            </button>
-
-
-
-            <button
-
-                type="button"
-
-                class="category"
-
-                data-category="Sensors"
-
-            >
-
-                Sensors
-
-            </button>
-
-
-
-            <button
-
-                type="button"
-
-                class="category"
-
-                data-category="Motors"
-
-            >
-
-                Motors
-
-            </button>
-
-
-
-            <button
-
-                type="button"
-
-                class="category"
-
-                data-category="Kits"
-
-            >
-
-                Kits
-
-            </button>
-
-
-
-            <button
-
-                type="button"
-
-                class="category"
-
-                data-category="Other"
-
-            >
-
-                Other
-
-            </button>
-
-
-        </div>
-
-
-
-        <!-- =================================================
-             PRODUCTS
-        ================================================== -->
-
-        <div
-
-            class="product-grid"
-
-            id="productGrid"
-
-        >
-
-
-            <p class="loading">
-
-                Loading products...
-
-            </p>
-
-
-        </div>
-
-
-
-        <!-- =================================================
-             NO RESULTS
-        ================================================== -->
-
-        <div
-
-            class="no-results"
-
-            id="noResults"
-
-            style="display:none;"
-
-        >
-
-            No products found.
-
-        </div>
-
-
-    </div>
-
-</section>
-
-
-</main>
-
-
-
-<!-- =====================================================
-     FOOTER
-====================================================== -->
-
-<footer class="footer">
-
-    <div class="footer-container">
-
-
-        <!-- FOOTER BRAND -->
-
-        <div class="footer-brand">
-
-
-            <img
-
-                src="logo.jpg"
-
-                alt="SRA Robotronics Lab"
-
-            >
-
-
-            <h3>
-
-                SRA Robotronics Lab
-
-            </h3>
-
-
-            <p>
-
-                Humans Innovate, Machines Repeat
-
-            </p>
-
-
-        </div>
-
-
-
-        <!-- FOOTER LINKS -->
-
-        <div class="footer-links">
-
-
-            <!-- EXPLORE -->
-
-            <div>
-
-
-                <h4>
-
-                    Explore
-
-                </h4>
-
-
-                <a href="index.html">
-
-                    Home
-
-                </a>
-
-
-                <a href="index.html#tutorials">
-
-                    Tutorials
-
-                </a>
-
-
-                <a href="index.html#projects">
-
-                    Projects
-
-                </a>
-
-
-                <a href="store.html">
-
-                    Store
-
-                </a>
-
-
-                <a href="cart.html">
-
-                    Cart
-
-                </a>
-
-
+            <div class="no-results" id="noResults" style="display:none;">
+                No products found in this category.
             </div>
+        </section>
+    </main>
 
-
-
-            <!-- CONNECT -->
-
-            <div>
-
-
-                <h4>
-
-                    Connect
-
-                </h4>
-
-
-                <a
-
-                    href="https://www.facebook.com/srarobotronicslab/"
-
-                    target="_blank"
-
-                    rel="noopener"
-
-                >
-
-                    Facebook
-
-                </a>
-
-
-                <a
-
-                    href="mailto:srarobotronicslab@gmail.com"
-
-                >
-
-                    Email
-
-                </a>
-
-
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <img src="logo.jpg" alt="SRA Robotronics Lab">
+                <h3>SRA Robotronics Lab</h3>
+                <p>Humans Innovate, Machines Repeat</p>
             </div>
-
-
+            <div class="footer-links">
+                <div>
+                    <h4>Explore</h4>
+                    <a href="index.html">Home</a>
+                    <a href="store.html">Store</a>
+                    <a href="cart.html">Cart</a>
+                </div>
+                <div>
+                    <h4>Connect</h4>
+                    <a href="https://www.facebook.com/srarobotronicslab/" target="_blank" rel="noopener">Facebook</a>
+                    <a href="mailto:srarobotronicslab@gmail.com">Email</a>
+                </div>
+            </div>
         </div>
+        <div class="footer-bottom">
+            <span>© <span id="year"></span> SRA Robotronics Lab</span>
+            <span>Humans Innovate, Machines Repeat</span>
+        </div>
+    </footer>
 
-
-    </div>
-
-
-
-    <!-- FOOTER BOTTOM -->
-
-    <div class="footer-bottom">
-
-
-        <span>
-
-            ©
-
-            <span id="year"></span>
-
-            SRA Robotronics Lab
-
-        </span>
-
-
-        <span>
-
-            Humans Innovate, Machines Repeat
-
-        </span>
-
-
-    </div>
-
-</footer>
-
-
-
-<!-- =====================================================
-     SUPABASE
-====================================================== -->
-
-<script
-
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-
-></script>
-
-
-
-<!-- =====================================================
-     STORE JS
-====================================================== -->
-
-<script
-
-    src="store.js"
-
-></script>
-
-
+    <!-- SUPABASE & STORE JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="store.js"></script>
 </body>
-
 </html>

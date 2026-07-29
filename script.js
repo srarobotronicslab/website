@@ -392,22 +392,19 @@ function displayProducts() {
     // FILTER PRODUCTS
     // ====================================
 
-    const filteredProducts =
+   // Inside displayProducts() in store.js
+const filteredProducts = products.filter(product => {
+    const name = String(product.name || "").toLowerCase();
+    const description = String(product.description || "").toLowerCase();
+    const category = String(product.category || "Other").toLowerCase();
 
-        products.filter(
+    const matchesSearch = name.includes(searchTerm) || description.includes(searchTerm);
+    
+    // Direct category matching without prefix stripping
+    const matchesCategory = selectedCategory === "all" || category.trim().toLowerCase() === selectedCategory.toLowerCase();
 
-            product => {
-
-
-                const productName =
-
-                    (
-                        product.name ||
-                        ""
-                    )
-
-                    .toLowerCase();
-
+    return matchesSearch && matchesCategory;
+});
 
                 const productCategory =
 

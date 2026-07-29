@@ -53,37 +53,24 @@ function saveCart() {
 }
 
 // ========================================
-// LOAD PRODUCTS FROM SUPABASE (WITH DIAGNOSTICS)
+// LOAD PRODUCTS FROM SUPABASE
 // ========================================
 async function loadProducts() {
     if (!productGrid) return;
     productGrid.innerHTML = `<p class="loading">Loading products...</p>`;
 
     try {
-        // Attempt fetch from Supabase
         const { data, error } = await supabaseClient
             .from("products")
             .select("*");
 
-        if (error) {
-            console.error("Supabase Error Details:", error);
-            throw error;
-        }
+        if (error) throw error;
 
         products = Array.isArray(data) ? data : [];
         displayProducts();
     } catch (error) {
-        console.error("Full Error Object:", error);
-        
-        // DISPLAY EXACT ERROR ON SCREEN
-        productGrid.innerHTML = `
-            <div style="background: #ffe6e6; border: 1px solid #ff4d4d; color: #b30000; padding: 15px; border-radius: 6px; width: 100%;">
-                <h3 style="margin-bottom: 8px;">Failed to fetch products:</h3>
-                <p><strong>Error Message:</strong> ${escapeHTML(error.message || error.error_description || "Unknown Error")}</p>
-                <p><strong>Error Code:</strong> ${escapeHTML(error.code || "N/A")}</p>
-                <p><strong>Details:</strong> ${escapeHTML(error.details || "Check console for more network details")}</p>
-            </div>
-        `;
+        console.error("Error loading products:", error);
+        productGrid.innerHTML = `<p class="error">Unable to load products. Please try again later.</p>`;
     }
 }
 

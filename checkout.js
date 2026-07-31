@@ -110,7 +110,7 @@ function setupCheckoutForm(cart) {
     const messageEl = document.getElementById("checkoutMessage");
 
     form.addEventListener("submit", async (e) => {
-        e.preventDefault(); // Absolute guard against page reload
+        e.preventDefault(); 
         e.stopPropagation();
 
         const name = document.getElementById("customerName")?.value.trim() || "";
@@ -143,10 +143,11 @@ function setupCheckoutForm(cart) {
         const total = subtotal + deliveryFee;
         const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value || "cod";
 
+        // Mapped to match your actual database column names
         const orderData = {
             customer_name: name,
             customer_phone: phone,
-            customer_address: address,
+            delivery_address: address, // Fixed column name here
             payment_method: paymentMethod,
             payment_last_digits: lastDigits,
             items: cart,

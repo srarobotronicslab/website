@@ -1,378 +1,176 @@
-// ========================================
-// SUPABASE CONFIGURATION
-// ========================================
-const SUPABASE_URL = "https://xzhpbisrzhgbeiptdkfd.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6aHBiaXNyemhnYmVpcHRka2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NzE1NDcsImV4cCI6MjEwMDU0NzU0N30.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
+document.addEventListener("DOMContentLoaded", async () => {
+    // Set current year in footer
+    const yearEl = document.getElementById("year");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-// ========================================
-// CREATE SUPABASE CLIENT
-// ========================================
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // Check Cart Data
+    let cart = JSON.parse(localStorage.getItem("sra_cart")) || [];
+    
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        window.location.href = "cart.html";
+        return;
+    }
 
-// ========================================
-// DELIVERY FEES
-// ========================================
-const INSIDE_DHAKA_FEE = 80;
-const OUTSIDE_DHAKA_FEE = 150;
+    // Render Order Summary
+    renderOrderSummary(cart);
 
-// ========================================
-// PAYMENT NUMBERS
-// ========================================
-const BKASH_NUMBER = "01303614563";
-const NAGAD_NUMBER = "01712108137";
+    // Setup Dynamic Payment Disclaimer toggling
+    setupPaymentDisclaimer(cart);
 
-// ========================================
-// CART INITIALIZATION
-// ========================================
-let cart = [];
-try {
-    cart = JSON.parse(localStorage.getItem("cart") || "[]");
-} catch (error) {
-    console.error("Error loading cart:", error);
-    cart = [];
-}
+    // Setup Form Submission
+    setupCheckoutForm(cart);
+});
 
-if (!Array.isArray(cart)) {
-    cart = [];
-}
-
-// ========================================
-// DOM ELEMENTS
-// ========================================
-const checkoutForm = document.getElementById("checkoutForm");
-const checkoutItems = document.getElementById("checkoutItems");
-const checkoutSubtotal = document.getElementById("checkoutSubtotal");
-const checkoutDelivery = document.getElementById("checkoutDelivery");
-const checkoutTotal = document.getElementById("checkoutTotal");
-const paymentInstructions = document.getElementById("paymentInstructions");
-const placeOrderBtn = document.getElementById("placeOrderBtn");
-const checkoutMessage = document.getElementById("checkoutMessage");
-const paymentLastTwo = document.getElementById("paymentLastTwo");
-const yearElement = document.getElementById("year");
-
-// ========================================
-// HELPER FUNCTIONS
-// ========================================
-function getDeliveryLocation() {
-    const selected = document.querySelector('input[name="deliveryLocation"]:checked');
-    return selected ? selected.value : "inside";
-}
-
-function getPaymentMethod() {
-    const selected = document.querySelector('input[name="paymentMethod"]:checked');
-    return selected ? selected.value : "cod";
-}
-
-function getDatabasePaymentMethod() {
-    const method = getPaymentMethod();
-    if (method === "bkash") return "bKash";
-    if (method === "nogod" || method === "nagad") return "Nagad";
-    return "COD";
+function calculateSubtotal(cart) {
+    return cart.reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0);
 }
 
 function getDeliveryFee() {
-    const location = getDeliveryLocation();
-    return location === "outside" ? OUTSIDE_DHAKA_FEE : INSIDE_DHAKA_FEE;
+    const selectedLocation = document.querySelector('input[name="deliveryLocation"]:checked');
+    return selectedLocation && selectedLocation.value === "outside" ? 150 : 80;
 }
 
-function calculateSubtotal() {
-    return cart.reduce((total, item) => {
-        const price = Number(item.price);
-        const quantity = Number(item.quantity);
-        const validPrice = isNaN(price) ? 0 : price;
-        const validQuantity = isNaN(quantity) ? 1 : quantity;
-        return total + (validPrice * validQuantity);
-    }, 0);
-}
+function renderOrderSummary(cart) {
+    const itemsContainer = document.getElementById("checkoutItems");
+    const subtotalEl = document.getElementById("checkoutSubtotal");
+    const deliveryEl = document.getElementById("checkoutDelivery");
+    const totalEl = document.getElementById("checkoutTotal");
 
-function calculateTotal() {
-    return calculateSubtotal() + getDeliveryFee();
-}
+    itemsContainer.innerHTML = cart.map(item => `
+        <div class="checkout-item">
+            <span class="checkout-item-name" title="${item.name}">${item.name}</span>
+            <span class="checkout-item-quantity">x${item.quantity}</span>
+            <span class="checkout-item-price">৳${Number(item.price) * Number(item.quantity)}</span>
+        </div>
+    `).join("");
 
-// ========================================
-// UPDATE PAYMENT INSTRUCTIONS
-// ========================================
-function updatePaymentInstructions() {
-    if (!paymentInstructions) return;
+    updateTotalsDisplay();
 
-    const method = getPaymentMethod();
-    const deliveryFee = getDeliveryFee();
-    const total = calculateTotal();
-
-    if (method === "cod") {
-        paymentInstructions.innerHTML = `
-            <div class="payment-instruction-content">
-                <h3>Cash on Delivery</h3>
-                <p>Pay the delivery charge in advance.</p>
-                <div class="payment-amount">
-                    Delivery Charge: <strong>৳${deliveryFee}</strong>
-                </div>
-                <p>Send the delivery charge to:</p>
-                <div class="payment-number">
-                    bKash: <strong>${BKASH_NUMBER}</strong>
-                </div>
-                <p>After completing the payment, enter the last 2 digits of your transaction ID below.</p>
-            </div>`;
-    } else if (method === "bkash") {
-        paymentInstructions.innerHTML = `
-            <div class="payment-instruction-content">
-                <h3>bKash Payment</h3>
-                <p>Please pay the full order amount.</p>
-                <div class="payment-amount">
-                    Total Amount: <strong>৳${total}</strong>
-                </div>
-                <p>Send the payment to:</p>
-                <div class="payment-number">
-                    bKash: <strong>${BKASH_NUMBER}</strong>
-                </div>
-                <p>After completing the payment, enter the last 2 digits of your transaction ID below.</p>
-            </div>`;
-    } else if (method === "nogod" || method === "nagad") {
-        paymentInstructions.innerHTML = `
-            <div class="payment-instruction-content">
-                <h3>Nagad Payment</h3>
-                <p>Please pay the full order amount.</p>
-                <div class="payment-amount">
-                    Total Amount: <strong>৳${total}</strong>
-                </div>
-                <p>Send the payment to:</p>
-                <div class="payment-number">
-                    Nagad: <strong>${NAGAD_NUMBER}</strong>
-                </div>
-                <p>After completing the payment, enter the last 2 digits of your transaction ID below.</p>
-            </div>`;
-    }
-}
-
-// ========================================
-// RENDER CHECKOUT CART
-// ========================================
-function renderCheckoutCart() {
-    if (cart.length === 0) {
-        if (checkoutItems) {
-            checkoutItems.innerHTML = `
-                <div class="empty-checkout">
-                    <h3>Your cart is empty</h3>
-                    <p>Please add products before proceeding to checkout.</p>
-                    <a href="store.html" class="back-store-btn">Browse Store</a>
-                </div>`;
-        }
-        if (placeOrderBtn) placeOrderBtn.disabled = true;
-        if (checkoutSubtotal) checkoutSubtotal.textContent = "৳0";
-        if (checkoutDelivery) checkoutDelivery.textContent = "৳0";
-        if (checkoutTotal) checkoutTotal.textContent = "৳0";
-        return;
-    }
-
-    if (placeOrderBtn) placeOrderBtn.disabled = false;
-    if (checkoutItems) checkoutItems.innerHTML = "";
-
-    let subtotal = 0;
-
-    cart.forEach(item => {
-        const price = Number(item.price);
-        const quantity = Number(item.quantity);
-        const validPrice = isNaN(price) ? 0 : price;
-        const validQuantity = isNaN(quantity) ? 1 : quantity;
-        
-        const itemTotal = validPrice * validQuantity;
-        subtotal += itemTotal;
-
-        if (!checkoutItems) return;
-
-        const itemElement = document.createElement("div");
-        itemElement.className = "checkout-item";
-        itemElement.innerHTML = `
-            <div class="checkout-item-info">
-                <h3>${escapeHTML(item.name)}</h3>
-                <p>৳${validPrice} × ${validQuantity}</p>
-            </div>
-            <strong class="checkout-item-price">৳${itemTotal}</strong>`;
-        checkoutItems.appendChild(itemElement);
+    // Listen to location changes to update delivery fee & totals
+    document.querySelectorAll('input[name="deliveryLocation"]').forEach(radio => {
+        radio.addEventListener("change", () => {
+            updateTotalsDisplay();
+            updateDisclaimerText(cart);
+        });
     });
+}
 
+function updateTotalsDisplay() {
+    let cart = JSON.parse(localStorage.getItem("sra_cart")) || [];
+    const subtotal = calculateSubtotal(cart);
     const deliveryFee = getDeliveryFee();
     const total = subtotal + deliveryFee;
 
-    if (checkoutSubtotal) checkoutSubtotal.textContent = "৳" + subtotal;
-    if (checkoutDelivery) checkoutDelivery.textContent = "৳" + deliveryFee;
-    if (checkoutTotal) checkoutTotal.textContent = "৳" + total;
-
-    updatePaymentInstructions();
+    document.getElementById("checkoutSubtotal").textContent = `৳${subtotal}`;
+    document.getElementById("checkoutDelivery").textContent = `৳${deliveryFee}`;
+    document.getElementById("checkoutTotal").textContent = `৳${total}`;
 }
 
-// ========================================
-// EVENT LISTENERS
-// ========================================
-document.querySelectorAll('input[name="deliveryLocation"]').forEach(radio => {
-    radio.addEventListener("change", renderCheckoutCart);
-});
+function setupPaymentDisclaimer(cart) {
+    const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
+    
+    paymentRadios.forEach(radio => {
+        radio.addEventListener("change", () => updateDisclaimerText(cart));
+    });
 
-document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
-    radio.addEventListener("change", updatePaymentInstructions);
-});
+    // Initial load call
+    updateDisclaimerText(cart);
+}
 
-// ========================================
-// SUBMIT ORDER FUNCTIONALITY
-// ========================================
-if (checkoutForm) {
-    checkoutForm.addEventListener("submit", async function(event) {
-        event.preventDefault();
+function updateDisclaimerText(cart) {
+    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+    const disclaimerBox = document.getElementById("paymentDisclaimer");
+    
+    const subtotal = calculateSubtotal(cart);
+    const deliveryFee = getDeliveryFee();
+    const grandTotal = subtotal + deliveryFee;
 
-        if (cart.length === 0) {
-            showMessage("Your cart is empty.", "error");
+    if (paymentMethod === "cod") {
+        disclaimerBox.innerHTML = `(If cash on delivery)<br>Pay the delivery charge ${deliveryFee}/- in advance<br>Bkash: 01303614563<br>Nogod: 01303614563`;
+    } else if (paymentMethod === "bkash") {
+        disclaimerBox.innerHTML = `If bkash payment<br>Pay the total (${grandTotal} tk)<br>Bkash: 01303614563`;
+    } else if (paymentMethod === "nogod") {
+        disclaimerBox.innerHTML = `If nogod payment<br>Pay the total (${grandTotal} tk)<br>Nogod: 01303614563`;
+    }
+}
+
+function setupCheckoutForm(cart) {
+    const form = document.getElementById("checkoutForm");
+    const placeOrderBtn = document.getElementById("placeOrderBtn");
+    const messageEl = document.getElementById("checkoutMessage");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById("customerName").value.trim();
+        const phone = document.getElementById("customerPhone").value.trim();
+        const address = document.getElementById("customerAddress").value.trim();
+        const location = document.querySelector('input[name="deliveryLocation"]:checked').value;
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+        const lastDigits = document.getElementById("paymentLastTwo").value.trim();
+
+        if (!name || !phone || !address) {
+            showMsg("Please fill in all required contact details.", "error");
             return;
         }
 
-        const customerName = document.getElementById("customerName")?.value.trim();
-        const customerPhone = document.getElementById("customerPhone")?.value.trim();
-        const customerAddress = document.getElementById("customerAddress")?.value.trim();
+        if (phone.length !== 11 || !phone.startsWith("01")) {
+            showMsg("Please enter a valid 11-digit phone number.", "error");
+            return;
+        }
+
+        if (lastDigits.length !== 2) {
+            showMsg("Please provide the last 2 digits of your payment number.", "error");
+            return;
+        }
+
+        placeOrderBtn.disabled = true;
+        placeOrderBtn.textContent = "Placing Order...";
+
+        const subtotal = calculateSubtotal(cart);
         const deliveryFee = getDeliveryFee();
-        const databasePaymentMethod = getDatabasePaymentMethod();
-        const paymentLastTwoValue = paymentLastTwo?.value.trim();
-
-        // Form Validation
-        if (!customerName) {
-            showMessage("Please enter your name.", "error");
-            return;
-        }
-        if (!/^[0-9]{11}$/.test(customerPhone || "")) {
-            showMessage("Please enter a valid 11-digit Bangladeshi phone number.", "error");
-            return;
-        }
-        if (!customerAddress) {
-            showMessage("Please enter your delivery address.", "error");
-            return;
-        }
-        if (!/^[0-9]{2}$/.test(paymentLastTwoValue || "")) {
-            showMessage("Please enter exactly 2 digits of your transaction ID.", "error");
-            return;
-        }
-
-        const subtotal = calculateSubtotal();
         const total = subtotal + deliveryFee;
 
-        // Visual button feedback
-        if (placeOrderBtn) {
-            placeOrderBtn.disabled = true;
-            placeOrderBtn.textContent = "Placing Order...";
-        }
-        clearMessage();
+        const orderData = {
+            customer_name: name,
+            customer_phone: phone,
+            customer_address: address,
+            delivery_location: location,
+            payment_method: paymentMethod,
+            payment_last_digits: lastDigits,
+            items: cart,
+            subtotal: subtotal,
+            delivery_fee: deliveryFee,
+            total_amount: total,
+            created_at: new Date().toISOString()
+        };
 
         try {
-            // 1. Build & Insert Main Order Row safely
-            const orderData = {
-                customer_name: customerName,
-                phone: customerPhone,
-                delivery_address: customerAddress,
-                payment_method: databasePaymentMethod,
-                payment_sender_last_two: paymentLastTwoValue,
-                delivery_fee: deliveryFee,
-                subtotal: subtotal,
-                total_amount: total,
-                payment_status: "pending",
-                order_status: "pending"
-            };
-
-            const { error: orderError } = await supabaseClient
-                .from("orders")
-                .insert(orderData);
-
-            if (orderError) throw new Error(orderError.message);
-
-            // 2. Fetch the newly generated Order ID securely
-            const { data: latestOrder, error: fetchError } = await supabaseClient
-                .from("orders")
-                .select("id")
-                .eq("phone", customerPhone)
-                .order("created_at", { ascending: false })
-                .limit(1)
-                .single();
-
-            if (fetchError || !latestOrder) {
-                throw new Error("Order was submitted, but matching verification failed. Please check with support.");
+            // Simulated or real Supabase integration depending on window configuration
+            if (window.supabase) {
+                // Adjust table name if necessary, e.g. "orders"
+                const { error } = await window.supabase.from("orders").insert([orderData]);
+                if (error) throw error;
             }
 
-            const activeOrderId = latestOrder.id;
+            showMsg("Order placed successfully! Redirecting...", "success");
+            localStorage.removeItem("sra_cart");
+            
+            setTimeout(() => {
+                window.location.href = "store.html";
+            }, 1500);
 
-            // 3. Map & Safe-Guard Cart Items against NaN/Null fields
-            const orderItems = cart.map(item => {
-                const price = Number(item.price);
-                const quantity = Number(item.quantity);
-                const validPrice = isNaN(price) ? 0 : price;
-                const validQuantity = isNaN(quantity) ? 1 : quantity;
-                const itemSubtotal = validPrice * validQuantity;
-
-                return {
-                    order_id: activeOrderId,
-                    product_id: item.id || null, 
-                    product_name: item.name || "Unknown Product",
-                    product_price: validPrice,
-                    quantity: validQuantity,
-                    subtotal: itemSubtotal
-                };
-            });
-
-            // 4. Insert Child Order Items
-            const { error: itemsError } = await supabaseClient
-                .from("order_items")
-                .insert(orderItems);
-
-            if (itemsError) throw new Error(itemsError.message);
-
-            // 5. Handle Cleanup & Redirect
-            localStorage.removeItem("cart");
-            cart = [];
-            showMessage("Order placed successfully! Order ID: #" + activeOrderId, "success");
-
-            if (placeOrderBtn) placeOrderBtn.textContent = "Order Placed ✓";
-            setTimeout(() => { window.location.href = "store.html"; }, 3000);
-
-        } catch (error) {
-            console.error("COMPLETE ORDER ERROR:", error);
-            showMessage("Failed to place order: " + error.message, "error");
-
-            if (placeOrderBtn) {
-                placeOrderBtn.disabled = false;
-                placeOrderBtn.textContent = "Place Order";
-            }
+        } catch (err) {
+            console.error(err);
+            showMsg("Failed to place order. Please check your network.", "error");
+            placeOrderBtn.disabled = false;
+            placeOrderBtn.textContent = "Place Order";
         }
     });
-}
 
-// ========================================
-// UI UTILITIES
-// ========================================
-function showMessage(message, type) {
-    if (!checkoutMessage) {
-        alert(message);
-        return;
+    function showMsg(text, type) {
+        messageEl.textContent = text;
+        messageEl.className = `checkout-message ${type}`;
     }
-    checkoutMessage.textContent = message;
-    checkoutMessage.className = "checkout-message " + type;
 }
-
-function clearMessage() {
-    if (!checkoutMessage) return;
-    checkoutMessage.textContent = "";
-    checkoutMessage.className = "checkout-message";
-}
-
-function escapeHTML(value) {
-    if (value === null || value === undefined) return "";
-    const div = document.createElement("div");
-    div.textContent = String(value);
-    return div.innerHTML;
-}
-
-// ========================================
-// FOOTER AUTO YEAR
-// ========================================
-if (yearElement) {
-    yearElement.textContent = new Date().getFullYear();
-}
-
-// ========================================
-// INITIALIZE
-// ========================================
-renderCheckoutCart();

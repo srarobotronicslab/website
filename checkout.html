@@ -1,465 +1,185 @@
-/* =========================================
-    ROOT VARIABLES
-========================================= */
-:root {
-    --bg: #1E1E1E;
-    --bg2: #252525;
-    --card: #333333;
-    
-    --primary: #FEFEFE;
-    --secondary: #D6D6D6;
-    --muted: #A8A8A8;
-    
-    --accent: #4A4A4A;
-    --accent-hover: #5A5A5A;
-    
-    --border: #4A4A4A;
-    --danger: #e74c3c;
-    --success-bg: #1e3a29;
-    --success-text: #2ecc71;
-}
+<!DOCTYPE html>
+<html lang="en">
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | SRA Robotronics Lab</title>
+    <meta name="description" content="Complete your order from SRA Robotronics Lab.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="checkout.css">
+</head>
 
-html, body {
-    width: 100%;
-    min-height: 100vh;
-    background: var(--bg);
-    color: var(--primary);
-    font-family: "Inter", Arial, sans-serif;
-    line-height: 1.45;
-    -webkit-font-smoothing: antialiased;
-    display: flex;
-    flex-direction: column;
-}
+<body>
 
-button, input, textarea, select {
-    font-family: inherit;
-}
-
-button {
-    cursor: pointer;
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-/* =========================================
+<!-- =========================================
     HEADER
-========================================= */
-.header {
-    width: 100%;
-    background: var(--bg2);
-    border-bottom: 1px solid var(--border);
-}
+========================================= -->
+<header class="header">
+    <div class="nav-container">
+        <a href="store.html" class="brand">
+            <img src="logo.jpg" alt="SRA Robotronics Lab" onerror="this.src='logo.jpg'">
+            <span>SRA Robotronics Lab</span>
+        </a>
+        <a href="cart.html" class="back-store">
+            ← Back to Cart
+        </a>
+    </div>
+</header>
 
-.nav-container {
-    width: 92%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0.8rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-}
+<!-- =========================================
+    MAIN
+========================================= -->
+<main class="checkout-page">
 
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-weight: 700;
-}
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+        <p class="section-label">SECURE CHECKOUT</p>
+        <h1>Complete Your Order</h1>
+    </section>
 
-.brand img {
-    width: 2.2rem;
-    height: 2.2rem;
-    object-fit: cover;
-    border-radius: 0.4rem;
-}
+    <!-- CHECKOUT LAYOUT -->
+    <section class="checkout-layout">
 
-.brand span {
-    font-size: 1rem;
-    color: var(--primary);
-}
+        <!-- CUSTOMER INFORMATION -->
+        <div class="checkout-card">
+            <h2>Delivery Information</h2>
 
-.back-store {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.45rem 0.8rem;
-    border: 1px solid var(--border);
-    border-radius: 0.5rem;
-    background: var(--card);
-    color: var(--secondary);
-    font-size: 0.82rem;
-    font-weight: 600;
-    transition: 0.2s ease;
-}
+            <form id="checkoutForm">
+                <!-- NAME -->
+                <div class="form-group">
+                    <label for="customerName">Full Name</label>
+                    <input type="text" id="customerName" placeholder="Enter your full name" required>
+                </div>
 
-.back-store:hover {
-    background: var(--accent-hover);
-    color: var(--primary);
-}
+                <!-- PHONE -->
+                <div class="form-group">
+                    <label for="customerPhone">Phone Number</label>
+                    <input type="tel" id="customerPhone" placeholder="01XXXXXXXXX" maxlength="11" required>
+                </div>
 
-/* =========================================
-    MAIN CONTAINER & PAGE HEADER
-========================================= */
-.checkout-page {
-    width: 92%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1.2rem 0 2rem 0;
-    flex: 1;
-}
+                <!-- ADDRESS -->
+                <div class="form-group">
+                    <label for="customerAddress">Full Address</label>
+                    <textarea id="customerAddress" rows="3" placeholder="House, Road, Area, Thana, District" required></textarea>
+                </div>
 
-.page-header {
-    text-align: center;
-    margin-bottom: 1.2rem;
-}
+                <!-- LOCATION -->
+                <div class="delivery-options-group">
+                    <span class="delivery-label">Delivery Location</span>
+                    <div class="delivery-radios">
+                        <label class="radio-card">
+                            <input type="radio" name="deliveryLocation" value="inside" checked>
+                            <span>Inside Dhaka (৳80)</span>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="deliveryLocation" value="outside">
+                            <span>Outside Dhaka (৳150)</span>
+                        </label>
+                    </div>
+                </div>
 
-.section-label {
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.1rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 0.2rem;
-}
+                <!-- PAYMENT -->
+                <div class="form-group" style="margin-top: 0.8rem;">
+                    <label>Payment Method</label>
+                    <div class="payment-options">
+                        <!-- COD -->
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="cod" checked>
+                            <div>
+                                <strong>Cash on Delivery</strong>
+                                <small>Pay delivery charge in advance</small>
+                            </div>
+                        </label>
+                        <!-- BKASH -->
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="bkash">
+                            <div>
+                                <strong>bKash</strong>
+                                <small>Pay the full order amount</small>
+                            </div>
+                        </label>
+                        <!-- NAGAD -->
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="nogod">
+                            <div>
+                                <strong>Nagad</strong>
+                                <small>Pay the full order amount</small>
+                            </div>
+                        </label>
+                    </div>
+                </div>
 
-.page-header h1 {
-    font-size: 1.6rem;
-    color: var(--primary);
-    font-weight: 800;
-}
+                <!-- DYNAMIC PAYMENT DISCLAIMER -->
+                <div id="paymentDisclaimer" class="payment-disclaimer">
+                    Pay the delivery charge 80/- in advance<br>
+                    Bkash: 01303614563<br>
+                    Nogod: 01303614563
+                </div>
 
-/* =========================================
-    CHECKOUT LAYOUT
-========================================= */
-.checkout-layout {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 1.2rem;
-    align-items: start;
-}
+                <!-- PAYMENT LAST TWO DIGITS -->
+                <div class="form-group" id="lastDigitsGroup">
+                    <label for="paymentLastTwo">Last 2 Digits of Payment Number</label>
+                    <input type="text" id="paymentLastTwo" maxlength="2" inputmode="numeric" placeholder="Example: 45">
+                    <small class="input-help">Enter the last 2 digits of the phone number you used to make the payment.</small>
+                </div>
 
-.checkout-card, .order-summary {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 0.8rem;
-    padding: 1.2rem;
-}
+                <!-- SUBMIT -->
+                <button type="submit" id="placeOrderBtn" class="checkout-btn">
+                    Place Order
+                </button>
 
-.checkout-card h2, .order-summary h2 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--primary);
-    padding-bottom: 0.6rem;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 1rem;
-}
+                <!-- MESSAGE -->
+                <div id="checkoutMessage" class="checkout-message"></div>
+            </form>
+        </div>
 
-/* =========================================
-    FORM
-========================================= */
-.form-group {
-    width: 100%;
-    margin-bottom: 0.85rem;
-}
+        <!-- ORDER SUMMARY -->
+        <aside class="order-summary">
+            <h2>Order Summary</h2>
 
-.form-group label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 0.35rem;
-    font-size: 0.82rem;
-    color: var(--secondary);
-}
+            <!-- ITEMS -->
+            <div id="checkoutItems" class="checkout-items"></div>
 
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 0.65rem 0.8rem;
-    border: 1px solid var(--border);
-    border-radius: 0.5rem;
-    background: var(--card);
-    color: var(--primary);
-    outline: none;
-    font-size: 0.88rem;
-}
+            <div class="summary-divider"></div>
 
-.form-group textarea {
-    resize: vertical;
-    min-height: 4.2rem;
-}
+            <!-- SUBTOTAL -->
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <strong id="checkoutSubtotal">৳0</strong>
+            </div>
 
-.form-group input:focus,
-.form-group textarea:focus {
-    border-color: var(--primary);
-}
+            <!-- DELIVERY -->
+            <div class="summary-row">
+                <span>Delivery Fee</span>
+                <strong id="checkoutDelivery">৳80</strong>
+            </div>
 
-/* =========================================
-    DELIVERY & PAYMENT OPTIONS
-========================================= */
-.delivery-options-group {
-    margin: 0.8rem 0;
-}
+            <div class="summary-divider"></div>
 
-.delivery-label {
-    display: block;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--secondary);
-    margin-bottom: 0.35rem;
-}
+            <!-- TOTAL -->
+            <div class="summary-total">
+                <span>Total</span>
+                <strong id="checkoutTotal">৳0</strong>
+            </div>
+        </aside>
 
-.delivery-radios {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.6rem;
-}
+    </section>
 
-.radio-card {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 0.8rem;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 0.5rem;
-    font-size: 0.82rem;
-    color: var(--secondary);
-    cursor: pointer;
-}
+</main>
 
-.radio-card input {
-    accent-color: var(--primary);
-}
-
-.payment-options {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 0.5rem;
-}
-
-.payment-option {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem;
-    border: 1px solid var(--border);
-    border-radius: 0.5rem;
-    background: var(--card);
-    cursor: pointer;
-    transition: 0.2s ease;
-}
-
-.payment-option:hover {
-    border-color: var(--primary);
-}
-
-.payment-option input {
-    accent-color: var(--primary);
-}
-
-.payment-option div {
-    display: flex;
-    flex-direction: column;
-}
-
-.payment-option strong {
-    font-size: 0.8rem;
-    color: var(--primary);
-}
-
-.payment-option small {
-    color: var(--muted);
-    font-size: 0.68rem;
-}
-
-/* =========================================
-    PAYMENT DISCLAIMER BOX
-========================================= */
-.payment-disclaimer {
-    width: 100%;
-    margin: 0.8rem 0;
-    padding: 0.7rem 0.9rem;
-    background: var(--card);
-    border-left: 3px solid #ffc107;
-    border-radius: 0.4rem;
-    color: var(--secondary);
-    font-size: 0.8rem;
-    line-height: 1.5;
-}
-
-.input-help {
-    display: block;
-    margin-top: 0.25rem;
-    color: var(--muted);
-    font-size: 0.7rem;
-}
-
-/* =========================================
-    PLACE ORDER BUTTON
-========================================= */
-.checkout-btn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-    margin-top: 1rem;
-    padding: 0.8rem;
-    border: none;
-    border-radius: 0.5rem;
-    background: #ffc107;
-    color: #1E1E1E;
-    font-size: 0.9rem;
-    font-weight: 700;
-    transition: 0.2s ease;
-}
-
-.checkout-btn:hover {
-    background: #e0a800;
-}
-
-/* =========================================
-    MESSAGES
-========================================= */
-.checkout-message {
-    margin-top: 0.8rem;
-    padding: 0.6rem 0.8rem;
-    border-radius: 0.4rem;
-    font-size: 0.8rem;
-    display: none;
-}
-
-.checkout-message.success {
-    display: block;
-    background: var(--success-bg);
-    color: var(--success-text);
-}
-
-.checkout-message.error {
-    display: block;
-    background: rgba(231, 76, 60, 0.15);
-    color: var(--danger);
-}
-
-/* =========================================
-    ORDER SUMMARY ITEMS
-========================================= */
-.checkout-items {
-    max-height: 240px;
-    overflow-y: auto;
-    margin-bottom: 0.8rem;
-}
-
-.checkout-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.8rem;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 0.82rem;
-}
-
-.checkout-item:last-child {
-    border-bottom: none;
-}
-
-.checkout-item-name {
-    min-width: 0;
-    color: var(--primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.checkout-item-quantity {
-    color: var(--muted);
-    font-size: 0.75rem;
-}
-
-.checkout-item-price {
-    white-space: nowrap;
-    font-weight: 700;
-    color: var(--primary);
-}
-
-/* =========================================
-    SUMMARY TOTALS
-========================================= */
-.summary-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.85rem;
-    color: var(--secondary);
-    padding: 0.35rem 0;
-}
-
-.summary-row strong {
-    color: var(--primary);
-}
-
-.summary-divider {
-    width: 100%;
-    height: 1px;
-    background: var(--border);
-    margin: 0.8rem 0;
-}
-
-.summary-total {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1rem;
-    font-weight: 800;
-    color: var(--primary);
-}
-
-/* =========================================
+<!-- =========================================
     FOOTER
-========================================= */
-.footer {
-    width: 100%;
-    background: var(--bg2);
-    color: var(--muted);
-    padding: 1rem 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.75rem;
-    border-top: 1px solid var(--border);
-    margin-top: auto;
-}
+========================================= -->
+<footer class="footer">
+    <p>© <span id="year"></span> SRA Robotronics Lab</p>
+    <p>Humans Innovate, Machines Repeat</p>
+</footer>
 
-/* =========================================
-    RESPONSIVE BREAKPOINTS
-========================================= */
-@media (max-width: 900px) {
-    .checkout-layout {
-        grid-template-columns: 1fr;
-    }
-}
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- CHECKOUT JS -->
+<script src="checkout.js"></script>
 
-@media (max-width: 600px) {
-    .payment-options {
-        grid-template-columns: 1fr;
-    }
-    .delivery-radios {
-        grid-template-columns: 1fr;
-    }
-    .footer {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.3rem;
-    }
-}
+</body>
+</html>

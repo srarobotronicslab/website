@@ -1,5 +1,5 @@
 /* =========================================
-   RESET & ROOT
+   RESET & COLOR CODES
 ========================================= */
 * {
     margin: 0;
@@ -8,22 +8,20 @@
 }
 
 :root {
-    --bg-color: #0f1115;
-    --card-bg: rgba(255, 255, 255, 0.04);
-    --card-border: rgba(255, 255, 255, 0.1);
-    --card-hover: rgba(255, 255, 255, 0.08);
-    --text-primary: #ffffff;
-    --text-secondary: #94a3b8;
-    --accent: #38bdf8;
-    --accent-glow: rgba(56, 189, 248, 0.2);
+    --charcoal: #4a4a4a;
+    --white: #fefefe;
+    --bg-dark: #121212;
+    --card-bg: rgba(74, 74, 74, 0.25);
+    --card-border: rgba(254, 254, 254, 0.12);
+    --card-hover: rgba(74, 74, 74, 0.45);
 }
 
 html, body {
     height: 100vh;
-    overflow: hidden; /* Prevents scrolling so everything fits on 1 screen */
+    overflow: hidden; /* Locks layout to 1 screen without scrolling */
     font-family: "Inter", sans-serif;
-    background: var(--bg-color);
-    color: var(--text-primary);
+    background: var(--bg-dark);
+    color: var(--white);
 }
 
 a {
@@ -32,7 +30,7 @@ a {
 }
 
 /* =========================================
-   SINGLE SCREEN HERO CONTAINER
+   SINGLE SCREEN CONTAINER
 ========================================= */
 .hero-screen {
     height: 100vh;
@@ -42,9 +40,8 @@ a {
     justify-content: space-between;
     padding: 20px 40px;
     background: 
-        radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.07), transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.07), transparent 40%),
-        var(--bg-color);
+        radial-gradient(circle at 50% 15%, rgba(74, 74, 74, 0.35), transparent 55%),
+        var(--bg-dark);
     position: relative;
 }
 
@@ -65,14 +62,14 @@ a {
     align-items: center;
     gap: 12px;
     font-weight: 800;
-    font-size: 1rem;
-    letter-spacing: -0.02em;
+    font-size: 0.95rem;
+    color: var(--white);
 }
 
 .brand img {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
     object-fit: cover;
     border: 1px solid var(--card-border);
 }
@@ -93,53 +90,70 @@ a {
     justify-content: center;
     font-size: 0.7rem;
     font-weight: 700;
+    color: var(--white);
     transition: all 0.2s ease;
 }
 
 .social-pill:hover {
-    background: var(--accent);
-    color: #0f1115;
-    border-color: var(--accent);
+    background: var(--white);
+    color: var(--charcoal);
+    border-color: var(--white);
     transform: translateY(-2px);
 }
 
 /* =========================================
-   HERO CENTER INFO
+   HERO CENTER INFO (LOGO, ONE-LINE TAGLINE)
 ========================================= */
 .hero-center {
     text-align: center;
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
+}
+
+.hero-logo-box {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 12px auto;
+    padding: 6px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    backdrop-filter: blur(10px);
+}
+
+.hero-logo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 10px;
 }
 
 .badge-tag {
     display: inline-block;
-    font-size: 0.65rem;
-    letter-spacing: 0.25em;
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
     font-weight: 700;
-    color: var(--accent);
-    background: var(--accent-glow);
-    padding: 5px 12px;
+    color: rgba(254, 254, 254, 0.6);
+    background: rgba(74, 74, 74, 0.4);
+    padding: 4px 10px;
     border-radius: 20px;
-    margin-bottom: 10px;
-    border: 1px solid rgba(56, 189, 248, 0.2);
+    margin-bottom: 8px;
+    border: 1px solid var(--card-border);
 }
 
-.hero-center h1 {
-    font-size: clamp(2rem, 4.5vw, 3.5rem);
+.oneline-tagline {
+    font-size: clamp(1.8rem, 3.2vw, 3rem);
     font-weight: 900;
     line-height: 1.1;
-    letter-spacing: -0.04em;
-}
-
-.hero-center h1 span {
-    color: var(--text-secondary);
+    letter-spacing: -0.03em;
+    color: var(--white);
+    white-space: nowrap; /* Forces text to stay in a single line */
 }
 
 .hero-subtitle {
-    margin-top: 8px;
-    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
-    color: var(--text-secondary);
+    margin-top: 6px;
+    font-size: clamp(0.85rem, 1.3vw, 1rem);
+    color: rgba(254, 254, 254, 0.7);
     font-weight: 500;
 }
 
@@ -149,7 +163,7 @@ a {
 .quick-links-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 14px;
+    gap: 12px;
     max-width: 1300px;
     width: 100%;
     margin: 0 auto;
@@ -160,42 +174,42 @@ a {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 16px;
-    padding: 18px 16px;
+    padding: 16px 14px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 125px;
+    min-height: 115px;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
 }
 
 .quick-card:hover {
     background: var(--card-hover);
-    border-color: rgba(255, 255, 255, 0.25);
+    border-color: rgba(254, 254, 254, 0.3);
     transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
-/* Featured Styling for Store Card */
 .quick-card.featured {
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(99, 102, 241, 0.15));
-    border-color: rgba(56, 189, 248, 0.3);
+    background: rgba(254, 254, 254, 0.12);
+    border-color: rgba(254, 254, 254, 0.35);
 }
 
 .card-icon {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
 }
 
 .card-info h3 {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 700;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.02em;
+    color: var(--white);
     margin-bottom: 2px;
 }
 
 .card-info span {
-    font-size: 0.68rem;
-    color: var(--text-secondary);
+    font-size: 0.65rem;
+    color: rgba(254, 254, 254, 0.6);
 }
 
 .card-arrow {
@@ -203,15 +217,14 @@ a {
     top: 14px;
     right: 14px;
     font-size: 0.85rem;
-    color: var(--text-secondary);
-    opacity: 0.5;
+    color: rgba(254, 254, 254, 0.4);
     transition: 0.2s;
 }
 
 .quick-card:hover .card-arrow {
     opacity: 1;
     transform: translateX(3px);
-    color: var(--accent);
+    color: var(--white);
 }
 
 /* =========================================
@@ -221,9 +234,9 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    font-size: 0.75rem;
-    color: var(--text-secondary);
+    gap: 10px;
+    font-size: 0.72rem;
+    color: rgba(254, 254, 254, 0.55);
     max-width: 1300px;
     margin: 0 auto;
     width: 100%;
@@ -231,18 +244,18 @@ a {
 
 .footer-socials {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
 }
 
 .footer-socials a {
-    color: var(--text-primary);
+    color: var(--white);
     font-weight: 600;
-    transition: color 0.2s;
+    transition: opacity 0.2s;
 }
 
 .footer-socials a:hover {
-    color: var(--accent);
+    opacity: 0.7;
 }
 
 /* =========================================
@@ -258,7 +271,12 @@ a {
     .hero-screen {
         padding: 15px 20px;
         height: 100vh;
-        overflow-y: auto; /* Fallback safety on tiny screens */
+        overflow-y: auto; /* Fallback safety for small screens */
+    }
+
+    .oneline-tagline {
+        white-space: normal; /* Allows wrapping on small mobile screens if screen is too narrow */
+        font-size: 1.6rem;
     }
 
     .quick-links-grid {
@@ -266,13 +284,8 @@ a {
         gap: 10px;
     }
 
-    /* Make Store span full width or nicely balanced */
     .quick-card.featured {
         grid-column: span 2;
-    }
-
-    .hero-center h1 {
-        font-size: 2.1rem;
     }
     
     .hero-footer {

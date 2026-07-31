@@ -1,5 +1,5 @@
 /* =========================================
-   RESET & COLOR CODES (#fefefe & #4a4a4a)
+   RESET & COLOR CODES (#4a4a4a & #fefefe)
 ========================================= */
 * {
     margin: 0;
@@ -10,18 +10,18 @@
 :root {
     --charcoal: #4a4a4a;
     --white: #fefefe;
-    --card-bg: rgba(74, 74, 74, 0.04);
-    --card-border: rgba(74, 74, 74, 0.12);
-    --card-hover: rgba(74, 74, 74, 0.08);
-    --card-featured-bg: rgba(74, 74, 74, 0.08);
+    --card-bg: rgba(254, 254, 254, 0.07);
+    --card-border: rgba(254, 254, 254, 0.15);
+    --card-hover: rgba(254, 254, 254, 0.14);
+    --card-featured-bg: rgba(254, 254, 254, 0.15);
 }
 
 html, body {
     height: 100vh;
     overflow: hidden; /* Locks layout to 1 screen without scrolling */
     font-family: "Inter", sans-serif;
-    background: var(--white);
-    color: var(--charcoal);
+    background: var(--charcoal);
+    color: var(--white);
 }
 
 a {
@@ -40,8 +40,8 @@ a {
     justify-content: space-between;
     padding: 20px 40px;
     background: 
-        radial-gradient(circle at 50% 15%, rgba(74, 74, 74, 0.05), transparent 60%),
-        var(--white);
+        radial-gradient(circle at 50% 15%, rgba(255, 255, 255, 0.08), transparent 60%),
+        var(--charcoal);
     position: relative;
 }
 
@@ -63,7 +63,7 @@ a {
     gap: 12px;
     font-weight: 800;
     font-size: 0.95rem;
-    color: var(--charcoal);
+    color: var(--white);
 }
 
 .brand img {
@@ -80,8 +80,8 @@ a {
 }
 
 .social-icon-btn {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     background: var(--card-bg);
     border: 1px solid var(--card-border);
@@ -91,20 +91,21 @@ a {
     transition: all 0.2s ease;
 }
 
-.social-icon-btn img {
-    width: 16px;
-    height: 16px;
-    object-fit: contain;
+.social-icon-btn svg {
+    width: 15px;
+    height: 15px;
+    fill: var(--white);
+    transition: transform 0.2s;
 }
 
 .social-icon-btn:hover {
-    background: var(--charcoal);
-    border-color: var(--charcoal);
+    background: var(--white);
+    border-color: var(--white);
     transform: translateY(-2px);
 }
 
-.social-icon-btn:hover img {
-    filter: brightness(0) invert(1);
+.social-icon-btn:hover svg {
+    fill: var(--charcoal);
 }
 
 /* =========================================
@@ -138,8 +139,8 @@ a {
     font-size: 0.6rem;
     letter-spacing: 0.22em;
     font-weight: 700;
-    color: var(--charcoal);
-    background: rgba(74, 74, 74, 0.08);
+    color: rgba(254, 254, 254, 0.7);
+    background: rgba(254, 254, 254, 0.08);
     padding: 4px 10px;
     border-radius: 20px;
     margin-bottom: 6px;
@@ -151,20 +152,20 @@ a {
     font-weight: 900;
     line-height: 1.1;
     letter-spacing: -0.03em;
-    color: var(--charcoal);
+    color: var(--white);
 }
 
 .tagline-sub {
     font-size: clamp(1rem, 1.8vw, 1.3rem);
     font-weight: 700;
-    color: #222;
+    color: rgba(254, 254, 254, 0.95);
     margin-top: 4px;
 }
 
 .hero-description {
     margin-top: 4px;
     font-size: clamp(0.85rem, 1.3vw, 1rem);
-    color: #666;
+    color: rgba(254, 254, 254, 0.65);
     font-weight: 500;
 }
 
@@ -188,29 +189,28 @@ a {
     padding: 16px 14px;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centers everything vertically */
+    justify-content: center;
     min-height: 115px;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Inner wrapper to keep icon and text perfectly balanced in the middle */
 .card-content-inner {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Horizontally centers icon and text */
+    align-items: center;
     text-align: center;
 }
 
 .quick-card:hover {
     background: var(--card-hover);
-    border-color: rgba(74, 74, 74, 0.3);
+    border-color: rgba(254, 254, 254, 0.4);
     transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .quick-card.featured {
     background: var(--card-featured-bg);
-    border-color: rgba(74, 74, 74, 0.3);
+    border-color: rgba(254, 254, 254, 0.45);
     border-width: 1.5px;
 }
 
@@ -223,13 +223,13 @@ a {
     font-size: 0.82rem;
     font-weight: 700;
     letter-spacing: 0.02em;
-    color: var(--charcoal);
+    color: var(--white);
     margin-bottom: 2px;
 }
 
 .card-info span {
     font-size: 0.65rem;
-    color: #777;
+    color: rgba(254, 254, 254, 0.6);
 }
 
 .card-arrow {
@@ -237,15 +237,14 @@ a {
     top: 12px;
     right: 12px;
     font-size: 0.8rem;
-    color: #888;
-    opacity: 0.5;
+    color: var(--white);
+    opacity: 0.4;
     transition: 0.2s;
 }
 
 .quick-card:hover .card-arrow {
     opacity: 1;
     transform: translateX(3px);
-    color: var(--charcoal);
 }
 
 /* =========================================
@@ -257,7 +256,7 @@ a {
     justify-content: center;
     gap: 10px;
     font-size: 0.72rem;
-    color: #666;
+    color: rgba(254, 254, 254, 0.6);
     max-width: 1300px;
     margin: 0 auto;
     width: 100%;
@@ -270,18 +269,9 @@ a {
 }
 
 .footer-socials a {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    color: var(--charcoal);
+    color: var(--white);
     font-weight: 600;
     transition: opacity 0.2s;
-}
-
-.footer-socials img {
-    width: 14px;
-    height: 14px;
-    object-fit: contain;
 }
 
 .footer-socials a:hover {
@@ -301,7 +291,7 @@ a {
     .hero-screen {
         padding: 15px 20px;
         height: 100vh;
-        overflow-y: auto; /* Fallback safety for small viewports */
+        overflow-y: auto; /* Fallback safety for small screens */
     }
 
     .quick-links-grid {

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
     // Set current year in footer
     const yearEl = document.getElementById("year");
     if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Render Order Summary
     renderOrderSummary(cart);
 
-    // Setup Dynamic Payment Disclaimer toggling
-    setupPaymentDisclaimer(cart);
+    // Setup Dynamic Payment Instructions
+    setupPaymentInstructions(cart);
 
     // Setup Form Submission
     setupCheckoutForm(cart);
@@ -33,17 +33,17 @@ function getDeliveryFee() {
 
 function renderOrderSummary(cart) {
     const itemsContainer = document.getElementById("checkoutItems");
+    if (!itemsContainer) return;
 
     itemsContainer.innerHTML = cart.map(item => {
         const imgSrc = item.image || item.img || item.image_url || 'logo.jpg';
         return `
             <div class="checkout-item">
-                <img src="${imgSrc}" alt="${item.name}" class="checkout-item-img" onerror="this.src='logo.jpg'">
-                <div class="checkout-item-details">
-                    <span class="checkout-item-name" title="${item.name}">${item.name}</span>
-                    <span class="checkout-item-quantity">Qty: ${item.quantity}</span>
+                <div class="checkout-item-name" title="${item.name}">
+                    ${item.name}
+                    <div class="checkout-item-quantity">Qty: ${item.quantity}</div>
                 </div>
-                <span class="checkout-item-price">৳${Number(item.price) * Number(item.quantity)}</span>
+                <div class="checkout-item-price">৳${Number(item.price) * Number(item.quantity)}</div>
             </div>
         `;
     }).join("");
@@ -53,7 +53,7 @@ function renderOrderSummary(cart) {
     document.querySelectorAll('input[name="deliveryLocation"]').forEach(radio => {
         radio.addEventListener("change", () => {
             updateTotalsDisplay();
-            updateDisclaimerText(cart);
+            updateInstructionsText(cart);
         });
     });
 }
@@ -64,53 +64,62 @@ function updateTotalsDisplay() {
     const deliveryFee = getDeliveryFee();
     const total = subtotal + deliveryFee;
 
-    document.getElementById("checkoutSubtotal").textContent = `৳${subtotal}`;
-    document.getElementById("checkoutDelivery").textContent = `৳${deliveryFee}`;
-    document.getElementById("checkoutTotal").textContent = `৳${total}`;
+    const subEl = document.getElementById("checkoutSubtotal");
+    const delEl = document.getElementById("checkoutDelivery");
+    const totEl = document.getElementById("checkoutTotal");
+
+    if (subEl) subEl.textContent = `৳${subtotal}`;
+    if (delEl) delEl.textContent = `৳${deliveryFee}`;
+    if (totEl) totEl.textContent = `৳${total}`;
 }
 
-function setupPaymentDisclaimer(cart) {
+function setupPaymentInstructions(cart) {
     const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
     
     paymentRadios.forEach(radio => {
-        radio.addEventListener("change", () => updateDisclaimerText(cart));
+        radio.addEventListener("change", () => updateInstructionsText(cart));
     });
 
-    updateDisclaimerText(cart);
+    updateInstructionsText(cart);
 }
 
-function updateDisclaimerText(cart) {
-    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-    const disclaimerBox = document.getElementById("paymentDisclaimer");
-    
+function updateInstructionsText(cart) {
+    const paymentRadio = document.querySelector('input[name="paymentMethod"]:checked');
+    const instructionsBox = document.getElementById("paymentInstructions");
+    if (!instructionsBox || !paymentRadio) return;
+
+    const paymentMethod = paymentRadio.value;
     const subtotal = calculateSubtotal(cart);
     const deliveryFee = getDeliveryFee();
     const grandTotal = subtotal + deliveryFee;
 
     if (paymentMethod === "cod") {
-        disclaimerBox.innerHTML = `Pay the delivery charge ${deliveryFee}/- in advance<br>Bkash: 01303614563<br>Nogod: 01303614563`;
+        instructionsBox.innerHTML = `<strong>Cash on Delivery:</strong> Pay the delivery charge ${deliveryFee}/- in advance.<br><strong>Bkash / Nagad:</strong> 01303614563`;
     } else if (paymentMethod === "bkash") {
-        disclaimerBox.innerHTML = `Pay the total (${grandTotal} tk)<br>Bkash: 01303614563`;
+        instructionsBox.innerHTML = `<strong>bKash Payment:</strong> Send total amount (${grandTotal} tk) to <strong>01303614563</strong> (Personal/Merchant).`;
     } else if (paymentMethod === "nogod") {
-        disclaimerBox.innerHTML = `Pay the total (${grandTotal} tk)<br>Nogod: 01303614563`;
+        instructionsBox.innerHTML = `<strong>Nagad Payment:</strong> Send total amount (${grandTotal} tk) to <strong>01303614563</strong> (Personal/Merchant).`;
     }
 }
 
 function setupCheckoutForm(cart) {
     const form = document.getElementById("checkoutForm");
+    if (!form) return;
+
     const placeOrderBtn = document.getElementById("placeOrderBtn");
     const messageEl = document.getElementById("checkoutMessage");
 
     form.addEventListener("submit", async (e) => {
-        e.preventDefault(); // Stop standard browser form submission/page reload
+        e.preventDefault(); // Absolute guard against page reload
+        e.stopPropagation();
 
-        const name = document.getElementById("customerName").value.trim();
-        const phone = document.getElementById("customerPhone").value.trim();
-        const address = document.getElementById("customerAddress").value.trim();
-        const lastDigits = document.getElementById("paymentLastTwo").value.trim();
+        const name = document.getElementById("customerName")?.value.trim() || "";
+        const phone = document.getElementById("customerPhone")?.value.trim() || "";
+        const address = document.getElementById("customerAddress")?.value.trim() || "";
+        const lastDigits = document.getElementById("paymentLastTwo")?.value.trim() || "";
 
-        if (!name || !phone || !address) {
-            showMsg("Please fill in all required contact details.", "error");
+        if (!name || !phone || !address || !lastDigits) {
+            showMsg("Please fill in all required fields.", "error");
             return;
         }
 
@@ -124,30 +133,34 @@ function setupCheckoutForm(cart) {
             return;
         }
 
-        placeOrderBtn.disabled = true;
-        placeOrderBtn.textContent = "Placing Order...";
+        if (placeOrderBtn) {
+            placeOrderBtn.disabled = true;
+            placeOrderBtn.textContent = "Placing Order...";
+        }
 
         const subtotal = calculateSubtotal(cart);
         const deliveryFee = getDeliveryFee();
         const total = subtotal + deliveryFee;
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value || "cod";
 
-        // Clean and safe payload mapping standard table requirements
         const orderData = {
             customer_name: name,
             customer_phone: phone,
             customer_address: address,
+            payment_method: paymentMethod,
+            payment_last_digits: lastDigits,
             items: cart,
             total_amount: total,
             created_at: new Date().toISOString()
         };
 
         try {
-            if (window.supabase) {
-                const { error } = await window.supabase.from("orders").insert([orderData]);
-                if (error) throw error;
-            } else {
-                throw new Error("Supabase client is not initialized.");
+            if (!window.supabase) {
+                throw new Error("Supabase is not initialized on this page.");
             }
+
+            const { error } = await window.supabase.from("orders").insert([orderData]);
+            if (error) throw error;
 
             showMsg("Order placed successfully! Redirecting...", "success");
             localStorage.removeItem("sra_cart");
@@ -157,15 +170,18 @@ function setupCheckoutForm(cart) {
             }, 1500);
 
         } catch (err) {
-            console.error("Supabase Error Details:", err);
-            // This outputs the exact reason to the user message box directly
+            console.error("Supabase Error:", err);
             showMsg("Error: " + (err.message || JSON.stringify(err)), "error");
-            placeOrderBtn.disabled = false;
-            placeOrderBtn.textContent = "Place Order";
+            
+            if (placeOrderBtn) {
+                placeOrderBtn.disabled = false;
+                placeOrderBtn.textContent = "Place Order";
+            }
         }
     });
 
     function showMsg(text, type) {
+        if (!messageEl) return;
         messageEl.textContent = text;
         messageEl.className = `checkout-message ${type}`;
     }

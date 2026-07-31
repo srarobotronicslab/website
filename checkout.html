@@ -12,9 +12,7 @@
 
 <body>
 
-<!-- =========================================
-    HEADER
-========================================= -->
+<!-- HEADER -->
 <header class="header">
     <div class="nav-container">
         <a href="store.html" class="brand">
@@ -27,19 +25,15 @@
     </div>
 </header>
 
-<!-- =========================================
-    MAIN
-========================================= -->
+<!-- MAIN -->
 <main class="checkout-page">
 
-    <!-- PAGE HEADER -->
     <section class="page-header">
         <p class="section-label">SECURE CHECKOUT</p>
         <h1>Complete Your Order</h1>
         <p>Enter your delivery information and complete the payment.</p>
     </section>
 
-    <!-- CHECKOUT LAYOUT -->
     <section class="checkout-layout">
 
         <!-- CUSTOMER INFORMATION -->
@@ -47,25 +41,21 @@
             <h2>Delivery Information</h2>
 
             <form id="checkoutForm">
-                <!-- NAME -->
                 <div class="form-group">
                     <label for="customerName">Full Name</label>
                     <input type="text" id="customerName" placeholder="Enter your full name" required>
                 </div>
 
-                <!-- PHONE -->
                 <div class="form-group">
                     <label for="customerPhone">Phone Number</label>
                     <input type="tel" id="customerPhone" placeholder="01XXXXXXXXX" maxlength="11" required>
                 </div>
 
-                <!-- ADDRESS -->
                 <div class="form-group">
                     <label for="customerAddress">Full Address</label>
                     <textarea id="customerAddress" rows="4" placeholder="House, Road, Area, Thana, District" required></textarea>
                 </div>
 
-                <!-- LOCATION -->
                 <div class="form-group">
                     <label>Delivery Location</label>
                     <div class="location-options">
@@ -80,11 +70,9 @@
                     </div>
                 </div>
 
-                <!-- PAYMENT -->
                 <div class="form-group">
                     <label>Payment Method</label>
                     <div class="payment-options">
-                        <!-- COD -->
                         <label class="payment-option">
                             <input type="radio" name="paymentMethod" value="cod" checked>
                             <div>
@@ -92,7 +80,6 @@
                                 <small>Pay delivery charge in advance</small>
                             </div>
                         </label>
-                        <!-- BKASH -->
                         <label class="payment-option">
                             <input type="radio" name="paymentMethod" value="bkash">
                             <div>
@@ -100,7 +87,6 @@
                                 <small>Pay the full order amount</small>
                             </div>
                         </label>
-                        <!-- NAGAD -->
                         <label class="payment-option">
                             <input type="radio" name="paymentMethod" value="nogod">
                             <div>
@@ -111,22 +97,18 @@
                     </div>
                 </div>
 
-                <!-- PAYMENT INSTRUCTIONS -->
                 <div id="paymentInstructions" class="payment-instructions"></div>
 
-                <!-- PAYMENT LAST TWO DIGITS -->
                 <div class="form-group">
                     <label for="paymentLastTwo">Last 2 Digits of Payment Number</label>
                     <input type="text" id="paymentLastTwo" maxlength="2" inputmode="numeric" placeholder="Example: 45" required>
                     <small class="input-help">Enter the last 2 digits of the phone number you used to make the payment.</small>
                 </div>
 
-                <!-- SUBMIT -->
                 <button type="submit" id="placeOrderBtn" class="place-order-btn">
                     Place Order
                 </button>
 
-                <!-- MESSAGE -->
                 <div id="checkoutMessage" class="checkout-message"></div>
             </form>
         </div>
@@ -134,17 +116,13 @@
         <!-- ORDER SUMMARY -->
         <aside class="order-summary">
             <h2>Order Summary</h2>
-
-            <!-- ITEMS -->
             <div id="checkoutItems" class="checkout-items"></div>
 
-            <!-- SUBTOTAL -->
             <div class="summary-row">
                 <span>Subtotal</span>
                 <strong id="checkoutSubtotal">৳0</strong>
             </div>
 
-            <!-- DELIVERY -->
             <div class="summary-row">
                 <span>Delivery</span>
                 <strong id="checkoutDelivery">৳80</strong>
@@ -152,7 +130,6 @@
 
             <div class="summary-divider"></div>
 
-            <!-- TOTAL -->
             <div class="summary-total">
                 <span>Total</span>
                 <strong id="checkoutTotal">৳80</strong>
@@ -163,9 +140,7 @@
 
 </main>
 
-<!-- =========================================
-    FOOTER
-========================================= -->
+<!-- FOOTER -->
 <footer class="footer">
     <p>© <span id="year"></span> SRA Robotronics Lab</p>
     <p>Humans Innovate, Machines Repeat</p>
@@ -176,8 +151,8 @@
 
 <!-- INITIALIZE SUPABASE CLIENT -->
 <script>
-    const SUPABASE_URL = "https://xzhpbisrzhgbeiptdkfd.supabase.co";       // <-- Replace with your Supabase URL
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6aHBiaXNyemhnYmVpcHRka2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NzE1NDcsImV4cCI6MjEwMDU0NzU0N30.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw"; // <-- Replace with your Supabase Anon Key
+    const SUPABASE_URL = "https://xzhpbisrzhgbeiptdkfd.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6aHBiaXNyemhnYmVpcHRka2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NzE1NDcsImV4cCI6MjEwMDU0NzU0N30.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
 
     window.supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 </script>

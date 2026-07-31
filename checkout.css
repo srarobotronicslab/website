@@ -27,14 +27,14 @@
 
 html, body {
     width: 100%;
-    max-width: 100vw;
-    height: 100vh;
-    overflow-x: hidden;
+    min-height: 100vh;
     background: var(--bg);
     color: var(--primary);
     font-family: "Inter", Arial, sans-serif;
-    line-height: 1.3;
+    line-height: 1.45;
     -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
 }
 
 button, input, textarea, select {
@@ -60,10 +60,10 @@ a {
 }
 
 .nav-container {
-    width: 94%;
-    max-width: 1100px;
+    width: 92%;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0.4rem 0;
+    padding: 0.8rem 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -73,31 +73,31 @@ a {
 .brand {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.6rem;
     font-weight: 700;
 }
 
 .brand img {
-    width: 1.6rem;
-    height: 1.6rem;
+    width: 2.2rem;
+    height: 2.2rem;
     object-fit: cover;
-    border-radius: 0.3rem;
+    border-radius: 0.4rem;
 }
 
 .brand span {
-    font-size: 0.85rem;
+    font-size: 1rem;
     color: var(--primary);
 }
 
 .back-store {
     display: inline-flex;
     align-items: center;
-    padding: 0.25rem 0.5rem;
+    padding: 0.45rem 0.8rem;
     border: 1px solid var(--border);
-    border-radius: 0.4rem;
+    border-radius: 0.5rem;
     background: var(--card);
     color: var(--secondary);
-    font-size: 0.7rem;
+    font-size: 0.82rem;
     font-weight: 600;
     transition: 0.2s ease;
 }
@@ -111,27 +111,29 @@ a {
     MAIN CONTAINER & PAGE HEADER
 ========================================= */
 .checkout-page {
-    width: 94%;
-    max-width: 1100px;
+    width: 92%;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0.5rem 0 1rem 0;
+    padding: 1.2rem 0 2rem 0;
+    flex: 1;
 }
 
 .page-header {
     text-align: center;
-    margin-bottom: 0.4rem;
+    margin-bottom: 1.2rem;
 }
 
 .section-label {
-    font-size: 0.6rem;
+    font-size: 0.7rem;
     font-weight: 800;
-    letter-spacing: 0.08rem;
+    letter-spacing: 0.1rem;
     color: var(--muted);
     text-transform: uppercase;
+    margin-bottom: 0.2rem;
 }
 
 .page-header h1 {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     color: var(--primary);
     font-weight: 800;
 }
@@ -143,24 +145,24 @@ a {
     width: 100%;
     display: grid;
     grid-template-columns: 1.4fr 1fr;
-    gap: 0.8rem;
+    gap: 1.2rem;
     align-items: start;
 }
 
 .checkout-card, .order-summary {
     background: var(--bg2);
     border: 1px solid var(--border);
-    border-radius: 0.6rem;
-    padding: 0.7rem 0.9rem;
+    border-radius: 0.8rem;
+    padding: 1.2rem;
 }
 
 .checkout-card h2, .order-summary h2 {
-    font-size: 0.85rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: var(--primary);
-    padding-bottom: 0.4rem;
+    padding-bottom: 0.6rem;
     border-bottom: 1px solid var(--border);
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 /* =========================================
@@ -168,32 +170,32 @@ a {
 ========================================= */
 .form-group {
     width: 100%;
-    margin-bottom: 0.45rem;
+    margin-bottom: 0.85rem;
 }
 
 .form-group label {
     display: block;
     font-weight: 600;
-    margin-bottom: 0.15rem;
-    font-size: 0.7rem;
+    margin-bottom: 0.35rem;
+    font-size: 0.82rem;
     color: var(--secondary);
 }
 
 .form-group input,
 .form-group textarea {
     width: 100%;
-    padding: 0.35rem 0.5rem;
+    padding: 0.65rem 0.8rem;
     border: 1px solid var(--border);
-    border-radius: 0.4rem;
+    border-radius: 0.5rem;
     background: var(--card);
     color: var(--primary);
     outline: none;
-    font-size: 0.75rem;
+    font-size: 0.88rem;
 }
 
 .form-group textarea {
-    resize: none;
-    min-height: 2.2rem;
+    resize: vertical;
+    min-height: 4.2rem;
 }
 
 .form-group input:focus,
@@ -205,32 +207,32 @@ a {
     DELIVERY & PAYMENT OPTIONS
 ========================================= */
 .delivery-options-group {
-    margin: 0.3rem 0;
+    margin: 0.8rem 0;
 }
 
 .delivery-label {
     display: block;
-    font-size: 0.7rem;
+    font-size: 0.82rem;
     font-weight: 600;
     color: var(--secondary);
-    margin-bottom: 0.15rem;
+    margin-bottom: 0.35rem;
 }
 
 .delivery-radios {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.4rem;
+    gap: 0.6rem;
 }
 
 .radio-card {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
-    padding: 0.35rem 0.5rem;
+    gap: 0.5rem;
+    padding: 0.6rem 0.8rem;
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 0.4rem;
-    font-size: 0.7rem;
+    border-radius: 0.5rem;
+    font-size: 0.82rem;
     color: var(--secondary);
     cursor: pointer;
 }
@@ -242,16 +244,16 @@ a {
 .payment-options {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 0.3rem;
+    gap: 0.5rem;
 }
 
 .payment-option {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
-    padding: 0.35rem 0.4rem;
+    gap: 0.5rem;
+    padding: 0.6rem;
     border: 1px solid var(--border);
-    border-radius: 0.4rem;
+    border-radius: 0.5rem;
     background: var(--card);
     cursor: pointer;
     transition: 0.2s ease;
@@ -271,15 +273,13 @@ a {
 }
 
 .payment-option strong {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: var(--primary);
-    white-space: nowrap;
 }
 
 .payment-option small {
     color: var(--muted);
-    font-size: 0.55rem;
-    display: none; /* Hide description badges to save vertical space */
+    font-size: 0.68rem;
 }
 
 /* =========================================
@@ -287,21 +287,21 @@ a {
 ========================================= */
 .payment-disclaimer {
     width: 100%;
-    margin: 0.4rem 0;
-    padding: 0.4rem 0.6rem;
+    margin: 0.8rem 0;
+    padding: 0.7rem 0.9rem;
     background: var(--card);
     border-left: 3px solid #ffc107;
-    border-radius: 0.3rem;
+    border-radius: 0.4rem;
     color: var(--secondary);
-    font-size: 0.68rem;
-    line-height: 1.35;
+    font-size: 0.8rem;
+    line-height: 1.5;
 }
 
 .input-help {
     display: block;
-    margin-top: 0.1rem;
+    margin-top: 0.25rem;
     color: var(--muted);
-    font-size: 0.6rem;
+    font-size: 0.7rem;
 }
 
 /* =========================================
@@ -312,14 +312,14 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.3rem;
-    margin-top: 0.5rem;
-    padding: 0.5rem;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    padding: 0.8rem;
     border: none;
-    border-radius: 0.4rem;
+    border-radius: 0.5rem;
     background: #ffc107;
     color: #1E1E1E;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     font-weight: 700;
     transition: 0.2s ease;
 }
@@ -332,10 +332,10 @@ a {
     MESSAGES
 ========================================= */
 .checkout-message {
-    margin-top: 0.4rem;
-    padding: 0.4rem;
-    border-radius: 0.3rem;
-    font-size: 0.7rem;
+    margin-top: 0.8rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.4rem;
+    font-size: 0.8rem;
     display: none;
 }
 
@@ -355,19 +355,19 @@ a {
     ORDER SUMMARY ITEMS
 ========================================= */
 .checkout-items {
-    max-height: 160px;
+    max-height: 240px;
     overflow-y: auto;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.8rem;
 }
 
 .checkout-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.3rem 0;
+    gap: 0.8rem;
+    padding: 0.5rem 0;
     border-bottom: 1px solid var(--border);
-    font-size: 0.7rem;
+    font-size: 0.82rem;
 }
 
 .checkout-item:last-child {
@@ -384,7 +384,7 @@ a {
 
 .checkout-item-quantity {
     color: var(--muted);
-    font-size: 0.65rem;
+    font-size: 0.75rem;
 }
 
 .checkout-item-price {
@@ -400,9 +400,9 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.72rem;
+    font-size: 0.85rem;
     color: var(--secondary);
-    padding: 0.2rem 0;
+    padding: 0.35rem 0;
 }
 
 .summary-row strong {
@@ -413,14 +413,14 @@ a {
     width: 100%;
     height: 1px;
     background: var(--border);
-    margin: 0.4rem 0;
+    margin: 0.8rem 0;
 }
 
 .summary-total {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.85rem;
+    font-size: 1rem;
     font-weight: 800;
     color: var(--primary);
 }
@@ -432,12 +432,13 @@ a {
     width: 100%;
     background: var(--bg2);
     color: var(--muted);
-    padding: 0.4rem 5%;
+    padding: 1rem 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     border-top: 1px solid var(--border);
+    margin-top: auto;
 }
 
 /* =========================================
@@ -447,7 +448,18 @@ a {
     .checkout-layout {
         grid-template-columns: 1fr;
     }
-    html, body {
-        height: auto;
+}
+
+@media (max-width: 600px) {
+    .payment-options {
+        grid-template-columns: 1fr;
+    }
+    .delivery-radios {
+        grid-template-columns: 1fr;
+    }
+    .footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
     }
 }

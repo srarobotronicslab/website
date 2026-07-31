@@ -161,33 +161,35 @@ a {
 }
 
 /* =========================================
-   COMPACT CATEGORIES SUB-NAVBAR
+   COMPACT CATEGORIES SUB-NAVBAR (FIXED)
 ========================================= */
 .nav-categories {
     background-color: var(--card);
     display: flex;
     align-items: center;
     overflow-x: auto;
-    padding: 6px 12px;
-    gap: 6px;
+    padding: 8px 12px;
+    gap: 8px;
     white-space: nowrap;
     border-top: 1px solid var(--border);
+    width: 100%;
 }
 
 .nav-categories::-webkit-scrollbar {
-    height: 3px;
+    height: 4px;
 }
 
 .nav-categories::-webkit-scrollbar-thumb {
     background: var(--border);
+    border-radius: 2px;
 }
 
 .category {
     background: var(--bg);
     border: 1px solid var(--border);
     color: var(--secondary);
-    padding: 4px 10px;
-    font-size: 0.72rem;
+    padding: 5px 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     cursor: pointer;
     border-radius: 4px;
@@ -400,7 +402,7 @@ a {
     height: 18px !important;
     min-width: 18px;
     min-height: 18px;
-    color: #4ade80; /* Success green accent */
+    color: #4ade80;
     flex-shrink: 0;
 }
 

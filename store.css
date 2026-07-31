@@ -255,14 +255,13 @@ a {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 10px 4px;
+    padding: 6px;
     text-align: center;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    min-height: 145px; /* Taller card height */
     transition: all 0.2s ease;
 }
 
@@ -275,7 +274,8 @@ a {
 
 .cat-img-box {
     width: 100%;
-    height: 80px; /* Taller vertical image frame */
+    /* Creates a taller vertical (roughly 9:16 style) aspect ratio frame */
+    aspect-ratio: 9 / 16; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -283,22 +283,23 @@ a {
     background-color: var(--bg);
     border-radius: 6px;
     overflow: hidden;
-    padding: 4px;
 }
 
 .cat-img-box img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    /* Crops and stretches the 1:1 image to fill the entire container frame */
+    object-fit: cover; 
 }
 
 .cat-title {
-    font-size: 0.52rem; /* Adjusted for narrower cards */
+    font-size: 0.52rem; 
     font-weight: 700;
     color: var(--secondary);
     text-transform: uppercase;
     line-height: 1.1;
     word-break: break-word;
+    padding: 2px 0;
 }
 
 /* =========================================
@@ -540,16 +541,11 @@ a {
     }
 
     .cat-card {
-        min-height: 125px;
-        padding: 8px 3px;
-    }
-
-    .cat-img-box {
-        height: 65px;
+        padding: 4px;
     }
 
     .cat-title {
-        font-size: 0.48rem;
+        font-size: 0.45rem;
     }
 
     .product-grid {

@@ -274,8 +274,8 @@ a {
 
 .cat-img-box {
     width: 100%;
-    /* Creates a taller vertical (roughly 9:16 style) aspect ratio frame */
-    aspect-ratio: 9 / 16; 
+    /* Adjusted to a slightly wider 5:7 vertical aspect ratio frame */
+    aspect-ratio: 5 / 7; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -288,7 +288,7 @@ a {
 .cat-img-box img {
     width: 100%;
     height: 100%;
-    /* Crops and stretches the 1:1 image to fill the entire container frame */
+    /* Crops and stretches the image to cover the entire container frame */
     object-fit: cover; 
 }
 

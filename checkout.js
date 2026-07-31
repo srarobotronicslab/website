@@ -147,15 +147,14 @@ function setupCheckoutForm(cart) {
                 throw new Error("Supabase is not initialized on this page.");
             }
 
-            // 1. Insert into 'orders' table matching exact schema columns
             const orderPayload = {
                 customer_name: name,
                 phone: phone,
                 delivery_address: address,
                 payment_method: paymentMethod,
                 payment_sender_last_two: lastDigits,
-                payment_status: "pending", // changed from "Pending" to lowercase
-                order_status: "pending",   // changed from "Pending" to lowercase
+                payment_status: "unpaid",
+                order_status: "new",
                 subtotal: subtotal,
                 delivery_fee: deliveryFee,
                 total_amount: total
@@ -171,13 +170,12 @@ function setupCheckoutForm(cart) {
 
             const orderId = orderData.id;
 
-            // 2. Insert items into 'order_items' table matching exact schema columns
             const orderItemsPayload = cart.map(item => {
                 const itemPrice = Number(item.price);
                 const itemQty = Number(item.quantity);
                 return {
                     order_id: orderId,
-                    product_id: item.id || null, // Handles if item has id or not
+                    product_id: item.id || null,
                     product_name: item.name,
                     product_price: itemPrice,
                     price: itemPrice,

@@ -2,524 +2,180 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-        Checkout | SRA Robotronics Lab
-    </title>
-
-    <meta
-        name="description"
-        content="Complete your order from SRA Robotronics Lab."
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="checkout.css"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | SRA Robotronics Lab</title>
+    <meta name="description" content="Complete your order from SRA Robotronics Lab.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="checkout.css">
 </head>
-
 
 <body>
 
-
 <!-- =========================================
-     HEADER
+    HEADER
 ========================================= -->
-
 <header class="header">
-
     <div class="nav-container">
-
-
-        <a
-            href="store.html"
-            class="brand"
-        >
-
-            <img
-                src="logo.jpg"
-                alt="SRA Robotronics Lab"
-            >
-
-            <span>
-                SRA Robotronics Lab
-            </span>
-
+        <a href="store.html" class="brand">
+            <img src="logo.jpg" alt="SRA Robotronics Lab" onerror="this.src='logo.jpg'">
+            <span>SRA Robotronics Lab</span>
         </a>
-
-
-        <a
-            href="cart.html"
-            class="back-cart"
-        >
-
+        <a href="cart.html" class="back-store">
             ← Back to Cart
-
         </a>
-
-
     </div>
-
 </header>
 
-
-
 <!-- =========================================
-     MAIN
+    MAIN
 ========================================= -->
-
 <main class="checkout-page">
 
-
     <!-- PAGE HEADER -->
-
     <section class="page-header">
-
-        <p class="section-label">
-            SECURE CHECKOUT
-        </p>
-
-        <h1>
-            Complete Your Order
-        </h1>
-
-        <p>
-            Enter your delivery information
-            and complete the payment.
-        </p>
-
+        <p class="section-label">SECURE CHECKOUT</p>
+        <h1>Complete Your Order</h1>
     </section>
 
-
-
-    <!-- =====================================
-         CHECKOUT LAYOUT
-    ====================================== -->
-
+    <!-- CHECKOUT LAYOUT -->
     <section class="checkout-layout">
 
-
-        <!-- =================================
-             CUSTOMER INFORMATION
-        ================================== -->
-
+        <!-- CUSTOMER INFORMATION -->
         <div class="checkout-card">
-
-
-            <h2>
-                Delivery Information
-            </h2>
-
+            <h2>Delivery Information</h2>
 
             <form id="checkoutForm">
-
-
                 <!-- NAME -->
-
                 <div class="form-group">
-
-                    <label for="customerName">
-                        Full Name
-                    </label>
-
-                    <input
-                        type="text"
-                        id="customerName"
-                        placeholder="Enter your full name"
-                        required
-                    >
-
+                    <label for="customerName">Full Name</label>
+                    <input type="text" id="customerName" placeholder="Enter your full name" required>
                 </div>
-
-
 
                 <!-- PHONE -->
-
                 <div class="form-group">
-
-                    <label for="customerPhone">
-                        Phone Number
-                    </label>
-
-                    <input
-                        type="tel"
-                        id="customerPhone"
-                        placeholder="01XXXXXXXXX"
-                        maxlength="11"
-                        required
-                    >
-
+                    <label for="customerPhone">Phone Number</label>
+                    <input type="tel" id="customerPhone" placeholder="01XXXXXXXXX" maxlength="11" required>
                 </div>
-
-
 
                 <!-- ADDRESS -->
-
                 <div class="form-group">
-
-                    <label for="customerAddress">
-                        Full Address
-                    </label>
-
-                    <textarea
-                        id="customerAddress"
-                        rows="4"
-                        placeholder="House, Road, Area, Thana, District"
-                        required
-                    ></textarea>
-
+                    <label for="customerAddress">Full Address</label>
+                    <textarea id="customerAddress" rows="3" placeholder="House, Road, Area, Thana, District" required></textarea>
                 </div>
-
-
 
                 <!-- LOCATION -->
-
-                <div class="form-group">
-
-                    <label>
-                        Delivery Location
-                    </label>
-
-
-                    <div class="location-options">
-
-
-                        <label class="radio-option">
-
-                            <input
-                                type="radio"
-                                name="deliveryLocation"
-                                value="inside"
-                                checked
-                            >
-
-                            <span>
-                                Inside Dhaka
-                            </span>
-
+                <div class="delivery-options-group">
+                    <span class="delivery-label">Delivery Location</span>
+                    <div class="delivery-radios">
+                        <label class="radio-card">
+                            <input type="radio" name="deliveryLocation" value="inside" checked>
+                            <span>Inside Dhaka (৳80)</span>
                         </label>
-
-
-                        <label class="radio-option">
-
-                            <input
-                                type="radio"
-                                name="deliveryLocation"
-                                value="outside"
-                            >
-
-                            <span>
-                                Outside Dhaka
-                            </span>
-
+                        <label class="radio-card">
+                            <input type="radio" name="deliveryLocation" value="outside">
+                            <span>Outside Dhaka (৳150)</span>
                         </label>
-
-
                     </div>
-
                 </div>
-
-
 
                 <!-- PAYMENT -->
-
-                <div class="form-group">
-
-                    <label>
-                        Payment Method
-                    </label>
-
-
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label>Payment Method</label>
                     <div class="payment-options">
-
-
                         <!-- COD -->
-
                         <label class="payment-option">
-
-                            <input
-                                type="radio"
-                                name="paymentMethod"
-                                value="cod"
-                                checked
-                            >
-
+                            <input type="radio" name="paymentMethod" value="cod" checked>
                             <div>
-
-                                <strong>
-                                    Cash on Delivery
-                                </strong>
-
-                                <small>
-                                    Pay delivery charge in advance
-                                </small>
-
+                                <strong>Cash on Delivery</strong>
+                                <small>Pay delivery charge in advance</small>
                             </div>
-
                         </label>
-
-
-
                         <!-- BKASH -->
-
                         <label class="payment-option">
-
-                            <input
-                                type="radio"
-                                name="paymentMethod"
-                                value="bkash"
-                            >
-
+                            <input type="radio" name="paymentMethod" value="bkash">
                             <div>
-
-                                <strong>
-                                    bKash
-                                </strong>
-
-                                <small>
-                                    Pay the full order amount
-                                </small>
-
+                                <strong>bKash</strong>
+                                <small>Pay the full order amount</small>
                             </div>
-
                         </label>
-
-
-
                         <!-- NAGAD -->
-
                         <label class="payment-option">
-
-                            <input
-                                type="radio"
-                                name="paymentMethod"
-                                value="nogod"
-                            >
-
+                            <input type="radio" name="paymentMethod" value="nogod">
                             <div>
-
-                                <strong>
-                                    Nagad
-                                </strong>
-
-                                <small>
-                                    Pay the full order amount
-                                </small>
-
+                                <strong>Nagad</strong>
+                                <small>Pay the full order amount</small>
                             </div>
-
                         </label>
-
-
                     </div>
-
                 </div>
-
-
 
                 <!-- PAYMENT INSTRUCTIONS -->
-
-                <div
-                    id="paymentInstructions"
-                    class="payment-instructions"
-                ></div>
-
-
+                <div id="paymentInstructions" class="payment-instructions" style="display: none;"></div>
 
                 <!-- PAYMENT LAST TWO DIGITS -->
-
-                <div class="form-group">
-
-                    <label for="paymentLastTwo">
-
-                        Last 2 Digits of
-                        Payment Number
-
-                    </label>
-
-                    <input
-                        type="text"
-                        id="paymentLastTwo"
-                        maxlength="2"
-                        inputmode="numeric"
-                        placeholder="Example: 45"
-                        required
-                    >
-
-                    <small class="input-help">
-
-                        Enter the last 2 digits of the
-                        phone number you used to make
-                        the payment.
-
-                    </small>
-
+                <div class="form-group" id="lastDigitsGroup">
+                    <label for="paymentLastTwo">Last 2 Digits of Payment Number</label>
+                    <input type="text" id="paymentLastTwo" maxlength="2" inputmode="numeric" placeholder="Example: 45">
+                    <small class="input-help">Enter the last 2 digits of the phone number you used to make the payment.</small>
                 </div>
 
-
-
                 <!-- SUBMIT -->
-
-                <button
-                    type="submit"
-                    id="placeOrderBtn"
-                    class="place-order-btn"
-                >
-
+                <button type="submit" id="placeOrderBtn" class="checkout-btn">
                     Place Order
-
                 </button>
 
-
                 <!-- MESSAGE -->
-
-                <div
-                    id="checkoutMessage"
-                    class="checkout-message"
-                ></div>
-
-
+                <div id="checkoutMessage" class="checkout-message"></div>
             </form>
-
-
         </div>
 
-
-
-        <!-- =================================
-             ORDER SUMMARY
-        ================================== -->
-
+        <!-- ORDER SUMMARY -->
         <aside class="order-summary">
-
-
-            <h2>
-                Order Summary
-            </h2>
-
+            <h2>Order Summary</h2>
 
             <!-- ITEMS -->
-
-            <div
-                id="checkoutItems"
-                class="checkout-items"
-            ></div>
-
-
-
-            <!-- SUBTOTAL -->
-
-            <div class="summary-row">
-
-                <span>
-                    Subtotal
-                </span>
-
-                <strong id="checkoutSubtotal">
-                    ৳0
-                </strong>
-
-            </div>
-
-
-
-            <!-- DELIVERY -->
-
-            <div class="summary-row">
-
-                <span>
-                    Delivery
-                </span>
-
-                <strong id="checkoutDelivery">
-                    ৳80
-                </strong>
-
-            </div>
-
-
+            <div id="checkoutItems" class="checkout-items"></div>
 
             <div class="summary-divider"></div>
 
-
-
-            <!-- TOTAL -->
-
-            <div class="summary-total">
-
-                <span>
-                    Total
-                </span>
-
-                <strong id="checkoutTotal">
-                    ৳80
-                </strong>
-
+            <!-- SUBTOTAL -->
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <strong id="checkoutSubtotal">৳0</strong>
             </div>
 
+            <!-- DELIVERY -->
+            <div class="summary-row">
+                <span>Delivery Fee</span>
+                <strong id="checkoutDelivery">৳80</strong>
+            </div>
 
+            <div class="summary-divider"></div>
+
+            <!-- TOTAL -->
+            <div class="summary-total">
+                <span>Total</span>
+                <strong id="checkoutTotal">৳0</strong>
+            </div>
         </aside>
-
 
     </section>
 
-
 </main>
 
-
-
 <!-- =========================================
-     FOOTER
+    FOOTER
 ========================================= -->
-
 <footer class="footer">
-
-    <p>
-
-        ©
-        <span id="year"></span>
-        SRA Robotronics Lab
-
-    </p>
-
-    <p>
-
-        Humans Innovate, Machines Repeat
-
-    </p>
-
+    <p>© <span id="year"></span> SRA Robotronics Lab</p>
+    <p>Humans Innovate, Machines Repeat</p>
 </footer>
 
-
-
-<!-- =========================================
-     SUPABASE
-========================================= -->
-
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-
-<!-- =========================================
-     CHECKOUT JS
-========================================= -->
-
+<!-- CHECKOUT JS -->
 <script src="checkout.js"></script>
 
-
 </body>
-
 </html>

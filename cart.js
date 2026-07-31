@@ -33,18 +33,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Retrieve cart from localStorage
+// Retrieve cart from localStorage (checks multiple keys to prevent empty cart bug)
 function getCart() {
     try {
-        return JSON.parse(localStorage.getItem('sra_cart')) || [];
+        const possibleKeys = ['sra_cart', 'cart', 'sra-cart', 'shopping_cart'];
+        let rawData = null;
+        
+        for (const key of possibleKeys) {
+            rawData = localStorage.getItem(key);
+            if (rawData) break;
+        }
+
+        return rawData ? JSON.parse(rawData) : [];
     } catch (e) {
         return [];
     }
 }
 
-// Save cart to localStorage
+// Save cart to localStorage (saves back to primary 'sra_cart' and syncs common keys)
 function saveCart(cart) {
-    localStorage.setItem('sra_cart', JSON.stringify(cart));
+    const cartString = JSON.stringify(cart);
+    localStorage.setItem('sra_cart', cartString);
+    localStorage.setItem('cart', cartString);
 }
 
 // Load and render cart UI
@@ -67,28 +77,30 @@ function loadCart() {
     cartContentSection.style.display = 'grid';
 
     // Update item count label
-    const totalItemsCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const totalItemsCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
     cartItemCount.innerText = `${totalItemsCount} item${totalItemsCount > 1 ? 's' : ''}`;
 
     // Clear current list and render items
     cartItemsContainer.innerHTML = '';
 
     cart.forEach((item, index) => {
-        const itemTotal = item.price * item.quantity;
+        const qty = item.quantity || 1;
+        const itemTotal = item.price * qty;
         const imageUrl = item.image && item.image.trim() !== '' ? item.image : 'logo.jpg';
+        const itemName = item.name || item.title || 'Robotics Component';
 
         const cartItemElement = document.createElement('div');
         cartItemElement.className = 'cart-item';
         cartItemElement.innerHTML = `
-            <img src="${imageUrl}" alt="${item.name}" class="cart-item-image" onerror="this.src='logo.jpg'">
+            <img src="${imageUrl}" alt="${itemName}" class="cart-item-image" onerror="this.src='logo.jpg'">
             <div class="cart-item-info">
-                <h3>${item.name}</h3>
+                <h3>${itemName}</h3>
                 <p>৳${item.price} each</p>
             </div>
             <div class="cart-item-controls">
                 <div class="quantity-controls">
                     <button class="quantity-btn" type="button" onclick="updateQuantity(${index}, -1)">-</button>
-                    <span>${item.quantity}</span>
+                    <span>${qty}</span>
                     <button class="quantity-btn" type="button" onclick="updateQuantity(${index}, 1)">+</button>
                 </div>
                 <div class="item-total">৳${itemTotal}</div>
@@ -105,7 +117,7 @@ function loadCart() {
 function updateQuantity(index, change) {
     let cart = getCart();
     if (cart[index]) {
-        cart[index].quantity += change;
+        cart[index].quantity = (cart[index].quantity || 1) + change;
         if (cart[index].quantity <= 0) {
             cart.splice(index, 1);
         }
@@ -126,6 +138,7 @@ function removeItem(index) {
 function clearCart() {
     if (confirm('Are you sure you want to clear your entire cart?')) {
         localStorage.removeItem('sra_cart');
+        localStorage.removeItem('cart');
         loadCart();
     }
 }
@@ -135,7 +148,7 @@ function updateCartUI() {
     const cart = getCart();
     
     // Calculate subtotal
-    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
 
     // Get selected delivery fee option
     const selectedDeliveryRadio = document.querySelector('input[name="deliveryOption"]:checked');
@@ -170,10 +183,9 @@ function handleCheckout() {
     const deliveryFee = selectedDeliveryRadio ? parseInt(selectedDeliveryRadio.value) : 80;
     const deliveryLocation = deliveryFee === 80 ? 'Inside Dhaka' : 'Outside Dhaka';
     
-    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
     const total = subtotal + deliveryFee;
 
-    // Package order data to pass to checkout/WhatsApp/payment page if needed
     const orderDetails = {
         items: cart,
         subtotal: subtotal,
@@ -183,10 +195,5 @@ function handleCheckout() {
     };
 
     localStorage.setItem('sra_pending_order', JSON.stringify(orderDetails));
-
-    // Redirect to checkout page or trigger checkout flow
-    // window.location.href = 'checkout.html';
-    
-    // Temporary confirmation flow or integration placeholder:
     alert(`Proceeding to checkout!\nLocation: ${deliveryLocation}\nTotal Amount: ৳${total}`);
 }

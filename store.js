@@ -53,23 +53,6 @@ function saveCart() {
 }
 
 // ========================================
-// TOAST NOTIFICATION HELPER
-// ========================================
-function showToast(message = "Product added to cart successfully!") {
-    const toast = document.getElementById("toast-notification");
-    const toastMsg = document.getElementById("toast-message");
-    
-    if (!toast) return;
-
-    if (toastMsg) toastMsg.textContent = message;
-    toast.classList.add("show");
-
-    setTimeout(() => {
-        toast.classList.remove("show");
-    }, 3000);
-}
-
-// ========================================
 // LOAD PRODUCTS FROM SUPABASE
 // ========================================
 async function loadProducts() {
@@ -165,7 +148,7 @@ function addToCart(product) {
         });
     }
     saveCart();
-    showToast(`${product.name} added to cart.`);
+    alert(`${product.name} added to cart.`);
 }
 
 function buyNow(product) {
@@ -178,6 +161,16 @@ function buyNow(product) {
     }];
     saveCart();
     window.location.href = "cart.html";
+}
+
+function selectCategory(catName) {
+    selectedCategory = catName;
+    categoryButtons.forEach(btn => {
+        const btnCat = btn.dataset.category;
+        if (btnCat === catName) btn.classList.add("active");
+        else btn.classList.remove("active");
+    });
+    displayProducts();
 }
 
 // ========================================

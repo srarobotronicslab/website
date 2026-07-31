@@ -198,6 +198,9 @@ function handleCheckout() {
         total: total
     };
 
+    // Save order details for the next page to read
     localStorage.setItem('sra_pending_order', JSON.stringify(orderDetails));
-    alert(`Proceeding to checkout!\nLocation: ${deliveryLocation}\nTotal Amount: ৳${total}`);
+
+    // Redirect to your checkout page (change 'checkout.html' if your file has a different name)
+    window.location.href = 'checkout.html';
 }

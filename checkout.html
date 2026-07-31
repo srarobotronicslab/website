@@ -1,164 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout | SRA Robotronics Lab</title>
-    <meta name="description" content="Complete your order from SRA Robotronics Lab.">
+    <title>Tutorials Hub - SRA Robotronics Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="checkout.css">
+    <link rel="stylesheet" href="tutorial.css">
 </head>
-
 <body>
 
-<!-- HEADER -->
-<header class="header">
-    <div class="nav-container">
-        <a href="store.html" class="brand">
-            <img src="logo.jpg" alt="SRA Robotronics Lab">
-            <span>SRA Robotronics Lab</span>
-        </a>
-        <a href="cart.html" class="back-cart">
-            ← Back to Cart
-        </a>
-    </div>
-</header>
-
-<!-- MAIN -->
-<main class="checkout-page">
-
-    <section class="page-header">
-        <p class="section-label">SECURE CHECKOUT</p>
-        <h1>Complete Your Order</h1>
-        <p>Enter your delivery information and complete the payment.</p>
-    </section>
-
-    <section class="checkout-layout">
-
-        <!-- CUSTOMER INFORMATION -->
-        <div class="checkout-card">
-            <h2>Delivery Information</h2>
-
-            <form id="checkoutForm">
-                <div class="form-group">
-                    <label for="customerName">Full Name</label>
-                    <input type="text" id="customerName" placeholder="Enter your full name" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="customerPhone">Phone Number</label>
-                    <input type="tel" id="customerPhone" placeholder="01XXXXXXXXX" maxlength="11" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="customerAddress">Full Address</label>
-                    <textarea id="customerAddress" rows="4" placeholder="House, Road, Area, Thana, District" required></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Delivery Location</label>
-                    <div class="location-options">
-                        <label class="radio-option">
-                            <input type="radio" name="deliveryLocation" value="inside" checked>
-                            <span>Inside Dhaka</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="deliveryLocation" value="outside">
-                            <span>Outside Dhaka</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Payment Method</label>
-                    <div class="payment-options">
-                        <label class="payment-option">
-                            <input type="radio" name="paymentMethod" value="cod" checked>
-                            <div>
-                                <strong>Cash on Delivery</strong>
-                                <small>Pay delivery charge in advance</small>
-                            </div>
-                        </label>
-                        <label class="payment-option">
-                            <input type="radio" name="paymentMethod" value="bkash">
-                            <div>
-                                <strong>bKash</strong>
-                                <small>Pay the full order amount</small>
-                            </div>
-                        </label>
-                        <label class="payment-option">
-                            <input type="radio" name="paymentMethod" value="nogod">
-                            <div>
-                                <strong>Nagad</strong>
-                                <small>Pay the full order amount</small>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <div id="paymentInstructions" class="payment-instructions"></div>
-
-                <div class="form-group">
-                    <label for="paymentLastTwo">Last 2 Digits of Payment Number</label>
-                    <input type="text" id="paymentLastTwo" maxlength="2" inputmode="numeric" placeholder="Example: 45" required>
-                    <small class="input-help">Enter the last 2 digits of the phone number you used to make the payment.</small>
-                </div>
-
-                <button type="submit" id="placeOrderBtn" class="place-order-btn">
-                    Place Order
-                </button>
-
-                <div id="checkoutMessage" class="checkout-message"></div>
-            </form>
+    <!-- ================= HEADER ================= -->
+    <header class="amazon-header">
+        <div class="nav-top">
+            <a href="index.html" class="nav-logo">
+                <img src="logo.jpg" alt="SRA Logo" onerror="this.src='https://via.placeholder.com/32'">
+            </a>
+            <div class="page-indicator">Tutorials Hub</div>
         </div>
+    </header>
 
-        <!-- ORDER SUMMARY -->
-        <aside class="order-summary">
-            <h2>Order Summary</h2>
-            <div id="checkoutItems" class="checkout-items"></div>
-
-            <div class="summary-row">
-                <span>Subtotal</span>
-                <strong id="checkoutSubtotal">৳0</strong>
+    <!-- ================= COMING SOON CONTENT ================= -->
+    <main class="coming-soon-container">
+        <div class="coming-soon-card">
+            <div class="icon-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/>
+                    <path d="M12 6h4"/>
+                    <path d="M12 10h4"/>
+                    <path d="M8 6h.01"/>
+                    <path d="M8 10h.01"/>
+                </svg>
             </div>
-
-            <div class="summary-row">
-                <span>Delivery</span>
-                <strong id="checkoutDelivery">৳80</strong>
+            
+            <h1>Comprehensive Tutorials In Development</h1>
+            <p class="subtitle-text">We are engineering a structured library of step-by-step video guides featuring practical hardware demonstrations and code walkthroughs in both English and Bangla. Launching soon.</p>
+            
+            <div class="action-box">
+                <a href="index.html" class="back-home-btn">Return to Home</a>
             </div>
+        </div>
+    </main>
 
-            <div class="summary-divider"></div>
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>&copy; <span id="year"></span> SRA Robotronics Lab. All Rights Reserved.</p>
+        </div>
+    </footer>
 
-            <div class="summary-total">
-                <span>Total</span>
-                <strong id="checkoutTotal">৳80</strong>
-            </div>
-        </aside>
-
-    </section>
-
-</main>
-
-<!-- FOOTER -->
-<footer class="footer">
-    <p>© <span id="year"></span> SRA Robotronics Lab</p>
-    <p>Humans Innovate, Machines Repeat</p>
-</footer>
-
-<!-- SUPABASE SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<!-- INITIALIZE SUPABASE CLIENT -->
-<script>
-    const SUPABASE_URL = "https://xzhpbisrzhgbeiptdkfd.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6aHBiaXNyemhnYmVpcHRka2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NzE1NDcsImV4cCI6MjEwMDU0NzU0N30.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
-
-    window.supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-</script>
-
-<!-- CHECKOUT JS -->
-<script src="checkout.js"></script>
-
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>

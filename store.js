@@ -53,6 +53,24 @@ function saveCart() {
 }
 
 // ========================================
+// TOAST NOTIFICATION HELPER
+// ========================================
+function showToast(message = "Product added to cart successfully!") {
+    const toast = document.getElementById("toast-notification");
+    const toastMsg = document.getElementById("toast-message");
+    
+    if (!toast) return;
+
+    if (toastMsg) toastMsg.textContent = message;
+    toast.classList.add("show");
+
+    // Automatically hide after 3 seconds
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000);
+}
+
+// ========================================
 // LOAD PRODUCTS FROM SUPABASE
 // ========================================
 async function loadProducts() {
@@ -148,7 +166,7 @@ function addToCart(product) {
         });
     }
     saveCart();
-    alert(`${product.name} added to cart.`);
+    showToast(`${product.name} added to cart.`);
 }
 
 function buyNow(product) {

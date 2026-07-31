@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorials - Coming Soon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tutorial.css">
+</head>
+<body>
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="amazon-header">
+        <div class="nav-top">
+            <a href="store.html" class="nav-logo">
+                <img src="logo.jpg" alt="Logo" onerror="this.src='https://via.placeholder.com/38'">
+            </a>
+            <div class="page-indicator">Tutorials</div>
+        </div>
+    </header>
+
+    <!-- COMING SOON CONTENT -->
+    <main class="coming-soon-container">
+        <div class="coming-soon-card">
+            <div class="icon-badge">🚀</div>
+            <h1>Tutorials Are Coming Soon!</h1>
+            <p>We are currently recording and putting together step-by-step video guides to help you out. Stay tuned—they will be live here very soon!</p>
+            <a href="store.html" class="back-home-btn">Back to Store</a>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>&copy; <span id="year"></span> All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

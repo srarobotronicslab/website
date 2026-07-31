@@ -1,19 +1,24 @@
 /* =========================================
-   VARIABLES & RESET
+   VARIABLES & RESET (Your Custom Palette)
 ========================================= */
 :root {
-    --primary: #4f46e5;
-    --primary-hover: #4338ca;
-    --bg-color: #f8fafc;
-    --card-bg: #ffffff;
-    --text-main: #0f172a;
-    --text-muted: #64748b;
-    --border-color: #cbd5e1;
-    --border-focus: #4f46e5;
+    --bg: #1E1E1E;
+    --bg2: #252525;
+    --card: #333333;
+ 
+    --primary: #FEFEFE;
+    --secondary: #D6D6D6;
+    --muted: #A8A8A8;
+ 
+    --accent: #4A4A4A;
+    --accent-hover: #5A5A5A;
+ 
+    --border: #4A4A4A;
+    
     --error: #ef4444;
     --success: #22c55e;
     --radius: 12px;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -24,8 +29,8 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-main);
+    background-color: var(--bg);
+    color: var(--primary);
     line-height: 1.5;
     display: flex;
     flex-direction: column;
@@ -36,8 +41,8 @@ body {
    HEADER
 ========================================= */
 .header {
-    background: #ffffff;
-    border-bottom: 1px solid var(--border-color);
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
     padding: 16px 24px;
     position: sticky;
     top: 0;
@@ -57,7 +62,7 @@ body {
     align-items: center;
     gap: 12px;
     text-decoration: none;
-    color: var(--text-main);
+    color: var(--primary);
     font-weight: 700;
     font-size: 1.1rem;
 }
@@ -71,7 +76,7 @@ body {
 
 .back-cart {
     text-decoration: none;
-    color: var(--text-muted);
+    color: var(--secondary);
     font-weight: 500;
     font-size: 0.95rem;
     transition: color 0.2s;
@@ -100,7 +105,7 @@ body {
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 1px;
-    color: var(--primary);
+    color: var(--secondary);
     margin-bottom: 6px;
     text-transform: uppercase;
 }
@@ -108,12 +113,12 @@ body {
 .page-header h1 {
     font-size: 2rem;
     font-weight: 800;
-    color: var(--text-main);
+    color: var(--primary);
     letter-spacing: -0.5px;
 }
 
 .page-header p {
-    color: var(--text-muted);
+    color: var(--muted);
     font-size: 0.95rem;
     margin-top: 4px;
 }
@@ -135,8 +140,8 @@ body {
    CARDS (Form & Summary Containers)
 ========================================= */
 .checkout-card, .order-summary {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
+    background: var(--card);
+    border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 32px;
     box-shadow: var(--shadow);
@@ -145,9 +150,10 @@ body {
 .checkout-card h2, .order-summary h2 {
     font-size: 1.25rem;
     font-weight: 700;
+    color: var(--primary);
     margin-bottom: 24px;
     padding-bottom: 12px;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid var(--border);
 }
 
 /* =========================================
@@ -162,7 +168,7 @@ body {
     font-size: 0.875rem;
     font-weight: 600;
     margin-bottom: 8px;
-    color: var(--text-main);
+    color: var(--secondary);
 }
 
 .form-group input[type="text"],
@@ -170,19 +176,25 @@ body {
 .form-group textarea {
     width: 100%;
     padding: 12px 16px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border);
     border-radius: 8px;
     font-size: 0.95rem;
     font-family: inherit;
-    background-color: #fff;
+    background-color: var(--bg2);
+    color: var(--primary);
     transition: all 0.2s ease;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--muted);
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: var(--border-focus);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(254, 254, 254, 0.1);
 }
 
 .form-group textarea {
@@ -201,17 +213,19 @@ body {
     align-items: center;
     gap: 10px;
     padding: 12px 16px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border);
     border-radius: 8px;
+    background-color: var(--bg2);
     cursor: pointer;
     font-weight: 500;
     font-size: 0.9rem;
+    color: var(--primary);
     transition: all 0.2s;
 }
 
 .radio-option:hover {
-    border-color: var(--primary);
-    background-color: #faf5ff;
+    border-color: var(--secondary);
+    background-color: #2a2a2a;
 }
 
 .radio-option input[type="radio"] {
@@ -232,15 +246,16 @@ body {
     align-items: flex-start;
     gap: 12px;
     padding: 14px 16px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border);
     border-radius: 8px;
+    background-color: var(--bg2);
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .payment-option:hover {
-    border-color: var(--primary);
-    background-color: #faf5ff;
+    border-color: var(--secondary);
+    background-color: #2a2a2a;
 }
 
 .payment-option input[type="radio"] {
@@ -253,29 +268,29 @@ body {
 .payment-option strong {
     display: block;
     font-size: 0.95rem;
-    color: var(--text-main);
+    color: var(--primary);
 }
 
 .payment-option small {
-    color: var(--text-muted);
+    color: var(--muted);
     font-size: 0.8rem;
 }
 
 /* Payment Instructions Box */
 .payment-instructions {
-    background-color: #f8fafc;
-    border: 1px dashed var(--border-color);
+    background-color: var(--bg2);
+    border: 1px dashed var(--border);
     padding: 14px 16px;
     border-radius: 8px;
     font-size: 0.875rem;
-    color: var(--text-main);
+    color: var(--secondary);
     margin-bottom: 20px;
 }
 
 .input-help {
     display: block;
     font-size: 0.775rem;
-    color: var(--text-muted);
+    color: var(--muted);
     margin-top: 6px;
 }
 
@@ -283,19 +298,18 @@ body {
 .place-order-btn {
     width: 100%;
     padding: 14px;
-    background-color: var(--primary);
-    color: #ffffff;
-    border: none;
+    background-color: var(--accent);
+    color: var(--primary);
+    border: 1px solid var(--border);
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
 }
 
 .place-order-btn:hover {
-    background-color: var(--primary-hover);
+    background-color: var(--accent-hover);
 }
 
 .place-order-btn:active {
@@ -303,9 +317,10 @@ body {
 }
 
 .place-order-btn:disabled {
-    background-color: #94a3b8;
+    background-color: var(--bg2);
+    color: var(--muted);
     cursor: not-allowed;
-    box-shadow: none;
+    border-color: var(--border);
 }
 
 /* Messages */
@@ -320,16 +335,16 @@ body {
 
 .checkout-message.error {
     display: block;
-    background-color: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #fecaca;
+    background-color: #3b1c1c;
+    color: #f87171;
+    border: 1px solid #7f1d1d;
 }
 
 .checkout-message.success {
     display: block;
-    background-color: #dcfce7;
-    color: #166534;
-    border: 1px solid #bbf7d0;
+    background-color: #143822;
+    color: #4ade80;
+    border: 1px solid #14532d;
 }
 
 /* =========================================
@@ -348,7 +363,7 @@ body {
     align-items: center;
     gap: 12px;
     padding: 12px 0;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid var(--border);
 }
 
 .checkout-item:last-child {
@@ -360,8 +375,8 @@ body {
     height: 54px;
     border-radius: 8px;
     object-fit: cover;
-    border: 1px solid var(--border-color);
-    background-color: #f1f5f9;
+    border: 1px solid var(--border);
+    background-color: var(--bg2);
     flex-shrink: 0;
 }
 
@@ -373,7 +388,7 @@ body {
 .checkout-item-name {
     font-size: 0.9rem;
     font-weight: 600;
-    color: var(--text-main);
+    color: var(--primary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -381,14 +396,14 @@ body {
 
 .checkout-item-quantity {
     font-size: 0.8rem;
-    color: var(--text-muted);
+    color: var(--muted);
     margin-top: 2px;
 }
 
 .checkout-item-price {
     font-size: 0.95rem;
     font-weight: 700;
-    color: var(--text-main);
+    color: var(--primary);
     white-space: nowrap;
 }
 
@@ -397,17 +412,17 @@ body {
     display: flex;
     justify-content: space-between;
     font-size: 0.95rem;
-    color: var(--text-muted);
+    color: var(--secondary);
     margin-bottom: 12px;
 }
 
 .summary-row strong {
-    color: var(--text-main);
+    color: var(--primary);
 }
 
 .summary-divider {
     height: 1px;
-    background-color: var(--border-color);
+    background-color: var(--border);
     margin: 16px 0;
 }
 
@@ -417,7 +432,7 @@ body {
     align-items: center;
     font-size: 1.15rem;
     font-weight: 700;
-    color: var(--text-main);
+    color: var(--primary);
 }
 
 .summary-total strong {
@@ -429,11 +444,11 @@ body {
    FOOTER
 ========================================= */
 .footer {
-    background-color: #ffffff;
-    border-top: 1px solid var(--border-color);
+    background-color: var(--bg2);
+    border-top: 1px solid var(--border);
     text-align: center;
     padding: 24px;
-    color: var(--text-muted);
+    color: var(--muted);
     font-size: 0.875rem;
     margin-top: 60px;
 }

@@ -61,7 +61,7 @@
                 <!-- ADDRESS -->
                 <div class="form-group">
                     <label for="customerAddress">Full Address</label>
-                    <textarea id="customerAddress" rows="3" placeholder="House, Road, Area, Thana, District" required></textarea>
+                    <textarea id="customerAddress" rows="2" placeholder="House, Road, Area, Thana, District" required></textarea>
                 </div>
 
                 <!-- LOCATION -->
@@ -80,7 +80,7 @@
                 </div>
 
                 <!-- PAYMENT -->
-                <div class="form-group" style="margin-top: 1rem;">
+                <div class="form-group" style="margin-top: 0.6rem;">
                     <label>Payment Method</label>
                     <div class="payment-options">
                         <!-- COD -->
@@ -110,8 +110,13 @@
                     </div>
                 </div>
 
-                <!-- PAYMENT INSTRUCTIONS -->
-                <div id="paymentInstructions" class="payment-instructions" style="display: none;"></div>
+                <!-- DYNAMIC PAYMENT DISCLAIMER -->
+                <div id="paymentDisclaimer" class="payment-disclaimer">
+                    (If cash on delivery)<br>
+                    Pay the delivery charge 80/- in advance<br>
+                    Bkash: 01303614563<br>
+                    Nogod: 01303614563
+                </div>
 
                 <!-- PAYMENT LAST TWO DIGITS -->
                 <div class="form-group" id="lastDigitsGroup">

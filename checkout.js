@@ -34,13 +34,20 @@ function getDeliveryFee() {
 function renderOrderSummary(cart) {
     const itemsContainer = document.getElementById("checkoutItems");
 
-    itemsContainer.innerHTML = cart.map(item => `
-        <div class="checkout-item">
-            <span class="checkout-item-name" title="${item.name}">${item.name}</span>
-            <span class="checkout-item-quantity">x${item.quantity}</span>
-            <span class="checkout-item-price">৳${Number(item.price) * Number(item.quantity)}</span>
-        </div>
-    `).join("");
+    itemsContainer.innerHTML = cart.map(item => {
+        // Handle variations in image property names across storage (image, img, image_url)
+        const imgSrc = item.image || item.img || item.image_url || 'logo.jpg';
+        return `
+            <div class="checkout-item">
+                <img src="${imgSrc}" alt="${item.name}" class="checkout-item-img" onerror="this.src='logo.jpg'">
+                <div class="checkout-item-details">
+                    <span class="checkout-item-name" title="${item.name}">${item.name}</span>
+                    <span class="checkout-item-quantity">Qty: ${item.quantity}</span>
+                </div>
+                <span class="checkout-item-price">৳${Number(item.price) * Number(item.quantity)}</span>
+            </div>
+        `;
+    }).join("");
 
     updateTotalsDisplay();
 

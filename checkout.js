@@ -35,7 +35,6 @@ function renderOrderSummary(cart) {
     const itemsContainer = document.getElementById("checkoutItems");
 
     itemsContainer.innerHTML = cart.map(item => {
-        // Handle variations in image property names across storage (image, img, image_url)
         const imgSrc = item.image || item.img || item.image_url || 'logo.jpg';
         return `
             <div class="checkout-item">
@@ -51,7 +50,6 @@ function renderOrderSummary(cart) {
 
     updateTotalsDisplay();
 
-    // Listen to location changes to update delivery fee & totals
     document.querySelectorAll('input[name="deliveryLocation"]').forEach(radio => {
         radio.addEventListener("change", () => {
             updateTotalsDisplay();
@@ -78,7 +76,6 @@ function setupPaymentDisclaimer(cart) {
         radio.addEventListener("change", () => updateDisclaimerText(cart));
     });
 
-    // Initial load call
     updateDisclaimerText(cart);
 }
 
@@ -136,16 +133,12 @@ function setupCheckoutForm(cart) {
         const deliveryFee = getDeliveryFee();
         const total = subtotal + deliveryFee;
 
+        // Clean payload safe for standard/original database structures
         const orderData = {
             customer_name: name,
             customer_phone: phone,
             customer_address: address,
-            delivery_location: location,
-            payment_method: paymentMethod,
-            payment_last_digits: lastDigits,
             items: cart,
-            subtotal: subtotal,
-            delivery_fee: deliveryFee,
             total_amount: total,
             created_at: new Date().toISOString()
         };
@@ -164,7 +157,7 @@ function setupCheckoutForm(cart) {
             }, 1500);
 
         } catch (err) {
-            console.error(err);
+            console.error("Supabase Error Details:", err);
             showMsg("Failed to place order. Please check your network.", "error");
             placeOrderBtn.disabled = false;
             placeOrderBtn.textContent = "Place Order";

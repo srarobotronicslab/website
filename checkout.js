@@ -36,10 +36,13 @@ function renderOrderSummary(cart) {
     if (!itemsContainer) return;
 
     itemsContainer.innerHTML = cart.map(item => {
+        // Fallback image handling
+        const imgSrc = item.image || item.img || item.image_url || 'logo.jpg';
         return `
             <div class="checkout-item">
-                <div class="checkout-item-name" title="${item.name}">
-                    ${item.name}
+                <img src="${imgSrc}" alt="${item.name}" class="checkout-item-img" onerror="this.src='logo.jpg'">
+                <div class="checkout-item-details">
+                    <div class="checkout-item-name" title="${item.name}">${item.name}</div>
                     <div class="checkout-item-quantity">Qty: ${item.quantity}</div>
                 </div>
                 <div class="checkout-item-price">৳${Number(item.price) * Number(item.quantity)}</div>
@@ -147,6 +150,7 @@ function setupCheckoutForm(cart) {
                 throw new Error("Supabase is not initialized on this page.");
             }
 
+            // 1. Insert into 'orders' table
             const orderPayload = {
                 customer_name: name,
                 phone: phone,
@@ -170,6 +174,7 @@ function setupCheckoutForm(cart) {
 
             const orderId = orderData.id;
 
+            // 2. Insert items into 'order_items' table
             const orderItemsPayload = cart.map(item => {
                 const itemPrice = Number(item.price);
                 const itemQty = Number(item.quantity);

@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const yearEl = document.getElementById("year");
     if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-    // Check Cart Data
-    let cart = JSON.parse(localStorage.getItem("sra_cart")) || [];
+    // Check Cart Data (Checking both storage keys for maximum compatibility)
+    let cart = JSON.parse(localStorage.getItem("sra_cart")) || JSON.parse(localStorage.getItem("cart")) || [];
     
     if (cart.length === 0) {
         alert("Your cart is empty!");
@@ -61,7 +61,7 @@ function renderOrderSummary(cart) {
 }
 
 function updateTotalsDisplay() {
-    let cart = JSON.parse(localStorage.getItem("sra_cart")) || [];
+    let cart = JSON.parse(localStorage.getItem("sra_cart")) || JSON.parse(localStorage.getItem("cart")) || [];
     const subtotal = calculateSubtotal(cart);
     const deliveryFee = getDeliveryFee();
     const total = subtotal + deliveryFee;
@@ -196,7 +196,10 @@ function setupCheckoutForm(cart) {
             if (itemsError) throw itemsError;
 
             showMsg("Order placed successfully! Redirecting...", "success");
+            
+            // Clear cart from both potential storage keys
             localStorage.removeItem("sra_cart");
+            localStorage.removeItem("cart");
             
             setTimeout(() => {
                 window.location.href = "store.html";

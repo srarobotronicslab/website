@@ -407,7 +407,7 @@ a {
 }
 
 /* =========================================
-    CHECKOUT BUTTON
+    CHECKOUT & PRIMARY BUTTON (YELLOW ACCENT)
 ========================================= */
 .checkout-btn {
     width: 100%;
@@ -415,20 +415,19 @@ a {
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
-    margin-top: 1rem;
-    padding: 0.75rem;
+    margin-top: 0.8rem;
+    padding: 0.65rem;
     border: none;
     border-radius: 0.6rem;
-    background: var(--primary);
-    color: var(--bg);
-    font-size: 0.85rem;
+    background: #ffc107; /* Matches store's add-to-cart yellow button */
+    color: #1E1E1E; /* Dark text for contrast */
+    font-size: 0.8rem;
     font-weight: 700;
     transition: 0.2s ease;
 }
 
 .checkout-btn:hover {
-    background: var(--secondary);
-    transform: translateY(-1px);
+    background: #e0a800; /* Darker yellow hover effect */
 }
 
 /* =========================================
@@ -457,17 +456,22 @@ a {
 
 .primary-btn {
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 0.6rem 1.2rem;
-    background: var(--primary);
-    color: var(--bg);
-    border-radius: 0.5rem;
-    font-size: 0.8rem;
+    background: #ffc107;
+    color: #1E1E1E;
+    border-radius: 0.6rem;
+    text-decoration: none;
     font-weight: 700;
+    font-size: 0.75rem;
+    transition: 0.2s ease;
 }
 
 .primary-btn:hover {
-    background: var(--secondary);
+    background: #e0a800;
 }
+
 
 /* =========================================
     FOOTER

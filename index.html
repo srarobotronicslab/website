@@ -3,375 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>SRA Robotronics Lab</title>
-
-    <meta
-        name="description"
-        content="SRA Robotronics Lab — Humans Innovate, Machines Repeat."
-    >
+    <meta name="description" content="SRA Robotronics Lab — Robotics Projects & Tutorials for Beginners. Humans Innovate, Machines Repeat.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
-<!-- ================= HEADER ================= -->
+    <!-- ================= COMPACT HERO / MAIN SCREEN ================= -->
+    <main class="hero-screen">
+        
+        <!-- Header / Nav bar integrated seamlessly -->
+        <header class="top-header">
+            <a href="#home" class="brand">
+                <img src="logo.jpg" alt="SRA Logo">
+                <span>SRA Robotronics Lab</span>
+            </a>
+            <div class="social-pills">
+                <a href="https://www.facebook.com/srarobotronicslab" target="_blank" class="social-pill fb" title="Facebook">FB</a>
+                <a href="https://www.instagram.com/sra_robotronics_lab?igsh=MWd2eW02dGt4Y2xveQ==" target="_blank" class="social-pill insta" title="Instagram">IG</a>
+                <a href="https://youtube.com/@srarobotronicslab?si=JbZqEeuuuL5DF7yF" target="_blank" class="social-pill yt" title="YouTube">YT</a>
+            </div>
+        </header>
 
-<header class="header">
+        <!-- Hero Content / Intro -->
+        <section class="hero-center" id="home">
+            <div class="badge-tag">ROBOTICS • ELECTRONICS • INNOVATION</div>
+            <h1>Humans Innovate, <span>Machines Repeat</span></h1>
+            <p class="hero-subtitle">Robotics Projects & Tutorials for Beginners</p>
+        </section>
 
-    <div class="nav-container">
+        <!-- ================= MAIN BUTTONS (ABOVE THE FOLD) ================= -->
+        <nav class="quick-links-grid" aria-label="Main Navigation">
+            <a href="#tutorials" class="quick-card">
+                <div class="card-icon">📚</div>
+                <div class="card-info">
+                    <h3>TUTORIALS</h3>
+                    <span>Learn & explore</span>
+                </div>
+                <span class="card-arrow">→</span>
+            </a>
 
-        <a href="#home" class="brand">
-            <img src="logo.jpg" alt="SRA Robotronics Lab Logo">
-            <span>SRA Robotronics Lab</span>
-        </a>
+            <a href="#projects" class="quick-card">
+                <div class="card-icon">⚙️</div>
+                <div class="card-info">
+                    <h3>PROJECTS</h3>
+                    <span>Build something</span>
+                </div>
+                <span class="card-arrow">→</span>
+            </a>
 
-        <nav class="top-nav">
-            <a href="#tutorials">Tutorials</a>
-            <a href="#projects">Projects</a>
-            <a href="#store">Store</a>
-            <a href="#starter-kit">Starter Kit</a>
-            <a href="#materials">Materials</a>
+            <a href="store.html" class="quick-card featured">
+                <div class="card-icon">🛒</div>
+                <div class="card-info">
+                    <h3>STORE</h3>
+                    <span>Shop components</span>
+                </div>
+                <span class="card-arrow">→</span>
+            </a>
+
+            <a href="#starter-kit" class="quick-card">
+                <div class="card-icon">🤖</div>
+                <div class="card-info">
+                    <h3>STARTER KIT</h3>
+                    <span>Beginner kits</span>
+                </div>
+                <span class="card-arrow">→</span>
+            </a>
+
+            <a href="#materials" class="quick-card">
+                <div class="card-icon">📦</div>
+                <div class="card-info">
+                    <h3>MATERIALS</h3>
+                    <span>Resources & guides</span>
+                </div>
+                <span class="card-arrow">→</span>
+            </a>
         </nav>
 
-        <button class="menu-button" id="menuButton">
-            ☰
-        </button>
-
-    </div>
-
-</header>
-
-
-<!-- ================= HERO ================= -->
-
-<main>
-
-<section class="hero" id="home">
-
-    <div class="hero-content">
-
-        <div class="logo-box">
-            <img src="logo.jpg" alt="SRA Robotronics Lab">
-        </div>
-
-        <p class="hero-label">
-            ROBOTICS • ELECTRONICS • INNOVATION
-        </p>
-
-        <h1>
-            SRA Robotronics Lab
-        </h1>
-
-        <p class="tagline">
-            Humans Innovate, Machines Repeat
-        </p>
-
-        <a
-            class="facebook-like"
-            href="https://www.facebook.com/srarobotronicslab/"
-            target="_blank"
-        >
-            <span class="heart">♥</span>
-            Like us on Facebook
-            <span class="arrow">↗</span>
-        </a>
-
-    </div>
-
-
-    <!-- ================= MAIN BUTTONS ================= -->
-
-    <div class="quick-links">
-
-        <a href="#tutorials" class="quick-button">
-
-            <div class="button-icon">
-                📚
+        <!-- Footer Note / Join the team -->
+        <footer class="hero-footer">
+            <span>Join the team:</span>
+            <div class="footer-socials">
+                <a href="https://www.facebook.com/srarobotronicslab" target="_blank">Facebook</a>
+                <span>•</span>
+                <a href="https://www.instagram.com/sra_robotronics_lab?igsh=MWd2eW02dGt4Y2xveQ==" target="_blank">Instagram</a>
+                <span>•</span>
+                <a href="https://youtube.com/@srarobotronicslab?si=JbZqEeuuuL5DF7yF" target="_blank">YouTube</a>
             </div>
+        </footer>
 
-            <div class="button-text">
-                <strong>Tutorials</strong>
-                <span>Learn & explore</span>
-            </div>
+    </main>
 
-            <div class="button-arrow">
-                →
-            </div>
-
-        </a>
-
-
-        <a href="#projects" class="quick-button">
-
-            <div class="button-icon">
-                ⚙
-            </div>
-
-            <div class="button-text">
-                <strong>Projects</strong>
-                <span>Build something</span>
-            </div>
-
-            <div class="button-arrow">
-                →
-            </div>
-
-        </a>
-
-        <a href="store.html" class="quick-button featured">
-
-            <div class="button-icon">
-                🛒
-            </div>
-
-            <div class="button-text">
-                <strong>Store</strong>
-                <span>Shop components</span>
-            </div>
-
-            <div class="button-arrow">
-                →
-            </div>
-
-        </a>
-
-
-        <a href="#starter-kit" class="quick-button">
-
-            <div class="button-icon">
-                🤖
-            </div>
-
-            <div class="button-text">
-                <strong>Starter Kit</strong>
-                <span>Start building</span>
-            </div>
-
-            <div class="button-arrow">
-                →
-            </div>
-
-        </a>
-
-
-        <a href="#materials" class="quick-button">
-
-            <div class="button-icon">
-                ◫
-            </div>
-
-            <div class="button-text">
-                <strong>Materials</strong>
-                <span>Resources & guides</span>
-            </div>
-
-            <div class="button-arrow">
-                →
-            </div>
-
-        </a>
-
-    </div>
-
-
-    <div class="scroll-indicator">
-        <span>Explore more</span>
-        <span class="down-arrow">↓</span>
-    </div>
-
-</section>
-
-
-<!-- ================= BELOW THE FOLD ================= -->
-
-<section class="below-content">
-
-    <div class="content-container">
-
-        <div class="section-title">
-            <span>EXPLORE</span>
-            <h2>Build. Learn. Innovate.</h2>
-            <p>
-                Discover robotics projects, tutorials and resources
-                designed for curious minds and future innovators.
-            </p>
-        </div>
-
-
-        <div class="content-grid">
-
-            <article id="tutorials">
-                <span>01</span>
-                <h3>Tutorials</h3>
-                <p>
-                    Beginner-friendly robotics and electronics
-                    tutorials.
-                </p>
-            </article>
-
-
-            <article id="projects">
-                <span>02</span>
-                <h3>Projects</h3>
-                <p>
-                    Turn your ideas into real-world robotics projects.
-                </p>
-            </article>
-
-
-            <article id="store">
-                <span>03</span>
-                <h3>Store</h3>
-                <p>
-                    Find the components you need for your next project.
-                </p>
-            </article>
-
-
-            <article id="starter-kit">
-                <span>04</span>
-                <h3>Robotics Starter Kit</h3>
-                <p>
-                    Everything you need to begin your robotics journey.
-                </p>
-            </article>
-
-
-            <article id="materials">
-                <span>05</span>
-                <h3>Materials</h3>
-                <p>
-                    Helpful guides, references and learning resources.
-                </p>
-            </article>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= FACEBOOK ================= -->
-
-<section class="facebook-section">
-
-    <div class="content-container facebook-inner">
-
-        <div>
-            <span>STAY CONNECTED</span>
-
-            <h2>
-                Follow SRA Robotronics Lab
-            </h2>
-
-            <p>
-                Get robotics projects, tutorials and updates
-                on our Facebook page.
-            </p>
-        </div>
-
-        <a
-            href="https://www.facebook.com/srarobotronicslab/"
-            target="_blank"
-            class="facebook-button"
-        >
-            Visit Facebook Page
-            <span>↗</span>
-        </a>
-
-    </div>
-
-</section>
-
-</main>
-
-
-<!-- ================= FOOTER ================= -->
-
-<footer class="footer">
-
-    <div class="footer-container">
-
-        <div class="footer-brand">
-
-            <img src="logo.jpg" alt="SRA Robotronics Lab">
-
-            <h3>
-                SRA Robotronics Lab
-            </h3>
-
-            <p>
-                Humans Innovate, Machines Repeat
-            </p>
-
-        </div>
-
-
-        <div class="footer-links">
-
-            <div>
-
-                <h4>Explore</h4>
-
-                <a href="#tutorials">Tutorials</a>
-                <a href="#projects">Projects</a>
-                <a href="#store">Store</a>
-                <a href="#starter-kit">Starter Kit</a>
-                <a href="#materials">Materials</a>
-
-            </div>
-
-
-            <div>
-
-                <h4>Connect</h4>
-
-                <a
-                    href="https://www.facebook.com/srarobotronicslab/"
-                    target="_blank"
-                >
-                    Facebook
-                </a>
-
-                <a href="mailto:srarobotronicslab@gmail.com">
-                    Email
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="footer-bottom">
-
-        <span>
-            © <span id="year"></span>
-            SRA Robotronics Lab
-        </span>
-
-        <span>
-            Humans Innovate, Machines Repeat
-        </span>
-
-    </div>
-
-</footer>
-
-
-<script src="script.js"></script>
-
+    <script src="script.js"></script>
 </body>
 </html>

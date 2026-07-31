@@ -618,4 +618,42 @@ a {
     .footer-links {
         gap: 30px;
     }
+    /* =========================================
+   PROFESSIONAL TOAST NOTIFICATION
+========================================= */
+#toast-notification {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background-color: var(--card, #333333);
+    color: var(--primary, #FEFEFE);
+    border: 1px solid var(--border, #4A4A4A);
+    padding: 14px 20px;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+#toast-notification.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+#toast-notification svg {
+    width: 18px;
+    height: 18px;
+    color: #4ade80; /* Success green accent */
+    flex-shrink: 0;
+}
 }

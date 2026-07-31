@@ -1,5 +1,5 @@
 /* =========================================
-    RESET & THEME VARIABLES
+    RESET & EXACT COLOR CODE VARIABLES
 ========================================= */
 * {
     margin: 0;
@@ -11,22 +11,25 @@
     --bg: #1E1E1E;
     --bg2: #252525;
     --card: #333333;
+    
     --primary: #FEFEFE;
     --secondary: #D6D6D6;
     --muted: #A8A8A8;
+    
     --accent: #4A4A4A;
     --accent-hover: #5A5A5A;
+    
     --border: #4A4A4A;
-    --highlight: #e2a03f;
 }
 
 body {
     font-family: "Inter", sans-serif;
-    background: var(--bg);
+    background-color: var(--bg);
     color: var(--primary);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -35,7 +38,7 @@ a {
 }
 
 /* =========================================
-    HEADER
+    HEADER & FIXED LOGO SIZE
 ========================================= */
 .amazon-header {
     background-color: var(--bg2);
@@ -52,19 +55,25 @@ a {
     width: 100%;
 }
 
+.nav-logo {
+    display: flex;
+    align-items: center;
+}
+
 .nav-logo img {
-    height: 38px;
-    width: 38px;
+    height: 32px;
+    width: 32px;
     object-fit: cover;
-    border-radius: 9px;
+    border-radius: 6px;
     border: 1px solid var(--border);
+    display: block;
 }
 
 .page-indicator {
-    font-weight: 700;
-    font-size: 1rem;
+    font-weight: 600;
+    font-size: 0.95rem;
     color: var(--secondary);
-    letter-spacing: 0.03em;
+    letter-spacing: 0.02em;
 }
 
 /* =========================================
@@ -79,93 +88,78 @@ a {
 }
 
 .coming-soon-card {
-    background: var(--card);
+    background-color: var(--card);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 45px 35px;
+    border-radius: 10px;
+    padding: 48px 36px;
     text-align: center;
-    max-width: 580px;
+    max-width: 520px;
     width: 100%;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
 }
 
 .icon-badge {
-    font-size: 3.5rem;
-    margin-bottom: 18px;
-    animation: floatIcon 3s ease-in-out infinite;
+    width: 54px;
+    height: 54px;
+    margin: 0 auto 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--secondary);
 }
 
-@keyframes floatIcon {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
+.icon-badge svg {
+    width: 26px;
+    height: 26px;
 }
 
 .coming-soon-card h1 {
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: var(--primary);
-    margin-bottom: 10px;
-}
-
-.subtitle-en {
-    font-size: 0.95rem;
-    color: var(--muted);
-    line-height: 1.5;
-    margin-bottom: 20px;
-}
-
-.divider {
-    width: 60px;
-    height: 3px;
-    background: var(--highlight);
-    margin: 20px auto;
-    border-radius: 2px;
-}
-
-.bangla-section h2 {
-    font-size: 1.3rem;
+    font-size: 1.35rem;
     font-weight: 700;
-    color: var(--secondary);
-    margin-bottom: 8px;
+    color: var(--primary);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
 }
 
-.bangla-section p {
-    font-size: 0.9rem;
+.subtitle-text {
+    font-size: 0.88rem;
     color: var(--muted);
-    line-height: 1.6;
-    margin-bottom: 30px;
+    line-height: 1.65;
+    margin-bottom: 28px;
 }
 
 .action-box {
-    margin-top: 10px;
+    margin-top: 8px;
 }
 
 .back-home-btn {
     display: inline-block;
-    background: var(--highlight);
-    color: #000;
-    font-weight: 700;
-    font-size: 0.9rem;
-    padding: 12px 28px;
+    background-color: var(--accent);
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 10px 24px;
     border-radius: 6px;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(226, 160, 63, 0.2);
+    border: 1px solid rgba(254, 254, 254, 0.1);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .back-home-btn:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(226, 160, 63, 0.35);
+    background-color: var(--accent-hover);
+    border-color: rgba(254, 254, 254, 0.2);
 }
 
 /* =========================================
     FOOTER
 ========================================= */
 .footer {
-    background: var(--bg2);
+    background-color: var(--bg2);
     border-top: 1px solid var(--border);
-    padding: 16px;
+    padding: 14px;
     text-align: center;
     color: var(--muted);
-    font-size: 0.78rem;
+    font-size: 0.75rem;
 }

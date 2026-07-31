@@ -18,10 +18,10 @@
 <header class="header">
     <div class="nav-container">
         <a href="store.html" class="brand">
-            <img src="logo.jpg" alt="SRA Robotronics Lab" onerror="this.src='logo.jpg'">
+            <img src="logo.jpg" alt="SRA Robotronics Lab">
             <span>SRA Robotronics Lab</span>
         </a>
-        <a href="cart.html" class="back-store">
+        <a href="cart.html" class="back-cart">
             ← Back to Cart
         </a>
     </div>
@@ -36,6 +36,7 @@
     <section class="page-header">
         <p class="section-label">SECURE CHECKOUT</p>
         <h1>Complete Your Order</h1>
+        <p>Enter your delivery information and complete the payment.</p>
     </section>
 
     <!-- CHECKOUT LAYOUT -->
@@ -61,26 +62,26 @@
                 <!-- ADDRESS -->
                 <div class="form-group">
                     <label for="customerAddress">Full Address</label>
-                    <textarea id="customerAddress" rows="3" placeholder="House, Road, Area, Thana, District" required></textarea>
+                    <textarea id="customerAddress" rows="4" placeholder="House, Road, Area, Thana, District" required></textarea>
                 </div>
 
                 <!-- LOCATION -->
-                <div class="delivery-options-group">
-                    <span class="delivery-label">Delivery Location</span>
-                    <div class="delivery-radios">
-                        <label class="radio-card">
+                <div class="form-group">
+                    <label>Delivery Location</label>
+                    <div class="location-options">
+                        <label class="radio-option">
                             <input type="radio" name="deliveryLocation" value="inside" checked>
-                            <span>Inside Dhaka (৳80)</span>
+                            <span>Inside Dhaka</span>
                         </label>
-                        <label class="radio-card">
+                        <label class="radio-option">
                             <input type="radio" name="deliveryLocation" value="outside">
-                            <span>Outside Dhaka (৳150)</span>
+                            <span>Outside Dhaka</span>
                         </label>
                     </div>
                 </div>
 
                 <!-- PAYMENT -->
-                <div class="form-group" style="margin-top: 0.8rem;">
+                <div class="form-group">
                     <label>Payment Method</label>
                     <div class="payment-options">
                         <!-- COD -->
@@ -110,22 +111,18 @@
                     </div>
                 </div>
 
-                <!-- DYNAMIC PAYMENT DISCLAIMER -->
-                <div id="paymentDisclaimer" class="payment-disclaimer">
-                    Pay the delivery charge 80/- in advance<br>
-                    Bkash: 01303614563<br>
-                    Nogod: 01303614563
-                </div>
+                <!-- PAYMENT INSTRUCTIONS -->
+                <div id="paymentInstructions" class="payment-instructions"></div>
 
                 <!-- PAYMENT LAST TWO DIGITS -->
-                <div class="form-group" id="lastDigitsGroup">
+                <div class="form-group">
                     <label for="paymentLastTwo">Last 2 Digits of Payment Number</label>
-                    <input type="text" id="paymentLastTwo" maxlength="2" inputmode="numeric" placeholder="Example: 45">
+                    <input type="text" id="paymentLastTwo" maxlength="2" inputmode="numeric" placeholder="Example: 45" required>
                     <small class="input-help">Enter the last 2 digits of the phone number you used to make the payment.</small>
                 </div>
 
                 <!-- SUBMIT -->
-                <button type="submit" id="placeOrderBtn" class="checkout-btn">
+                <button type="submit" id="placeOrderBtn" class="place-order-btn">
                     Place Order
                 </button>
 
@@ -141,8 +138,6 @@
             <!-- ITEMS -->
             <div id="checkoutItems" class="checkout-items"></div>
 
-            <div class="summary-divider"></div>
-
             <!-- SUBTOTAL -->
             <div class="summary-row">
                 <span>Subtotal</span>
@@ -151,7 +146,7 @@
 
             <!-- DELIVERY -->
             <div class="summary-row">
-                <span>Delivery Fee</span>
+                <span>Delivery</span>
                 <strong id="checkoutDelivery">৳80</strong>
             </div>
 
@@ -160,7 +155,7 @@
             <!-- TOTAL -->
             <div class="summary-total">
                 <span>Total</span>
-                <strong id="checkoutTotal">৳0</strong>
+                <strong id="checkoutTotal">৳80</strong>
             </div>
         </aside>
 
@@ -181,9 +176,9 @@
 
 <!-- INITIALIZE SUPABASE CLIENT -->
 <script>
-    const SUPABASE_URL = "https://xzhpbisrzhgbeiptdkfd.supabase.co/rest/v1/";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6aHBiaXNyemhnYmVpcHRka2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NzE1NDcsImV4cCI6MjEwMDU0NzU0N30.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw";
-    
+    const SUPABASE_URL = "https://xzhpbisrzhgbeiptdkfd.supabase.co/rest/v1/";       // <-- Replace with your Supabase URL
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6aHBiaXNyemhnYmVpcHRka2ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NzE1NDcsImV4cCI6MjEwMDU0NzU0N30.oGwKzJG7CuBG_bCDIz7vn5UMVDVMDJBZPM8H1Rxt1iw"; // <-- Replace with your Supabase Anon Key
+
     window.supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 </script>
 

@@ -1,115 +1,166 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store | SRA Robotronics Lab</title>
-    <link rel="stylesheet" href="store.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Supabase Client CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
 <body>
 
-    <!-- =========================================
-       AMAZON STYLE HEADER
-    ========================================= -->
-    <header class="amazon-header">
-        <div class="nav-top">
-            <a href="store.html" class="nav-logo">
-                <img src="logo.png" alt="Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <span class="logo-fallback" style="display:none;">SRA</span>
-            </a>
-            <div class="nav-delivery">
-                <span class="delivery-icon">📍</span>
-                <div class="delivery-text">
-                    <span class="line-1">Deliver to</span>
+<!-- =====================================================
+         MAIN HEADER (AMAZON STYLE)
+         MAIN HEADER (AMAZON STYLE - DARK THEME)
+   ====================================================== -->
+<header class="amazon-header">
+<div class="nav-top">
+@@ -25,13 +25,13 @@
+<span class="location-icon">📍</span>
+<div class="delivery-text">
+<span class="line-1">Deliver to</span>
+                    <span class="line-2">Fast delivery all over bd</span>
                     <span class="line-2">Fast delivery all over BD</span>
-                </div>
-            </div>
-            <div class="nav-search">
-                <input type="text" id="searchInput" placeholder="Search components, modules...">
-                <button class="search-btn" type="button">🔍</button>
-            </div>
-            <a href="cart.html" class="nav-cart">
-                <span class="cart-icon">🛒</span>
-                <span class="cart-count" id="cartCount">0</span>
-                <span class="cart-text">Cart</span>
-            </a>
-        </div>
+</div>
+</div>
 
-        <!-- COMPACT CATEGORIES SUB-NAVBAR -->
-        <div class="nav-categories-wrapper">
-            <nav class="nav-categories">
-                <button class="category active" data-category="all">ALL</button>
-                <button class="category" data-category="arduino">ARDUINO</button>
-                <button class="category" data-category="esp">ESP</button>
-                <button class="category" data-category="raspberry pi">RASPBERRY PI</button>
-                <button class="category" data-category="sensors">SENSORS</button>
-                <button class="category" data-category="motors & actuators">MOTORS & ACTUATORS</button>
-                <button class="category" data-category="motor drivers">MOTOR DRIVERS</button>
-                <button class="category" data-category="power">POWER</button>
-                <button class="category" data-category="displays">DISPLAYS</button>
-                <button class="category" data-category="mechanical parts">MECHANICAL PARTS</button>
-                <button class="category" data-category="electronic components">ELECTRONIC COMPONENTS</button>
-                <button class="category" data-category="cables & connectors">CABLES & CONNECTORS</button>
-                <button class="category" data-category="communication modules">COMMUNICATION MODULES</button>
-            </nav>
-        </div>
-    </header>
+<!-- SEARCH BAR -->
+<div class="nav-search">
+                <input type="text" id="searchInput" placeholder="Search your required product..." autocomplete="off">
+                <input type="text" id="searchInput" placeholder="Search components, modules..." autocomplete="off">
+<button type="button" class="search-btn">🔍</button>
+</div>
 
-    <!-- =========================================
-       MAIN CONTENT
-    ========================================= -->
-    <main class="main-content">
-        <section class="products-section">
-            <h2 class="section-title">Available Products</h2>
-            <div id="productGrid" class="product-grid">
-                <!-- Products dynamically injected via store.js -->
-            </div>
-            <div id="noResults" class="no-results" style="display: none;">
-                <p>No products found matching your search.</p>
-            </div>
-        </section>
-    </main>
+@@ -69,109 +69,66 @@
+<img src="Banner.png" alt="SRA Robotronics Lab Store Banner" class="hero-banner">
+</section>
 
-    <!-- =========================================
-       FOOTER
-    ========================================= -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-brand">
-                <img src="logo.png" alt="Logo" onerror="this.style.display='none'">
-                <h3>SRA Robotronics Lab</h3>
-                <p>Your ultimate destination for robotics & electronics components.</p>
-            </div>
-            <div class="footer-links">
-                <div>
-                    <h4>Quick Links</h4>
-                    <a href="store.html">Store</a>
-                    <a href="cart.html">Cart</a>
-                </div>
-                <div>
-                    <h4>Support</h4>
-                    <a href="#">Contact Us</a>
-                    <a href="#">Shipping Policy</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; <span id="year"></span> SRA Robotronics Lab. All rights reserved.</p>
-        </div>
-    </footer>
+        <!-- CATEGORY CARDS WITH PICTURES (ALL 14 CATEGORIES) -->
+        <!-- CATEGORY CARDS WITH PICTURES -->
+<section class="featured-categories-section">
+<h2 class="section-title">Explore Top Categories</h2>
+<div class="category-grid">
+                
+<div class="cat-card" onclick="selectCategory('ARDUINO')">
+                    <div class="cat-img-box">
+                        <img src="1.png" alt="Arduino" onerror="this.src='placeholder.png'">
+                    </div>
+                    <div class="cat-img-box"><img src="1.png" alt="Arduino" onerror="this.src='placeholder.png'"></div>
+<span class="cat-title">ARDUINO</span>
+</div>
 
-    <!-- =========================================
-       PROFESSIONAL TOAST NOTIFICATION CONTAINER
-    ========================================= -->
-    <div id="toast-notification">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-        <span id="toast-message">Product added to cart successfully!</span>
-    </div>
+<div class="cat-card" onclick="selectCategory('ESP')">
+                    <div class="cat-img-box">
+                        <img src="2.png" alt="ESP" onerror="this.src='placeholder.png'">
+                    </div>
+                    <div class="cat-img-box"><img src="2.png" alt="ESP" onerror="this.src='placeholder.png'"></div>
+<span class="cat-title">ESP</span>
+</div>
 
-    <!-- Store Script -->
-    <script src="store.js"></script>
-</body>
-</html>
+<div class="cat-card" onclick="selectCategory('RASPBERRY PI')">
+                    <div class="cat-img-box">
+                        <img src="3.png" alt="Raspberry Pi" onerror="this.src='placeholder.png'">
+                    </div>
+                    <div class="cat-img-box"><img src="3.png" alt="Raspberry Pi" onerror="this.src='placeholder.png'"></div>
+<span class="cat-title">RASPBERRY PI</span>
+</div>
+
+<div class="cat-card" onclick="selectCategory('SENSORS')">
+                    <div class="cat-img-box">
+                        <img src="4.png" alt="Sensors" onerror="this.src='placeholder.png'">
+                    </div>
+                    <div class="cat-img-box"><img src="4.png" alt="Sensors" onerror="this.src='placeholder.png'"></div>
+<span class="cat-title">SENSORS</span>
+</div>
+
+<div class="cat-card" onclick="selectCategory('MOTORS & ACTUATORS')">
+                    <div class="cat-img-box">
+                        <img src="5.png" alt="Motors & Actuators" onerror="this.src='placeholder.png'">
+                    </div>
+                    <span class="cat-title">MOTORS & ACTUATORS</span>
+                    <div class="cat-img-box"><img src="5.png" alt="Motors & Actuators" onerror="this.src='placeholder.png'"></div>
+                    <span class="cat-title">MOTORS</span>
+</div>
+
+<div class="cat-card" onclick="selectCategory('MOTOR DRIVERS')">
+                    <div class="cat-img-box">
+                        <img src="6.png" alt="Motor Drivers" onerror="this.src='placeholder.png'">
+                    </div>
+                    <span class="cat-title">MOTOR DRIVERS</span>
+                    <div class="cat-img-box"><img src="6.png" alt="Motor Drivers" onerror="this.src='placeholder.png'"></div>
+                    <span class="cat-title">DRIVERS</span>
+</div>
+
+<div class="cat-card" onclick="selectCategory('POWER')">
+                    <div class="cat-img-box">
+                        <img src="7.png" alt="Power" onerror="this.src='placeholder.png'">
+                    </div>
+                    <div class="cat-img-box"><img src="7.png" alt="Power" onerror="this.src='placeholder.png'"></div>
+<span class="cat-title">POWER</span>
+</div>
+
+<div class="cat-card" onclick="selectCategory('DISPLAYS')">
+                    <div class="cat-img-box">
+                        <img src="8.png" alt="Displays" onerror="this.src='placeholder.png'">
+                    </div>
+                    <div class="cat-img-box"><img src="8.png" alt="Displays" onerror="this.src='placeholder.png'"></div>
+<span class="cat-title">DISPLAYS</span>
+</div>
+
+<div class="cat-card" onclick="selectCategory('MECHANICAL PARTS')">
+                    <div class="cat-img-box">
+                        <img src="9.png" alt="Mechanical Parts" onerror="this.src='placeholder.png'">
+                    </div>
+                    <span class="cat-title">MECHANICAL PARTS</span>
+                    <div class="cat-img-box"><img src="9.png" alt="Mechanical Parts" onerror="this.src='placeholder.png'"></div>
+                    <span class="cat-title">MECHANICAL</span>
+</div>
+
+<div class="cat-card" onclick="selectCategory('ELECTRONIC COMPONENTS')">
+                    <div class="cat-img-box">
+                        <img src="10.png" alt="Electronic Components" onerror="this.src='placeholder.png'">
+                    </div>
+                    <span class="cat-title">ELECTRONIC COMPONENTS</span>
+                    <div class="cat-img-box"><img src="10.png" alt="Electronic Components" onerror="this.src='placeholder.png'"></div>
+                    <span class="cat-title">COMPONENTS</span>
+</div>
+
+<div class="cat-card" onclick="selectCategory('CABLES & CONNECTORS')">
+                    <div class="cat-img-box">
+                        <img src="11.png" alt="Cables & Connectors" onerror="this.src='placeholder.png'">
+                    </div>
+                    <span class="cat-title">CABLES & CONNECTORS</span>
+                    <div class="cat-img-box"><img src="11.png" alt="Cables & Connectors" onerror="this.src='placeholder.png'"></div>
+                    <span class="cat-title">CABLES</span>
+</div>
+
+<div class="cat-card" onclick="selectCategory('COMMUNICATION MODULES')">
+                    <div class="cat-img-box">
+                        <img src="12.png" alt="Communication Modules" onerror="this.src='placeholder.png'">
+                    </div>
+                    <span class="cat-title">COMMUNICATION MODULES</span>
+                    <div class="cat-img-box"><img src="12.png" alt="Communication Modules" onerror="this.src='placeholder.png'"></div>
+                    <span class="cat-title">COMMUNICATION</span>
+</div>
+
+<div class="cat-card" onclick="selectCategory('ROBOTICS KITS')">
+                    <div class="cat-img-box">
+                        <img src="13.png" alt="Robotics Kits" onerror="this.src='placeholder.png'">
+                    </div>
+                    <span class="cat-title">ROBOTICS KITS</span>
+                    <div class="cat-img-box"><img src="13.png" alt="Robotics Kits" onerror="this.src='placeholder.png'"></div>
+                    <span class="cat-title">KITS</span>
+</div>
+
+<div class="cat-card" onclick="selectCategory('TOOLS & ACCESSORIES')">
+                    <div class="cat-img-box">
+                        <img src="14.png" alt="Tools & Accessories" onerror="this.src='placeholder.png'">
+                    </div>
+                    <span class="cat-title">TOOLS & ACCESSORIES</span>
+                    <div class="cat-img-box"><img src="14.png" alt="Tools & Accessories" onerror="this.src='placeholder.png'"></div>
+                    <span class="cat-title">TOOLS</span>
+</div>
+
+</div>
+</section>
+
+@@ -182,7 +139,7 @@ <h2 class="section-title">All Products</h2>
+<p class="loading">Loading products...</p>
+</div>
+<div class="no-results" id="noResults" style="display:none;">
+                No products found in this category.
+                No products found matching your search or category criteria.
+</div>
+</section>
+</main>

@@ -207,4 +207,4 @@ if (yearElement) {
 }
 
 updateCartCount();
-loadProducts();
+loadProducts(); 

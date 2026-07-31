@@ -1,981 +1,192 @@
-/* =========================================
-   CART CONFIGURATION
-========================================= */
+// =========================================
+// CART LOGIC - SRA ROBOTRONICS LAB
+// =========================================
 
-const DELIVERY_FEE = 100;
-
-
-/* =========================================
-   CART DATA
-========================================= */
-
-let cart = [];
-
-
-/* =========================================
-   DOM ELEMENTS
-========================================= */
-
-const emptyCart =
-    document.getElementById("emptyCart");
-
-const cartContent =
-    document.getElementById("cartContent");
-
-const cartItems =
-    document.getElementById("cartItems");
-
-const cartItemCount =
-    document.getElementById("cartItemCount");
-
-const cartSubtotal =
-    document.getElementById("cartSubtotal");
-
-const cartTotal =
-    document.getElementById("cartTotal");
-
-const checkoutBtn =
-    document.getElementById("checkoutBtn");
-
-const clearCartBtn =
-    document.getElementById("clearCartBtn");
-
-const yearElement =
-    document.getElementById("year");
-
-
-/* =========================================
-   LOAD CART FROM LOCAL STORAGE
-========================================= */
-
-function loadCart() {
-
-    try {
-
-        const savedCart =
-            localStorage.getItem("cart");
-
-        cart =
-            savedCart
-                ? JSON.parse(savedCart)
-                : [];
-
+document.addEventListener('DOMContentLoaded', () => {
+    // Set dynamic footer year
+    const yearSpan = document.getElementById('year');
+    if (yearSpan) {
+        yearSpan.innerText = new Date().getFullYear();
     }
 
-    catch (error) {
+    // Initialize cart data from LocalStorage
+    loadCart();
 
-        console.error(
-            "Failed to load cart:",
-            error
-        );
-
-        cart = [];
-
+    // Event listener for clear cart button
+    const clearCartBtn = document.getElementById('clearCartBtn');
+    if (clearCartBtn) {
+        clearCartBtn.addEventListener('click', clearCart);
     }
 
-
-    /*
-       Make sure cart is actually an array
-    */
-
-    if (!Array.isArray(cart)) {
-
-        cart = [];
-
-    }
-
-
-    /*
-       Normalize old cart data
-
-       This is important because your
-       previous cart may have items like:
-
-       {
-           name: "...",
-           price: 100
-       }
-
-       instead of:
-
-       {
-           name: "...",
-           price: 100,
-           quantity: 1,
-           image_url: "..."
-       }
-    */
-
-    cart = cart.map(item => {
-
-        return {
-
-            id:
-                item.id ||
-                item.product_id ||
-                null,
-
-            name:
-                item.name ||
-                "Unnamed Product",
-
-            price:
-                Number(item.price) || 0,
-
-            quantity:
-                Math.max(
-                    1,
-                    Number(item.quantity) || 1
-                ),
-
-            stock:
-                Number(item.stock) > 0
-                    ? Number(item.stock)
-                    : 999999,
-
-            image_url:
-                item.image_url ||
-                item.image ||
-                ""
-
-        };
-
+    // Event listener for delivery option changes (Inside/Outside Dhaka)
+    const deliveryRadios = document.querySelectorAll('input[name="deliveryOption"]');
+    deliveryRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            updateCartUI();
+        });
     });
 
-
-    /*
-       Save normalized data
-    */
-
-    saveCart(false);
-
-
-    /*
-       Display cart
-    */
-
-    renderCart();
-
-}
-
-
-/* =========================================
-   SAVE CART
-========================================= */
-
-function saveCart(
-    shouldRender = true
-) {
-
-    localStorage.setItem(
-
-        "cart",
-
-        JSON.stringify(cart)
-
-    );
-
-
-    if (shouldRender) {
-
-        renderCart();
-
-    }
-
-}
-
-
-/* =========================================
-   RENDER CART
-========================================= */
-
-function renderCart() {
-
-
-    /*
-       EMPTY CART
-    */
-
-    if (
-        cart.length === 0
-    ) {
-
-        if (emptyCart) {
-
-            emptyCart.style.display =
-                "block";
-
-        }
-
-
-        if (cartContent) {
-
-            cartContent.style.display =
-                "none";
-
-        }
-
-
-        if (cartSubtotal) {
-
-            cartSubtotal.textContent =
-                "৳0";
-
-        }
-
-
-        if (cartTotal) {
-
-            cartTotal.textContent =
-                "৳0";
-
-        }
-
-
-        if (cartItemCount) {
-
-            cartItemCount.textContent =
-                "0 items";
-
-        }
-
-
-        if (checkoutBtn) {
-
-            checkoutBtn.disabled =
-                true;
-
-        }
-
-
-        return;
-
-    }
-
-
-
-    /*
-       SHOW CART
-    */
-
-    if (emptyCart) {
-
-        emptyCart.style.display =
-            "none";
-
-    }
-
-
-    if (cartContent) {
-
-        cartContent.style.display =
-            "grid";
-
-    }
-
-
+    // Event listener for checkout button
+    const checkoutBtn = document.getElementById('checkoutBtn');
     if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', handleCheckout);
+    }
+});
 
-        checkoutBtn.disabled =
-            false;
+// Retrieve cart from localStorage
+function getCart() {
+    try {
+        return JSON.parse(localStorage.getItem('sra_cart')) || [];
+    } catch (e) {
+        return [];
+    }
+}
 
+// Save cart to localStorage
+function saveCart(cart) {
+    localStorage.setItem('sra_cart', JSON.stringify(cart));
+}
+
+// Load and render cart UI
+function loadCart() {
+    const cart = getCart();
+    const emptyCartSection = document.getElementById('emptyCart');
+    const cartContentSection = document.getElementById('cartContent');
+    const cartItemsContainer = document.getElementById('cartItems');
+    const cartItemCount = document.getElementById('cartItemCount');
+
+    if (!cartContentSection || !emptyCartSection) return;
+
+    if (cart.length === 0) {
+        emptyCartSection.style.display = 'block';
+        cartContentSection.style.display = 'none';
+        return;
     }
 
+    emptyCartSection.style.display = 'none';
+    cartContentSection.style.display = 'grid';
 
+    // Update item count label
+    const totalItemsCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+    cartItemCount.innerText = `${totalItemsCount} item${totalItemsCount > 1 ? 's' : ''}`;
 
-    /*
-       CALCULATE SUBTOTAL
-    */
+    // Clear current list and render items
+    cartItemsContainer.innerHTML = '';
 
-    let subtotal = 0;
+    cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        const imageUrl = item.image && item.image.trim() !== '' ? item.image : 'logo.jpg';
 
-    let totalQuantity = 0;
-
-
-    cart.forEach(item => {
-
-        const price =
-            Number(item.price) || 0;
-
-        const quantity =
-            Number(item.quantity) || 1;
-
-
-        subtotal +=
-            price *
-            quantity;
-
-
-        totalQuantity +=
-            quantity;
-
+        const cartItemElement = document.createElement('div');
+        cartItemElement.className = 'cart-item';
+        cartItemElement.innerHTML = `
+            <img src="${imageUrl}" alt="${item.name}" class="cart-item-image" onerror="this.src='logo.jpg'">
+            <div class="cart-item-info">
+                <h3>${item.name}</h3>
+                <p>৳${item.price} each</p>
+            </div>
+            <div class="cart-item-controls">
+                <div class="quantity-controls">
+                    <button class="quantity-btn" type="button" onclick="updateQuantity(${index}, -1)">-</button>
+                    <span>${item.quantity}</span>
+                    <button class="quantity-btn" type="button" onclick="updateQuantity(${index}, 1)">+</button>
+                </div>
+                <div class="item-total">৳${itemTotal}</div>
+                <button class="remove-btn" type="button" onclick="removeItem(${index})">Remove</button>
+            </div>
+        `;
+        cartItemsContainer.appendChild(cartItemElement);
     });
 
-
-
-    /*
-       GRAND TOTAL
-    */
-
-    const grandTotal =
-
-        subtotal +
-        DELIVERY_FEE;
-
-
-
-    /*
-       UPDATE SUMMARY
-    */
-
-    if (cartSubtotal) {
-
-        cartSubtotal.textContent =
-
-            "৳" +
-            subtotal.toFixed(0);
-
-    }
-
-
-    if (cartTotal) {
-
-        cartTotal.textContent =
-
-            "৳" +
-            grandTotal.toFixed(0);
-
-    }
-
-
-    if (cartItemCount) {
-
-        cartItemCount.textContent =
-
-            totalQuantity +
-
-            (
-                totalQuantity === 1
-                    ? " item"
-                    : " items"
-            );
-
-    }
-
-
-
-    /*
-       CLEAR PREVIOUS ITEMS
-    */
-
-    if (!cartItems) {
-
-        console.error(
-            "cartItems element not found."
-        );
-
-        return;
-
-    }
-
-
-    cartItems.innerHTML =
-        "";
-
-
-
-    /*
-       CREATE EACH CART ITEM
-    */
-
-    cart.forEach(
-        (item, index) => {
-
-
-            const price =
-                Number(item.price) || 0;
-
-
-            const quantity =
-                Number(item.quantity) || 1;
-
-
-            const itemTotal =
-
-                price *
-                quantity;
-
-
-
-            /*
-               CREATE ITEM
-            */
-
-            const itemElement =
-
-                document.createElement(
-                    "div"
-                );
-
-
-            itemElement.className =
-                "cart-item";
-
-
-
-            /*
-               PRODUCT IMAGE
-            */
-
-            let imageHTML = "";
-
-
-            if (
-                item.image_url &&
-                item.image_url.trim() !== ""
-            ) {
-
-                imageHTML = `
-
-                    <img
-
-                        src="${escapeHTML(
-                            item.image_url
-                        )}"
-
-                        alt="${escapeHTML(
-                            item.name
-                        )}"
-
-                        class="cart-item-image"
-
-                        loading="lazy"
-
-                    >
-
-                `;
-
-            }
-
-            else {
-
-                imageHTML = `
-
-                    <div
-                        class="cart-item-image-placeholder"
-                    >
-
-                        🤖
-
-                    </div>
-
-                `;
-
-            }
-
-
-
-            /*
-               COMPLETE ITEM
-            */
-
-            itemElement.innerHTML = `
-
-                ${imageHTML}
-
-
-                <div
-                    class="cart-item-info"
-                >
-
-                    <h3>
-
-                        ${escapeHTML(
-                            item.name
-                        )}
-
-                    </h3>
-
-
-                    <p>
-
-                        Unit Price:
-                        ৳${price.toFixed(0)}
-
-                    </p>
-
-                </div>
-
-
-                <div
-                    class="cart-item-controls"
-                >
-
-
-                    <div
-                        class="quantity-controls"
-                    >
-
-
-                        <button
-
-                            type="button"
-
-                            class="quantity-btn"
-
-                            data-action="decrease"
-
-                            data-index="${index}"
-
-                        >
-
-                            −
-
-                        </button>
-
-
-                        <span>
-
-                            ${quantity}
-
-                        </span>
-
-
-                        <button
-
-                            type="button"
-
-                            class="quantity-btn"
-
-                            data-action="increase"
-
-                            data-index="${index}"
-
-                        >
-
-                            +
-
-                        </button>
-
-
-                    </div>
-
-
-                    <strong
-                        class="item-total"
-                    >
-
-                        ৳${itemTotal.toFixed(0)}
-
-                    </strong>
-
-
-                    <button
-
-                        type="button"
-
-                        class="remove-btn"
-
-                        data-action="remove"
-
-                        data-index="${index}"
-
-                    >
-
-                        Remove
-
-                    </button>
-
-
-                </div>
-
-            `;
-
-
-            cartItems.appendChild(
-                itemElement
-            );
-
+    updateCartUI();
+}
+
+// Update item quantity
+function updateQuantity(index, change) {
+    let cart = getCart();
+    if (cart[index]) {
+        cart[index].quantity += change;
+        if (cart[index].quantity <= 0) {
+            cart.splice(index, 1);
         }
-
-    );
-
-
-
-    /*
-       ADD BUTTON EVENTS
-    */
-
-    const actionButtons =
-
-        cartItems.querySelectorAll(
-            "[data-action]"
-        );
-
-
-    actionButtons.forEach(
-        button => {
-
-            button.addEventListener(
-
-                "click",
-
-                function () {
-
-
-                    const action =
-
-                        this.dataset.action;
-
-
-                    const index =
-
-                        Number(
-                            this.dataset.index
-                        );
-
-
-                    if (
-                        action ===
-                        "increase"
-                    ) {
-
-                        increaseQuantity(
-                            index
-                        );
-
-                    }
-
-
-                    else if (
-                        action ===
-                        "decrease"
-                    ) {
-
-                        decreaseQuantity(
-                            index
-                        );
-
-                    }
-
-
-                    else if (
-                        action ===
-                        "remove"
-                    ) {
-
-                        removeFromCart(
-                            index
-                        );
-
-                    }
-
-                }
-
-            );
-
-        }
-
-    );
-
-}
-
-
-/* =========================================
-   INCREASE QUANTITY
-========================================= */
-
-function increaseQuantity(
-    index
-) {
-
-    const item =
-        cart[index];
-
-
-    if (!item) {
-
-        return;
-
-    }
-
-
-    const quantity =
-
-        Number(
-            item.quantity
-        ) || 1;
-
-
-    const stock =
-
-        Number(
-            item.stock
-        ) || 999999;
-
-
-    if (
-        quantity >=
-        stock
-    ) {
-
-        alert(
-
-            "Only " +
-            stock +
-            " unit(s) available."
-
-        );
-
-        return;
-
-    }
-
-
-    item.quantity =
-        quantity + 1;
-
-
-    saveCart();
-
-}
-
-
-/* =========================================
-   DECREASE QUANTITY
-========================================= */
-
-function decreaseQuantity(
-    index
-) {
-
-    const item =
-        cart[index];
-
-
-    if (!item) {
-
-        return;
-
-    }
-
-
-    const quantity =
-
-        Number(
-            item.quantity
-        ) || 1;
-
-
-    if (
-        quantity <= 1
-    ) {
-
-        removeFromCart(
-            index
-        );
-
-        return;
-
-    }
-
-
-    item.quantity =
-        quantity - 1;
-
-
-    saveCart();
-
-}
-
-
-/* =========================================
-   REMOVE ITEM
-========================================= */
-
-function removeFromCart(
-    index
-) {
-
-    if (
-        !cart[index]
-    ) {
-
-        return;
-
-    }
-
-
-    cart.splice(
-        index,
-        1
-    );
-
-
-    saveCart();
-
-}
-
-
-/* =========================================
-   CLEAR CART
-========================================= */
-
-if (clearCartBtn) {
-
-    clearCartBtn.addEventListener(
-
-        "click",
-
-        function () {
-
-
-            if (
-                cart.length === 0
-            ) {
-
-                return;
-
-            }
-
-
-            const confirmed =
-
-                confirm(
-
-                    "Are you sure you want to clear your cart?"
-
-                );
-
-
-            if (
-                !confirmed
-            ) {
-
-                return;
-
-            }
-
-
-            cart = [];
-
-
-            saveCart();
-
-        }
-
-    );
-
-}
-
-
-/* =========================================
-   CHECKOUT
-========================================= */
-
-if (checkoutBtn) {
-
-    checkoutBtn.addEventListener(
-
-        "click",
-
-        function () {
-
-
-            if (
-                cart.length === 0
-            ) {
-
-                alert(
-                    "Your cart is empty."
-                );
-
-                return;
-
-            }
-
-
-            /*
-               Save latest cart
-            */
-
-            localStorage.setItem(
-
-                "cart",
-
-                JSON.stringify(
-                    cart
-                )
-
-            );
-
-
-            /*
-               Go to checkout
-            */
-
-            window.location.href =
-                "checkout.html";
-
-        }
-
-    );
-
-}
-
-
-/* =========================================
-   ESCAPE HTML
-========================================= */
-
-function escapeHTML(
-    value
-) {
-
-    const div =
-        document.createElement(
-            "div"
-        );
-
-
-    div.textContent =
-        String(
-            value ||
-            ""
-        );
-
-
-    return div.innerHTML;
-
-}
-
-
-/* =========================================
-   YEAR
-========================================= */
-
-if (yearElement) {
-
-    yearElement.textContent =
-
-        new Date()
-            .getFullYear();
-
-}
-
-
-/* =========================================
-   START
-========================================= */
-
-document.addEventListener(
-
-    "DOMContentLoaded",
-
-    () => {
-
+        saveCart(cart);
         loadCart();
+    }
+}
 
+// Remove single item
+function removeItem(index) {
+    let cart = getCart();
+    cart.splice(index, 1);
+    saveCart(cart);
+    loadCart();
+}
+
+// Clear entire cart
+function clearCart() {
+    if (confirm('Are you sure you want to clear your entire cart?')) {
+        localStorage.removeItem('sra_cart');
+        loadCart();
+    }
+}
+
+// Calculate totals and render summary
+function updateCartUI() {
+    const cart = getCart();
+    
+    // Calculate subtotal
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+    // Get selected delivery fee option
+    const selectedDeliveryRadio = document.querySelector('input[name="deliveryOption"]:checked');
+    const deliveryFee = selectedDeliveryRadio ? parseInt(selectedDeliveryRadio.value) : 80;
+
+    // Update fee display text
+    const deliveryFeeElement = document.getElementById('deliveryFee');
+    if (deliveryFeeElement) {
+        deliveryFeeElement.innerText = `৳${deliveryFee}`;
     }
 
-);
+    // Calculate total amount
+    const total = subtotal + (cart.length > 0 ? deliveryFee : 0);
+
+    // Render values
+    const subtotalElement = document.getElementById('cartSubtotal');
+    const totalElement = document.getElementById('cartTotal');
+
+    if (subtotalElement) subtotalElement.innerText = `৳${subtotal}`;
+    if (totalElement) totalElement.innerText = `৳${cart.length > 0 ? total : 0}`;
+}
+
+// Handle Checkout process
+function handleCheckout() {
+    const cart = getCart();
+    if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+    }
+
+    const selectedDeliveryRadio = document.querySelector('input[name="deliveryOption"]:checked');
+    const deliveryFee = selectedDeliveryRadio ? parseInt(selectedDeliveryRadio.value) : 80;
+    const deliveryLocation = deliveryFee === 80 ? 'Inside Dhaka' : 'Outside Dhaka';
+    
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const total = subtotal + deliveryFee;
+
+    // Package order data to pass to checkout/WhatsApp/payment page if needed
+    const orderDetails = {
+        items: cart,
+        subtotal: subtotal,
+        deliveryLocation: deliveryLocation,
+        deliveryFee: deliveryFee,
+        total: total
+    };
+
+    localStorage.setItem('sra_pending_order', JSON.stringify(orderDetails));
+
+    // Redirect to checkout page or trigger checkout flow
+    // window.location.href = 'checkout.html';
+    
+    // Temporary confirmation flow or integration placeholder:
+    alert(`Proceeding to checkout!\nLocation: ${deliveryLocation}\nTotal Amount: ৳${total}`);
+}

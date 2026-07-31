@@ -36,7 +36,6 @@ function renderOrderSummary(cart) {
     if (!itemsContainer) return;
 
     itemsContainer.innerHTML = cart.map(item => {
-        const imgSrc = item.image || item.img || item.image_url || 'logo.jpg';
         return `
             <div class="checkout-item">
                 <div class="checkout-item-name" title="${item.name}">
@@ -143,25 +142,55 @@ function setupCheckoutForm(cart) {
         const total = subtotal + deliveryFee;
         const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value || "cod";
 
-        // Mapped to match your actual database column names
-        const orderData = {
-            customer_name: name,
-            customer_phone: phone,
-            delivery_address: address, // Fixed column name here
-            payment_method: paymentMethod,
-            payment_last_digits: lastDigits,
-            items: cart,
-            total_amount: total,
-            created_at: new Date().toISOString()
-        };
-
         try {
             if (!window.supabase) {
                 throw new Error("Supabase is not initialized on this page.");
             }
 
-            const { error } = await window.supabase.from("orders").insert([orderData]);
-            if (error) throw error;
+            // 1. Insert into 'orders' table matching exact schema columns
+            const orderPayload = {
+                customer_name: name,
+                phone: phone,
+                delivery_address: address,
+                payment_method: paymentMethod,
+                payment_sender_last_two: lastDigits,
+                payment_status: "Pending",
+                order_status: "Pending",
+                subtotal: subtotal,
+                delivery_fee: deliveryFee,
+                total_amount: total
+            };
+
+            const { data: orderData, error: orderError } = await window.supabase
+                .from("orders")
+                .insert([orderPayload])
+                .select()
+                .single();
+
+            if (orderError) throw orderError;
+
+            const orderId = orderData.id;
+
+            // 2. Insert items into 'order_items' table matching exact schema columns
+            const orderItemsPayload = cart.map(item => {
+                const itemPrice = Number(item.price);
+                const itemQty = Number(item.quantity);
+                return {
+                    order_id: orderId,
+                    product_id: item.id || null, // Handles if item has id or not
+                    product_name: item.name,
+                    product_price: itemPrice,
+                    price: itemPrice,
+                    quantity: itemQty,
+                    subtotal: itemPrice * itemQty
+                };
+            });
+
+            const { error: itemsError } = await window.supabase
+                .from("order_items")
+                .insert(orderItemsPayload);
+
+            if (itemsError) throw itemsError;
 
             showMsg("Order placed successfully! Redirecting...", "success");
             localStorage.removeItem("sra_cart");

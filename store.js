@@ -64,7 +64,6 @@ function showToast(message = "Product added to cart successfully!") {
     if (toastMsg) toastMsg.textContent = message;
     toast.classList.add("show");
 
-    // Automatically hide after 3 seconds
     setTimeout(() => {
         toast.classList.remove("show");
     }, 3000);
@@ -179,16 +178,6 @@ function buyNow(product) {
     }];
     saveCart();
     window.location.href = "cart.html";
-}
-
-function selectCategory(catName) {
-    selectedCategory = catName;
-    categoryButtons.forEach(btn => {
-        const btnCat = btn.dataset.category;
-        if (btnCat === catName) btn.classList.add("active");
-        else btn.classList.remove("active");
-    });
-    displayProducts();
 }
 
 // ========================================

@@ -154,8 +154,8 @@ function setupCheckoutForm(cart) {
                 delivery_address: address,
                 payment_method: paymentMethod,
                 payment_sender_last_two: lastDigits,
-                payment_status: "Pending",
-                order_status: "Pending",
+                payment_status: "pending", // changed from "Pending" to lowercase
+                order_status: "pending",   // changed from "Pending" to lowercase
                 subtotal: subtotal,
                 delivery_fee: deliveryFee,
                 total_amount: total

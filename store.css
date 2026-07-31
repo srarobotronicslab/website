@@ -274,8 +274,8 @@ a {
 
 .cat-img-box {
     width: 100%;
-    /* Adjusted to a slightly wider 5:7 vertical aspect ratio frame */
-    aspect-ratio: 5 / 7; 
+    /* Adjusted to a 4:5 vertical aspect ratio frame */
+    aspect-ratio: 4 / 5; 
     display: flex;
     align-items: center;
     justify-content: center;

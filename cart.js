@@ -86,7 +86,10 @@ function loadCart() {
     cart.forEach((item, index) => {
         const qty = item.quantity || 1;
         const itemTotal = item.price * qty;
-        const imageUrl = item.image && item.image.trim() !== '' ? item.image : 'logo.jpg';
+        
+        // Check multiple possible keys for the product image and clean pathing if needed
+        const rawImage = item.image || item.img || item.thumbnail || '';
+        const imageUrl = rawImage.trim() !== '' ? rawImage : 'logo.jpg';
         const itemName = item.name || item.title || 'Robotics Component';
 
         const cartItemElement = document.createElement('div');

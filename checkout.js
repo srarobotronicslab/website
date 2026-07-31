@@ -33,9 +33,6 @@ function getDeliveryFee() {
 
 function renderOrderSummary(cart) {
     const itemsContainer = document.getElementById("checkoutItems");
-    const subtotalEl = document.getElementById("checkoutSubtotal");
-    const deliveryEl = document.getElementById("checkoutDelivery");
-    const totalEl = document.getElementById("checkoutTotal");
 
     itemsContainer.innerHTML = cart.map(item => `
         <div class="checkout-item">
@@ -87,11 +84,11 @@ function updateDisclaimerText(cart) {
     const grandTotal = subtotal + deliveryFee;
 
     if (paymentMethod === "cod") {
-        disclaimerBox.innerHTML = `(If cash on delivery)<br>Pay the delivery charge ${deliveryFee}/- in advance<br>Bkash: 01303614563<br>Nogod: 01303614563`;
+        disclaimerBox.innerHTML = `Pay the delivery charge ${deliveryFee}/- in advance<br>Bkash: 01303614563<br>Nogod: 01303614563`;
     } else if (paymentMethod === "bkash") {
-        disclaimerBox.innerHTML = `If bkash payment<br>Pay the total (${grandTotal} tk)<br>Bkash: 01303614563`;
+        disclaimerBox.innerHTML = `Pay the total (${grandTotal} tk)<br>Bkash: 01303614563`;
     } else if (paymentMethod === "nogod") {
-        disclaimerBox.innerHTML = `If nogod payment<br>Pay the total (${grandTotal} tk)<br>Nogod: 01303614563`;
+        disclaimerBox.innerHTML = `Pay the total (${grandTotal} tk)<br>Nogod: 01303614563`;
     }
 }
 
@@ -147,9 +144,7 @@ function setupCheckoutForm(cart) {
         };
 
         try {
-            // Simulated or real Supabase integration depending on window configuration
             if (window.supabase) {
-                // Adjust table name if necessary, e.g. "orders"
                 const { error } = await window.supabase.from("orders").insert([orderData]);
                 if (error) throw error;
             }
